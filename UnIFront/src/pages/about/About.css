@@ -1,0 +1,19 @@
+
+body {
+    text-align: center;
+    line-height: 1.5;
+    background-color: #2d4181; /* Light background for visibility */
+}
+
+.authors{
+    padding-left: 5%;
+    background-color: #2d4181; /*I don't know why this did that */
+}
+
+.authors ul {
+    list-style: disc; /* Ensures bullet points are visible */
+    list-style-position: inside; /* Moves bullets inside the text area */
+    display: inline-block; /* Makes the list shrink-wrap around content */
+    text-align: left; /* Ensures bullets are properly aligned */
+    padding-left: 0; /* Removes extra default padding */
+}
