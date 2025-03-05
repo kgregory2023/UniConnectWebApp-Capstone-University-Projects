@@ -3,7 +3,11 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
-//Import more pages here!
+
+/* 
+Create more pages in ./pages/<pagename folder>/<pagename that's exported> 
+and import them below. Then create a route for that path to go down.
+*/
 import About from './pages/about/About'
 
 //This was the pre made web page, wrapped it in a function to make the actuall App function look prettier :)
