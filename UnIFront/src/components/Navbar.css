@@ -20,11 +20,12 @@
 }
 .navbar-item{
     color: rgb(0, 0, 0);
-    padding: 20px 50px;
+    padding: 20px 100px;
     display: block;
     text-align: center;
     float:left
 }
 .navbar-item:hover{
+    color:rgb(255, 255, 255);
     background-color:#89d48e;
 }
