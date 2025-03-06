@@ -9,6 +9,7 @@ Create more pages in ./pages/<pagename folder>/<pagename that's exported>
 and import them below. Then create a route for that path to go down.
 */
 import About from './pages/about/About'
+import CustomizeAccount from './pages/customizeAccount/CustomizeAccount'
 
 //This was the pre made web page, wrapped it in a function to make the actuall App function look prettier :)
 function DefaultApp() {
@@ -43,6 +44,13 @@ function DefaultApp() {
           </a>
         </p>
       </div>
+      <div>
+        <p>
+          <a href="/customizeAccount">
+            Click me to go to the customize account page!
+          </a>
+        </p>
+      </div>
     </>
   )
 }
@@ -59,6 +67,7 @@ function App() {
       <Routes>
         <Route path="/" element={<DefaultApp />} />
         <Route path="/about" element={<About />} />
+        <Route path="/customizeAccount" element={<CustomizeAccount />} />
       </Routes>
     </div>
   )
