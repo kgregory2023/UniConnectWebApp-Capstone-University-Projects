@@ -1,9 +1,17 @@
 import { useState } from 'react'
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 
-function App() {
+/* 
+Create more pages in ./pages/<pagename folder>/<pagename that's exported> 
+and import them below. Then create a route for that path to go down.
+*/
+import About from './pages/about/About'
+
+//This was the pre made web page, wrapped it in a function to make the actuall App function look prettier :)
+function DefaultApp() {
   const [count, setCount] = useState(0)
 
   return (
@@ -28,7 +36,31 @@ function App() {
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
       </p>
+      <div>
+        <p>
+          <a href="/about">
+            Click me to go to the about page!
+          </a>
+        </p>
+      </div>
     </>
+  )
+}
+
+
+function App() {
+  return (
+    <div>
+        <h1>
+          <a href ="/">
+            go home
+          </a>
+        </h1>
+      <Routes>
+        <Route path="/" element={<DefaultApp />} />
+        <Route path="/about" element={<About />} />
+      </Routes>
+    </div>
   )
 }
 
