@@ -9,15 +9,10 @@ import './Navbar.css';
 let Navbar = () => {
     return (
         <nav className = "navbar">
-                <ul className="navbar-menu">
+                <ul>
                     <li>
                         <Link to="/" className="navbar-item">
                             Home
-                        </Link>
-                    </li>
-                    <li>
-                        <Link to="/about" className="navbar-item">
-                            About
                         </Link>
                     </li>
                     <li>
@@ -31,8 +26,18 @@ let Navbar = () => {
                         </Link>
                     </li>
                     <li>
+                        <Link to="/about" className="navbar-item">
+                            About
+                        </Link>
+                    </li>
+                    <li>
                         <Link to="/login" className="navbar-item">
                             Log In
+                        </Link>
+                    </li>
+                    <li>
+                        <Link to="/profile" className="navbar-item">
+                            Profile
                         </Link>
                     </li>
                 </ul>
