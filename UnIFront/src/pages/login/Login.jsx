@@ -1,6 +1,7 @@
 /**
  * Login page to handle submitting a login form with a user's email and password, with a link
  * to change to registration page.
+ * Author: @MMcClure313
  */
 
 

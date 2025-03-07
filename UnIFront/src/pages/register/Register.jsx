@@ -1,5 +1,7 @@
 /**
- * Register page to handle submitting a register form with a user's email, username, password, 
+ * Register page to handle submitting a register form with a user's email, username, password, and school attending,
+ * with a link to return to login page
+ * Author: @MMcClure313
  */
 
 
