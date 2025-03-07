@@ -31,13 +31,13 @@ let Navbar = () => {
                         </Link>
                     </li>
                     <li>
-                        <Link to="/login" className="navbar-item">
-                            Log In
+                        <Link to="/profile" className="navbar-item">
+                            Profile
                         </Link>
                     </li>
                     <li>
-                        <Link to="/profile" className="navbar-item">
-                            Profile
+                        <Link to="/login" className="navbar-item">
+                            Log In
                         </Link>
                     </li>
                 </ul>
