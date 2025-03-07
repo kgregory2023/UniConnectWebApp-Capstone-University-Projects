@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import {useEffect} from 'react';
 import './CustomizeAccount.css';
 
 function AccountCustomization() {
@@ -12,16 +13,26 @@ function AccountCustomization() {
         username: '',
     });
 
-    const handleChange = (e) => {
-        setFormData({
-            ...formData,
+    {/* Temporary values used to store the data before submitting it.*/}
+    const [tempData, setTempData] = useState({ ...formData});
+
+    const handleTempChange = (e) => {
+        setTempData({
+            ...tempData,
             [e.target.name]: e.target.value
         });
     };
 
+    {/* Added this in in order to check if/ when the form data is updated. Can be deleted later once we
+        know everything works smoothly*/}
+    useEffect(() => {
+        console.log("Current account details:", formData);
+    }, [formData]);
+
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log("Updated account details:", formData);
+        setFormData(tempData);
+        console.log("Updated account details:", tempData);
         alert("Account updated successfully!");
     };
 
@@ -38,8 +49,8 @@ function AccountCustomization() {
                     <input 
                         type="text" 
                         name="username" 
-                        value={formData.username} 
-                        onChange={handleChange} 
+                        value={tempData.username} 
+                        onChange={handleTempChange} 
                     />
                 </label>
                 <label>
@@ -47,8 +58,8 @@ function AccountCustomization() {
                     <input 
                         type="text" 
                         name="name" 
-                        value={formData.name} 
-                        onChange={handleChange} 
+                        value={tempData.name} 
+                        onChange={handleTempChange} 
                     />
                 </label>
                 <label>
@@ -56,8 +67,8 @@ function AccountCustomization() {
                     <input 
                         type="text" 
                         name="bio" 
-                        value={formData.bio} 
-                        onChange={handleChange} 
+                        value={tempData.bio} 
+                        onChange={handleTempChange} 
                     />
                 </label>
                 <label>
@@ -65,8 +76,8 @@ function AccountCustomization() {
                     <input 
                         type="text" 
                         name="university" 
-                        value={formData.university} 
-                        onChange={handleChange} 
+                        value={tempData.university} 
+                        onChange={handleTempChange} 
                     />
                 </label>
                 <label>
@@ -74,8 +85,8 @@ function AccountCustomization() {
                     <input 
                         type="text" 
                         name="email" 
-                        value={formData.email} 
-                        onChange={handleChange} 
+                        value={tempData.email} 
+                        onChange={handleTempChange} 
                     />
                 </label>
                 <label>
@@ -83,8 +94,8 @@ function AccountCustomization() {
                     <input 
                         type="text" 
                         name="phoneNumber" 
-                        value={formData.phoneNumber} 
-                        onChange={handleChange} 
+                        value={tempData.phoneNumber} 
+                        onChange={handleTempChange} 
                     />
                 </label>
                 {/* I added this one temporarily, obviously we need to make it more secure.
@@ -94,9 +105,9 @@ function AccountCustomization() {
                     <input 
                         type="password" 
                         name="password" 
-                        value={formData.password} 
-                        onChange={handleChange}
-                        placeHolder="Enter your new password"
+                        value={tempData.password} 
+                        onChange={handleTempChange}
+                        placeholder="Enter your new password"
                     />
                 </label>
                 <button type="submit">Save Changes</button>
