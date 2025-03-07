@@ -13,7 +13,7 @@ const registerUser = async (req, res) => {
         // Hash the password before saving
         const hashedPassword = await hashPassword(password);
 
-        // Create a new user
+        // Save user to database
         const newUser = new User({ username, email, password: hashedPassword });
         await newUser.save();
 
@@ -28,10 +28,11 @@ const loginUser = async (req, res) => {
     try {
         const { email, password } = req.body;
 
+        // Find user by email
         const user = await User.findOne({ email });
         if (!user) return res.status(404).json({ message: "User not found" });
 
-        // Compare entered password with hashed password
+        // Compare entered password with stored hashed password
         const isMatch = await comparePassword(password, user.password);
         if (!isMatch) return res.status(400).json({ message: "Invalid credentials" });
 
