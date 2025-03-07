@@ -20,6 +20,9 @@ function Login () {
 
     return (
         <div>
+            <h1>
+                Log in
+            </h1>
         <form onSubmit={handleSubmit}  className = 'loginForm'>
           <div>
             <label htmlFor="email">Email:</label>
