@@ -5,8 +5,17 @@
 
 import { Link } from "react-router-dom";
 import './Navbar.css';
+import { useUser } from '../userContext/UserContext'
 
 let Navbar = () => {
+    const { user, logout, login } = useUser();
+
+    const testLogin = () =>{
+        login('user');
+    };
+
+
+
     return (
         <nav className = "navbar">
                 <ul>
@@ -35,11 +44,23 @@ let Navbar = () => {
                             Profile
                         </Link>
                     </li>
+                    {(!user) ? (
                     <li>
-                        <Link to="/login" className="navbar-item">
+                        {/* <Link to="/login" className="navbar-item">
                             Log In
-                        </Link>
+                        </Link> */}
+                        <button onClick={testLogin}>
+                            Log In
+                        </button>
                     </li>
+                    ) : (
+                        <li
+                        >Hello, {user.username}
+                        <button onClick={logout}>Logout</button>
+                        </li> 
+                    )}
+
+
                 </ul>
         </nav>
     );

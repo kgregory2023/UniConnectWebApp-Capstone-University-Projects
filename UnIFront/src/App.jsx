@@ -3,14 +3,14 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
-import './components/Navbar'
 
 /* 
 Create more pages in ./pages/<pagename folder>/<pagename that's exported> 
 and import them below. Then create a route for that path to go down.
 */
 import About from './pages/about/About'
-import Navbar from './components/Navbar';
+import Navbar from './components/navbar/Navbar';
+import { UserProvider } from './components/userContext/UserContext';
 
 
 
@@ -54,13 +54,13 @@ function DefaultApp() {
 
 function App() {
   return (
-    <div>
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<DefaultApp />} />
-        <Route path="/about" element={<About />} />
-      </Routes>
-    </div>
+    <UserProvider>
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<DefaultApp />} />
+          <Route path="/about" element={<About />} />
+        </Routes>
+    </UserProvider>
   )
 }
 
