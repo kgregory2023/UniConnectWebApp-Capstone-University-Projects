@@ -8,6 +8,10 @@ const PORT = 3000
 app.use(cors())
 app.use(express.json())
 
+// Import Routes 
+const usersRoutes = require("./usersRoutes"); 
+app.use("/api/users", usersRoutes); 
+
 app.listen(PORT, () => {
     connect.connectToServer()
     console.log(`Server is running on port ${PORT}`)

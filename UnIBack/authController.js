@@ -1,5 +1,5 @@
-const User = require("../models/userModel");
-const { hashPassword, comparePassword, generateToken } = require("../services/authService");
+const User = require("./userModel");
+const { hashPassword, comparePassword, generateToken } = require("./authService");
 
 // Register a New User
 const registerUser = async (req, res) => {
@@ -19,6 +19,7 @@ const registerUser = async (req, res) => {
 
         res.status(201).json({ message: "User registered successfully" });
     } catch (error) {
+        console.error("Registration Error:", error);
         res.status(500).json({ message: "Server error", error });
     }
 };

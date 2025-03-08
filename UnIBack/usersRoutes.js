@@ -1,8 +1,8 @@
 const express = require("express")
 
 //Authentication Functions
-const { registerUser, loginUser } = require("../controllers/authController"); 
-const authMiddleware = require("../middleware/authMiddleware");
+const { registerUser, loginUser } = require("./authController"); 
+const authMiddleware = require("./authMiddleware");
 
 const database = require("./connect")
 
