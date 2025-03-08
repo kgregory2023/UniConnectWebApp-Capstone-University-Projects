@@ -21,7 +21,7 @@ function Register () {
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        //This is where the api call goes for fun
+        //This is where the api call
         console.log('Email: ', email, 'Password:', password, 'Password2:', password2, 'Username: ', username, 'School attending', school);
     }
 

@@ -16,6 +16,7 @@ function Login () {
 
     const handleSubmit = (event) => {
         event.preventDefault();
+        //This is where we make the call to the database!
         console.log('email: ', email, 'Password:', password);
     }
 
