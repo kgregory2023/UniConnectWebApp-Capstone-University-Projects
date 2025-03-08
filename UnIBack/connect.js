@@ -1,22 +1,25 @@
 const { MongoClient, ServerApiVersion } = require('mongodb');
-require("dotenv").config({path: "./config.env"})
+require("dotenv").config({ path: "./config.env" });
 
-// Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(process.env.AURI, {
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true,
-  }
+  serverApi: ServerApiVersion.v1,
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
 });
 
-let database
+let database;
 
-module.exports = {
-    connectToServer: () => {
-        database = client.db("UnIConnect")
-    },
-    getDB: () => {
-        return database
-    }
-}
+const connectToServer = async () => {
+  try {
+    await client.connect();
+    database = client.db("UnIConnect");
+    console.log("MongoDB Connected Successfully using MongoClient!");
+  } catch (error) {
+    console.error("MongoDB Connection Failed!", error);
+    process.exit(1);
+  }
+};
+
+const getDB = () => database;
+
+module.exports = { connectToServer, getDB };
