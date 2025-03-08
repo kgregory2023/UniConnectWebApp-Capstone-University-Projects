@@ -1,5 +1,7 @@
-const app = require('./app');
-const { connectToServer } = require("./db");
+require("dotenv").config({path: "./config/config.env"});
+
+const app = require('./config/app');
+const { connectToServer } = require("./config/db");
 const PORT = process.env.PORT || 3000;
 
 (async () =>{
