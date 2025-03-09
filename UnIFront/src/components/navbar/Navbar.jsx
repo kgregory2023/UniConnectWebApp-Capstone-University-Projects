@@ -46,12 +46,9 @@ let Navbar = () => {
                     </li>
                     {(!user) ? (
                     <li>
-                        {/* <Link to="/login" className="navbar-item">
+                        <Link to="/login" className="navbar-item">
                             Log In
-                        </Link> */}
-                        <button onClick={testLogin}>
-                            Log In
-                        </button>
+                        </Link>
                     </li>
                     ) : (
                         <li
