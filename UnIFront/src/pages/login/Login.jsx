@@ -7,9 +7,13 @@
 
 import React, { useState } from 'react';
 import { Link } from "react-router-dom";
+import { useUser } from '../../components/userContext/UserContext'
 import './Login.css'
 
 function Login() {
+ const { user, login } = useUser();
+
+
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -26,10 +30,6 @@ function Login() {
 
 
     try {
-      console.log(JSON.stringify({
-        email,
-        password,
-      }));
 
       const response = await fetch('http://localhost:5000/users/login', {
         method: 'POST',
@@ -46,8 +46,10 @@ function Login() {
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.message || 'An error occured during login');
+      } else {
+        const data = await response.json()
+        login(data.user);
       }
-      console.log(response);
 
     } catch (error) {
       console.error('Error:', error);
