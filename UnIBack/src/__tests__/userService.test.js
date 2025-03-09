@@ -23,7 +23,6 @@ describe("User Service", () => {
         await User.deleteMany();
     });
 
-//registerUser Testing
     it("shoould register a new user", async () => {
         const userData = {
             username: "testuser",
@@ -64,7 +63,6 @@ describe("User Service", () => {
         expect(await bcrypt.compare("securepassword", foundUser.password)).toBe(true);
     });
 
-//loginUser Testing
     it("should validate user login and return JWT", async () => {
         const userData = {
             username: "testuser",
@@ -95,7 +93,6 @@ describe("User Service", () => {
         await expect(userService.loginUser({ email: userData.email, password: "wrongpassword"})).rejects.toThrow("Invalid password.");
     });
 
-//getUserProfile Testing
     it("should return user profile with populated comments and ratings", async () => {
         const userData = {
             username: "testuser",
@@ -139,7 +136,6 @@ describe("User Service", () => {
         expect(profile).toBeNull();
     });
 
-//updateUserProfile Testing
     it("should update user profile data", async () => {
         const userData = {
             username: "testuser",
@@ -164,7 +160,7 @@ describe("User Service", () => {
         expect(updatedUser.age).toBe(updateData.age);
     });
 
-    it("should returnr null if the user does not exist", async () => {
+    it("should return null if the user does not exist", async () => {
         const nonExistantUserId = new mongoose.Types.ObjectId();
         const updateData = {
             username: "nonExistentUser"
@@ -173,5 +169,30 @@ describe("User Service", () => {
         const updatedUser = await userService.updateUserProfile(nonExistantUserId, updateData);
         
         expect(updatedUser).toBeNull();
+    });
+
+    it("should delete user profile", async () => {
+        const userData = {
+            username: "testuser",
+            email: "test@example.com",
+            password: "secure password"
+        };
+
+        const user = await userService.registerUser(userData);
+        const userId = user._id;
+
+        const deletedUser = await userService.deleteUser(userId);
+
+        const userFromDb = await User.findById(userId);
+        expect(userFromDb).toBeNull();
+        expect(deletedUser).toBeDefined();
+        expect(deletedUser._id.toString()).toBe(userId.toString());
+    });
+
+    it("should return null if the user does not exist whhen trying to delete", async () => {
+        const nonExistantUserId = new mongoose.Types.ObjectId();
+        const deletedUser = await userService.deleteUser(nonExistantUserId);
+
+        expect(deletedUser).toBeNull();
     });
 });
