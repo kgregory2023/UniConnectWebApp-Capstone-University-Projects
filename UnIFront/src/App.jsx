@@ -9,10 +9,12 @@ Create more pages in ./pages/<pagename folder>/<pagename that's exported>
 and import them below. Then create a route for that path to go down.
 */
 import About from './pages/about/About'
+
 import Login from './pages/login/Login'
 import Register from './pages/register/Register'
 
-
+import Navbar from './components/navbar/Navbar';
+import { UserProvider } from './components/userContext/UserContext';
 
 
 
@@ -57,14 +59,16 @@ function DefaultApp() {
 
 function App() {
   return (
-    <div>
-      <Routes>
-        <Route path="/" element={<DefaultApp />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/login" element={<Login />} />
-      </Routes>
-    </div>
+    <UserProvider>
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<DefaultApp />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} />
+        </Routes>
+    </UserProvider>
+
   )
 }
 
