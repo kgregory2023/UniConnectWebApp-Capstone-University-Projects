@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-require('dotenv').config(); // Load environment variables
+require('dotenv').config({ path: "./src/config/config.env"}); // Load environment variables
 
 // Hash password before storing
 const hashPassword = async (password) => {
@@ -17,7 +17,7 @@ const generateToken = (user) => {
     return jwt.sign(
         { id: user._id, username: user.username }, 
         process.env.JWT_SECRET, 
-        { expiresIn: "1h" }  // 1-hour expiration
+        { expiresIn: "3h" }  // 3-hour expiration
     );
 };
 
