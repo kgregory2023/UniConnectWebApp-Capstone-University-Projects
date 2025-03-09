@@ -11,8 +11,7 @@ Ensuring that you are in the directory: UnIFront
 
 With Node.JS and git bash terminal, ensure you have ran
 
-`npm install vite`
-`npm install react-router-dom`
+`npm i`
 
 and to run the front end you enter the command
 `npm run dev`
@@ -23,19 +22,7 @@ Ensuring that you are in the directory: UnIBack
 
 With Node.JS and git bash terminal, ensure that these dependencies have been installed.
 
-`npm i jsonwebtoken`
-
-`npm i mongoose`
-
-`npm i bcrypt`
-
-`npm i mongodb-memory-server`
-
-`npm i jest`
-
-`npm i nodemon`
-
-`npm i --save-dev supertest jest`
+`npm i`
 
 and then you can run 
 `node server.js`
@@ -56,9 +43,18 @@ Controller -
 Routes - Defines routes that will be called to, primarily by the frontend, in order to carry out specific database and backend functions.
 
 
+### For the front end
+With Node.JS and git bash terminal, ensure you have ran
+
+`npm i`
+
+and to run the front end you enter the command
+`npm run dev`
+which will open the frontend on a localhost website with a port specified within the terminal
+
+
+
 ## Contributing
-  - (What should be considered before opening a pull request)
-  - (How to open a pull request)
   - ### (How to run tests)
 Ensuring that you are in the directory for UnIBack, there is a tests folder to cd into. Once in that directory, and ensuring that you have all the dependencies needed for the backend, running
 
@@ -73,7 +69,7 @@ While in the UnIBack directory `node server.js`
 
 on a seperate terminal, whil in the UnIFront directory, `npm run dev`
 
-These two commands will allow you to open http:localhost:5173, or whatever the localhost is determined to be by Vite on your machine, to begin interacting and using the application.
+These two commands will allow you to open http:localhost:5173, port 5173 is the port that vite defaults to, and if the port is in use, will find another open port to use.
 
 ## Get in Touch
   - (Github Issues)

@@ -1,0 +1,31 @@
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    padding: 0px;
+    margin: 0px;
+    box-shadow: 0 4px 2px -2px rgb(128, 128, 128);
+    justify-content: space-evenly;
+}
+.navbar ul{
+    list-style-type: none;
+    background-color :#8cdb92; 
+    padding: 0px;
+    margin: 0px;
+    justify-content: center;
+    overflow: hidden;
+    display: flex;
+}
+.navbar-item{
+    color: rgb(0, 0, 0);
+    padding: 20px 100px;
+    display: block;
+    text-align: center;
+    float:left
+}
+.navbar-item:hover{
+    color:rgb(255, 255, 255);
+    background-color:#89d48e;
+}
