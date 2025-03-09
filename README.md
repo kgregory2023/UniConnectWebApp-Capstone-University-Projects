@@ -6,9 +6,25 @@ Group 3's Capstone Project for Spring 2025
 
 
 ## Installation
-(Installation Instructions if there are any)
+
+### For the front end
+With Node.JS and git bash terminal, ensure you have ran
+`npm install vite`
+`npm install react-router-dom`
+
+and to run the front end you enter the command
+`npm run dev`
+which will open the frontend on a localhost website with a port specified within the terminal
+
+
+
 
 ## Documentation
+### Within the backend, this is how it will go
+Model 
+Repos
+Services (business)
+Controller
 
 
 ## Contributing
