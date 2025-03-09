@@ -25,8 +25,8 @@ let Navbar = () => {
                         </Link>
                     </li>
                     <li>
-                        <Link to="/match" className="navbar-item">
-                            Match
+                        <Link to="/connect" className="navbar-item">
+                            Connect
                         </Link>
                     </li>
                     <li>
@@ -53,7 +53,7 @@ let Navbar = () => {
                     ) : (
                         <li
                         >Hello, {user.username}
-                        <button onClick={logout}>Logout</button>
+                        <button onClick={logout} className="navbar-item">Logout</button>
                         </li> 
                     )}
 
