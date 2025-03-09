@@ -28,6 +28,7 @@ function Register () {
           return;
         }
 
+        
 
         setError('');
         setIsLoading(true);
