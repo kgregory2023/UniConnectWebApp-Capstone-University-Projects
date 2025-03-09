@@ -16,14 +16,54 @@ function Register () {
     const [password2, setPassword2] = useState('');
     const [username, setUsername] = useState('');
     const [school, setSchool] = useState('UWF');
+    const [isLoading, setIsLoading] = useState(false); 
+    const [error, setError] = useState(''); 
 
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
+
+
+        setError('');
+        setIsLoading(true);
 
         //This is where the api call
         console.log('Email: ', email, 'Password:', password, 'Password2:', password2, 'Username: ', username, 'School attending', school);
+        
+        try{
+          console.log(JSON.stringify({
+            email,
+            password,
+            username,
+            school,
+        }));
+        const response = await fetch('https://localhost:3000/user/register', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+              email,
+              password,
+              username,
+              school,
+          }),
+      });
+
+
+      if(!response.ok){
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'An error occured during registration');
+      }
+
+     //window.location.href = "/login";
+    } catch (error){
+      console.error('Error:', error);
+      setError('Something went horribly wrong! Try again later');
+    } finally {
+      setIsLoading(false);
     }
+  }
 
     return (
         <div>
@@ -103,7 +143,14 @@ function Register () {
               required
             />
           </div>
-          <button type="submit">Register</button>
+
+        {/* conditionally only shows the error message if there even is one. */}
+        {error && <div className="error-message">{error}</div>}
+
+    
+
+          <button type="submit" disabled={isLoading}>{isLoading ? 'Registering...' : 'Register'}</button>
+
           <div>
             <Link to ="/login">
                 Already have an account? Click here
