@@ -4,7 +4,7 @@ const routes = require('../routes');
 const userRoutes = require('../routes/usersRoutes');
 
 app.use(express.json()); //middleware to parse JSON
-app.use("/api/users", userRoutes);
+app.use("/users", userRoutes);
 //Add more middleware as needed
 
 module.exports = app;
