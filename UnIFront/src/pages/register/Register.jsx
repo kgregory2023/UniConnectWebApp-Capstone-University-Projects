@@ -15,7 +15,7 @@ function Register () {
     const [password, setPassword] = useState('');
     const [password2, setPassword2] = useState('');
     const [username, setUsername] = useState('');
-    const [school, setSchool] = useState('UWF');
+    const [uni, setUni] = useState('UWF');
     const [isLoading, setIsLoading] = useState(false); 
     const [error, setError] = useState(''); 
 
@@ -28,16 +28,16 @@ function Register () {
         setIsLoading(true);
 
         //This is where the api call
-        console.log('Email: ', email, 'Password:', password, 'Password2:', password2, 'Username: ', username, 'School attending', school);
-        
+        console.log('Email: ', email, 'Password:', password, 'Password2:', password2, 'Username: ', username, 'uni attending', uni);
+
         try{
           console.log(JSON.stringify({
             email,
             password,
             username,
-            school,
+            uni,
         }));
-        const response = await fetch('https://localhost:3000/user/register', {
+        const response = await fetch('http://localhost:5000/users/register', {
           method: 'POST',
           headers: {
               'Content-Type': 'application/json',
@@ -46,7 +46,7 @@ function Register () {
               email,
               password,
               username,
-              school,
+              uni,
           }),
       });
 
@@ -59,7 +59,7 @@ function Register () {
      //window.location.href = "/login";
     } catch (error){
       console.error('Error:', error);
-      setError('Something went horribly wrong! Try again later');
+      setError(error.message);
     } finally {
       setIsLoading(false);
     }
@@ -103,11 +103,11 @@ function Register () {
 
           {/* Dropdown School field */}
           <div>
-            <label htmlFor="schoolOptions">Select a school:</label>
+            <label htmlFor="uni">Select a school:</label>
             <select
-                id="school"
-                value={school}
-                onChange={(e) => setSchool(e.target.value)}
+                id="uni"
+                value={uni}
+                onChange={(e) => setUni(e.target.value)}
                 className="fancy-select"
                 required
             >
