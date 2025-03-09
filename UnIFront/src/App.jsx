@@ -10,6 +10,13 @@ and import them below. Then create a route for that path to go down.
 */
 import About from './pages/about/About'
 import CustomizeAccount from './pages/customizeAccount/CustomizeAccount'
+import Login from './pages/login/Login'
+import Register from './pages/register/Register'
+import Navbar from './components/navbar/Navbar';
+import { UserProvider } from './components/userContext/UserContext';
+
+
+
 
 //This was the pre made web page, wrapped it in a function to make the actuall App function look prettier :)
 function DefaultApp() {
@@ -58,18 +65,18 @@ function DefaultApp() {
 
 function App() {
   return (
-    <div>
-        <h1>
-          <a href ="/">
-            go home
-          </a>
-        </h1>
-      <Routes>
-        <Route path="/" element={<DefaultApp />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/customizeAccount" element={<CustomizeAccount />} />
-      </Routes>
-    </div>
+
+    <UserProvider>
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<DefaultApp />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/customizeAccount" element={<CustomizeAccount />} />
+        </Routes>
+    </UserProvider>
+
   )
 }
 
