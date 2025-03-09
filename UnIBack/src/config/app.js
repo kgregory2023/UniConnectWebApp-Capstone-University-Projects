@@ -1,9 +1,20 @@
 const express = require('express');
+const cors = require('cors');
+const morgan = require('morgan');
+const fs = require('fs');
+const path = require('path');
 const app = express();
-const routes = require('../routes');
 const userRoutes = require('../routes/usersRoutes');
 
+const logStream = fs.createWriteStream(path.join(__dirname, 'requests.log'), {flags: 'a' });
+
 app.use(express.json()); //middleware to parse JSON
+app.use(morgan("combined", { stream: logStream }));
+app.use(cors({
+    origin: "http://localhost:5173", 
+    methods: ["GET", "POST", "PUT", "DELETE"], 
+    allowedHeaders: ["Content-Type", "Authorization"], // Allowed headers
+}));
 app.use("/users", userRoutes);
 //Add more middleware as needed
 
