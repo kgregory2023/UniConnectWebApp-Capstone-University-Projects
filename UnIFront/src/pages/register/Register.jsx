@@ -23,6 +23,11 @@ function Register () {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
+        if(!(password == password2)){
+          setError('The passwords must match');
+          return;
+        }
+
 
         setError('');
         setIsLoading(true);
@@ -37,6 +42,7 @@ function Register () {
             username,
             uni,
         }));
+
         const response = await fetch('http://localhost:5000/users/register', {
           method: 'POST',
           headers: {
@@ -63,6 +69,7 @@ function Register () {
     } finally {
       setIsLoading(false);
     }
+
   }
 
     return (
