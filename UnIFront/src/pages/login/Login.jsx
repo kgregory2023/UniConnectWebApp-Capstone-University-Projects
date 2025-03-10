@@ -7,57 +7,99 @@
 
 import React, { useState } from 'react';
 import { Link } from "react-router-dom";
+import { useUser } from '../../components/userContext/UserContext'
 import './Login.css'
 
-function Login () {
+function Login() {
+ const { user, login } = useUser();
 
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        //This is where we make the call to the database!
-        console.log('email: ', email, 'Password:', password);
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false); 
+  const [error, setError] = useState(''); 
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    //This is where we make the call to the database!
+    console.log('email: ', email, 'Password:', password);
+
+    setError('');
+    setIsLoading(true);
+
+
+    try {
+
+      const response = await fetch('http://localhost:5000/users/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+      });
+
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'An error occured during login');
+      } else {
+        const data = await response.json()
+        login(data.user);
+      }
+
+    } catch (error) {
+      console.error('Error:', error);
+      setError(error.message);
+    } finally {
+      setIsLoading(false);
     }
 
-    return (
+  }
+
+  return (
+    <div>
+      <h1>
+        Log in
+      </h1>
+      <form onSubmit={handleSubmit} className='loginForm'>
         <div>
-            <h1>
-                Log in
-            </h1>
-        <form onSubmit={handleSubmit}  className = 'loginForm'>
-          <div>
-            <label htmlFor="email">Email:</label>
-            <input
-              className='fancy-input'
-              type="text"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="aaa@students.uwf.edu"
-            />
-          </div>
-          <div>
-            <label htmlFor="password">Password:</label> 
-            <input
-              className='fancy-input'
-              type="password"
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="enter your password"
-            />
-          </div>
-          <button type="submit">Login</button>
-          <div>
-            <Link to ="/register">
-                Don't have an account? Click here
-            </Link>
+          <label htmlFor="email">Email:</label>
+          <input
+            className='fancy-input'
+            type="text"
+            id="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="aaa@students.uwf.edu"
+            required
+          />
         </div>
-        </form>
+        <div>
+          <label htmlFor="password">Password:</label>
+          <input
+            className='fancy-input'
+            type="password"
+            id="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="enter your password"
+            required
+          />
+        </div>
+        <button type="submit" disabled={isLoading}>{isLoading ? 'Logging in...' : 'Log in'}</button>
+        <div>
+          <Link to="/register">
+            Don't have an account? Click here
+          </Link>
+        </div>
+      </form>
 
     </div>
-    )
+  )
 }
 
 export default Login

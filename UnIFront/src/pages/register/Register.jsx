@@ -15,15 +15,63 @@ function Register () {
     const [password, setPassword] = useState('');
     const [password2, setPassword2] = useState('');
     const [username, setUsername] = useState('');
-    const [school, setSchool] = useState('UWF');
+    const [uni, setUni] = useState('UWF');
+    const [isLoading, setIsLoading] = useState(false); 
+    const [error, setError] = useState(''); 
 
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
 
+        if(!(password == password2)){
+          setError('The passwords must match');
+          return;
+        }
+
+        
+
+        setError('');
+        setIsLoading(true);
+
         //This is where the api call
-        console.log('Email: ', email, 'Password:', password, 'Password2:', password2, 'Username: ', username, 'School attending', school);
+        console.log('Email: ', email, 'Password:', password, 'Password2:', password2, 'Username: ', username, 'uni attending', uni);
+
+        try{
+          console.log(JSON.stringify({
+            email,
+            password,
+            username,
+            uni,
+        }));
+
+        const response = await fetch('http://localhost:5000/users/register', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+              email,
+              password,
+              username,
+              uni,
+          }),
+      });
+
+
+      if(!response.ok){
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'An error occured during registration');
+      }
+
+     //window.location.href = "/login";
+    } catch (error){
+      console.error('Error:', error);
+      setError(error.message);
+    } finally {
+      setIsLoading(false);
     }
+
+  }
 
     return (
         <div>
@@ -63,11 +111,11 @@ function Register () {
 
           {/* Dropdown School field */}
           <div>
-            <label htmlFor="schoolOptions">Select a school:</label>
+            <label htmlFor="uni">Select a school:</label>
             <select
-                id="school"
-                value={school}
-                onChange={(e) => setSchool(e.target.value)}
+                id="uni"
+                value={uni}
+                onChange={(e) => setUni(e.target.value)}
                 className="fancy-select"
                 required
             >
@@ -103,7 +151,14 @@ function Register () {
               required
             />
           </div>
-          <button type="submit">Register</button>
+
+        {/* conditionally only shows the error message if there even is one. */}
+        {error && <div className="error-message">{error}</div>}
+
+    
+
+          <button type="submit" disabled={isLoading}>{isLoading ? 'Registering...' : 'Register'}</button>
+
           <div>
             <Link to ="/login">
                 Already have an account? Click here

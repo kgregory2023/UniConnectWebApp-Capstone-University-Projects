@@ -9,6 +9,7 @@ Create more pages in ./pages/<pagename folder>/<pagename that's exported>
 and import them below. Then create a route for that path to go down.
 */
 import About from './pages/about/About'
+
 import CustomizeAccount from './pages/customizeAccount/CustomizeAccount'
 import Login from './pages/login/Login'
 import Register from './pages/register/Register'

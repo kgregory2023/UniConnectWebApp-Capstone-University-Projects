@@ -19,11 +19,10 @@ export const UserProvider = ({ children }) => {
 
 
   // A method to update user info (for example, after login)
-  const login = (username) => {
-    const newUser = ({ username });
-    setUser(newUser);
+  const login = (userData) => {
+    setUser(userData);
     //This is where the local storage on the browser is so that you aren't 'logged out' on page refresh
-    sessionStorage.setItem('user', JSON.stringify(newUser));
+    sessionStorage.setItem('user', JSON.stringify(userData));
   };
 
   const logout = () => {
