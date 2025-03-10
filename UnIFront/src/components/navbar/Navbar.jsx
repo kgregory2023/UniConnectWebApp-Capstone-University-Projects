@@ -8,9 +8,8 @@ import './Navbar.css';
 import { useUser } from '../userContext/UserContext'
 
 let Navbar = () => {
-    const { user, logout, login } = useUser();
+    const { user, logout } = useUser();
 
-    console.log(user);  // Check if user is correct
 
 
     return (
