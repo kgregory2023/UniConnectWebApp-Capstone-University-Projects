@@ -3,18 +3,22 @@ import { useUser } from '../../components/userContext/UserContext';
 import './CustomizeProfile.css';
 
 function CustomizeProfile() {
-    const { user } = useUser();
+    const { user, token, login } = useUser(); // updateUser will refresh the user context
     const [tempData, setTempData] = useState({});
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState('');
+    const [message, setMessage] = useState('');
 
     useEffect(() => {
         if (user) {
             setTempData({
                 username: user.username || '',
                 name: user.name || '',
-                phoneNumber: user.phone || '',
+                phone: user.phone || '',
                 bio: user.bio || '',
                 age: user.age || '',
                 password: '',
+                password2: '',
             });
         }
     }, [user]);
@@ -25,9 +29,44 @@ function CustomizeProfile() {
             [e.target.name]: e.target.value
         });
     };
-    const handleSubmit = (e) => {
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
+    
+        if (tempData.password !== tempData.password2) {
+            setError('The passwords must match');
+            return;
+        }
+    
+        setError('');
+        setMessage('');
+        setIsLoading(true);
+    
+        try {
+            const response = await fetch('http://localhost:5000/users/profile', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify(tempData),
+            });
+    
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Failed to update profile.');
+            }
+            const updatedUser = await response.json();
+            login(updatedUser, token); // Update frontend state
+    
+            setMessage("Profile updated successfully!");
+        } catch (err) {
+            setError(err.message);
+        } finally {
+            setIsLoading(false);
+        }
     };
+    
         
       /*  I also think there should be some additional fields like graduation month,year or at least the year*/
     return (
@@ -56,8 +95,8 @@ function CustomizeProfile() {
                     Phone #:   
                     <input 
                         type="text" 
-                        name="phoneNumber" 
-                        value={tempData.phoneNumber} 
+                        name="phone" 
+                        value={tempData.phone} 
                         onChange={handleTempChange} 
                     />
                 </label>
@@ -94,10 +133,10 @@ function CustomizeProfile() {
                     Re-enter Password:
                     <input 
                         type="password" 
-                        name="password" 
-                        value={tempData.password} 
+                        name="password2" 
+                        value={tempData.password2} 
                         onChange={handleTempChange}
-                        placeholder="Enter your new password"
+                        placeholder="Confirm your new password"
                     />
                 </label>
                 <button type="submit">Save Changes</button>
