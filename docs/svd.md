@@ -2,9 +2,9 @@
 
 for
 
-**<Project>** 
+**UnIConnect** 
 
-Version <version_number>
+Version 0.8
 
 Prepared by <author>
 
