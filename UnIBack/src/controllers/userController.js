@@ -47,7 +47,7 @@ exports.updateUserProfile = async (req, res) => {
 
 exports.deleteUser = async (req, res) => {
     try {
-        const deletedUser = await userService.deleteUser(req.user._id);
+        const deletedUser = await userService.deleteUser(req.user.id);
         res.status(204).json({});
     } catch (error) {
         res.status(404).json({ message: "User profile not found." });    

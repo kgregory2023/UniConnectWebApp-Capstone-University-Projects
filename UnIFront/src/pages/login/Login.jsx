@@ -7,12 +7,13 @@
 
 import React, { useState } from 'react';
 import { Link } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 import { useUser } from '../../components/userContext/UserContext'
 import './Login.css'
 
 function Login() {
- const { user, login } = useUser();
-
+  const { user, token, login } = useUser();
+  const navigate = useNavigate();
 
 
   const [email, setEmail] = useState('');
@@ -22,8 +23,6 @@ function Login() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    //This is where we make the call to the database!
-    console.log('email: ', email, 'Password:', password);
 
     setError('');
     setIsLoading(true);
@@ -48,7 +47,8 @@ function Login() {
         throw new Error(errorData.message || 'An error occured during login');
       } else {
         const data = await response.json()
-        login(data.user);
+        login(data.user, data.token);
+        navigate('/'); 
       }
 
     } catch (error) {
