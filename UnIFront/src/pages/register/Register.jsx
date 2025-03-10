@@ -61,9 +61,10 @@ function Register () {
       if(!response.ok){
         const errorData = await response.json();
         throw new Error(errorData.message || 'An error occured during registration');
+      } else{
+        navigate('/login'); 
       }
 
-     //window.location.href = "/login";
     } catch (error){
       console.error('Error:', error);
       setError(error.message);

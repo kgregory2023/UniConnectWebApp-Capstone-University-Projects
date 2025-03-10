@@ -47,6 +47,7 @@ exports.updateUserProfile = async (req, res) => {
 
 exports.deleteUser = async (req, res) => {
     try {
+        //console.log(req.user._id);
         const deletedUser = await userService.deleteUser(req.user._id);
         res.status(204).json({});
     } catch (error) {

@@ -6,7 +6,10 @@ import './Profile.css';
 
 function Profile() {
     const navigate = useNavigate();
-    const { user, logout, deleteUser } = useUser();
+    const { user, token, logout } = useUser();
+
+    console.log(user);
+    console.log(token);
 
     const handleCustomize = (event) => {
         event.preventDefault();
@@ -27,7 +30,6 @@ function Profile() {
             return;
         }
 
-        const token = localStorage.getItem('authToken');
         if (!token) {
             console.log('No auth token found.');
             return;
@@ -44,7 +46,7 @@ function Profile() {
 
             if (response.ok) {
                 console.log('Profile deleted successfully');
-                deleteUser();
+                logout();
                 navigate('/login');
             } else {
                 const data = await response.json();
