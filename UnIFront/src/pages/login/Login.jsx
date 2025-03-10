@@ -7,12 +7,13 @@
 
 import React, { useState } from 'react';
 import { Link } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 import { useUser } from '../../components/userContext/UserContext'
 import './Login.css'
 
 function Login() {
- const { user, login } = useUser();
-
+  const { user, login } = useUser();
+  const navigate = useNavigate();
 
 
   const [email, setEmail] = useState('');
@@ -49,6 +50,7 @@ function Login() {
       } else {
         const data = await response.json()
         login(data.user);
+        navigate('/'); 
       }
 
     } catch (error) {

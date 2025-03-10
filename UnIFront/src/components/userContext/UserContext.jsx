@@ -30,8 +30,14 @@ export const UserProvider = ({ children }) => {
     sessionStorage.removeItem('user');
   };
 
+  const deleteUser = () => {
+    setUser(null); // Clear user from context
+    sessionStorage.removeItem('user'); // Remove user from sessionStorage
+    localStorage.removeItem('authToken'); // Optionally clear authToken from localStorage
+  };
+
   return (
-    <UserContext.Provider value={{ user, login, logout }}>
+    <UserContext.Provider value={{ user, login, logout, deleteUser}}>
       {children}
     </UserContext.Provider>
   );
