@@ -7,6 +7,7 @@
 
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import './Register.css'
 
 function Register () {
@@ -19,6 +20,8 @@ function Register () {
     const [isLoading, setIsLoading] = useState(false); 
     const [error, setError] = useState(''); 
 
+    const navigate = useNavigate();
+    
 
     const handleSubmit = async (event) => {
         event.preventDefault();
