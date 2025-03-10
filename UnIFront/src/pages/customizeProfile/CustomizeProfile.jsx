@@ -56,7 +56,6 @@ function CustomizeProfile() {
                 const errorData = await response.json();
                 throw new Error(errorData.message || 'Failed to update profile.');
             }
-    
             const updatedUser = await response.json();
             login(updatedUser, token); // Update frontend state
     
