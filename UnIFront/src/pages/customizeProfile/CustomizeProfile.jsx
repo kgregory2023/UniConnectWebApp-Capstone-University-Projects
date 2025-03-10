@@ -3,7 +3,7 @@ import { useUser } from '../../components/userContext/UserContext';
 import './CustomizeProfile.css';
 
 function CustomizeProfile() {
-    const { user, updateUserProfile } = useUser(); // updateUser will refresh the user context
+    const { user, token, login } = useUser(); // updateUser will refresh the user context
     const [tempData, setTempData] = useState({});
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
@@ -47,7 +47,7 @@ function CustomizeProfile() {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    'Authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify(tempData),
             });
@@ -58,7 +58,7 @@ function CustomizeProfile() {
             }
     
             const updatedUser = await response.json();
-            updateUserProfile(updatedUser); // Update frontend state
+            login(updatedUser, token); // Update frontend state
     
             setMessage("Profile updated successfully!");
         } catch (err) {
