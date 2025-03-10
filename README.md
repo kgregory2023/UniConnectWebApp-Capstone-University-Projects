@@ -13,9 +13,10 @@ With Node.JS and git bash terminal, ensure you have ran
 
 `npm i`
 
-and to run the front end you enter the command
+and to run from the UnIFront directory
 `npm run dev`
-which will open the frontend on a localhost website with a port specified within the terminal
+
+which will open the frontend on a localhost website with a port specified within the terminal. Vite defaults to 5173.
 
 ### For the back end
 Ensuring that you are in the directory: UnIBack
@@ -24,7 +25,7 @@ With Node.JS and git bash terminal, ensure that these dependencies have been ins
 
 `npm i`
 
-and then you can run 
+and then you can run from the UnIBack/src directory
 `node server.js`
 
 
@@ -41,16 +42,6 @@ Services - Performs the business operations on incoming and outgoing database re
 Controller -
 
 Routes - Defines routes that will be called to, primarily by the frontend, in order to carry out specific database and backend functions.
-
-
-### For the front end
-With Node.JS and git bash terminal, ensure you have ran
-
-`npm i`
-
-and to run the front end you enter the command
-`npm run dev`
-which will open the frontend on a localhost website with a port specified within the terminal
 
 
 
@@ -75,3 +66,5 @@ These two commands will allow you to open http:localhost:5173, port 5173 is the 
   - (Github Issues)
   - (discord)
 
+### Video
+https://drive.google.com/file/d/1Uuvm0-8mchNEGIvj-00L9rnUPBlwSqaQ/view?usp=drive_link
