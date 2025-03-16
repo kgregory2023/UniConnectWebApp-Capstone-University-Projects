@@ -20,7 +20,11 @@ const RatingSchema = new mongoose.Schema({
         required: true,
         min: [1, "Rating must be at least 1."],
         max: [5, "Rating cannot be more than 5."],
-    }
+    },
+    text: {
+        type: String,
+        required: [true, "Comment cannot be empty."],
+    },
 }, { timestamps: true });
 
 const Rating = mongoose.model("Rating", RatingSchema);

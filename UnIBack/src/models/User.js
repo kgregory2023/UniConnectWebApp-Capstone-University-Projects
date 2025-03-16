@@ -49,10 +49,6 @@ const UserSchema = new mongoose.Schema({
         type: String, //Store image URL
         default: "",  //Find placeholder image and insert URL here
     },
-    comments: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Comment",
-    }],
     ratings: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Rating",

@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const User = require("../models/User");
-const Comment = require("../models/Comment");
 const Rating = require("../models/Rating");
 const userService = require("../services/userService");
 const { MongoMemoryServer } = require("mongodb-memory-server");
@@ -102,31 +101,23 @@ describe("User Service", () => {
         const user = await userService.registerUser(userData);
         userId = user._id;
 
-        const comment = await new Comment({
-            user: userId,
-            location: new mongoose.Types.ObjectId(),
-            text: "Great place!"
-        }).save();
-        commentId = comment._id;
-
         const rating = await new Rating({
             user: userId,
             location: new mongoose.Types.ObjectId(),
-            value: 5
+            value: 5,
+            text: "Great place!"
         }).save();
         ratingId = rating._id;
 
-        user.comments = [commentId];
         user.ratings = [ratingId];
         await user.save();
 
         const profile = await userService.getUserProfile(userId);
 
         expect(profile).toBeDefined();
-        expect(profile.comments).toHaveLength(1);
-        expect(profile.comments[0].text).toBe("Great place!");
         expect(profile.ratings).toHaveLength(1);
         expect(profile.ratings[0].value).toBe(5);
+        expect(profile.ratings[0].text).toBe("Great place!");
     });
 
     it("should return null if user does not exist", async () => {
