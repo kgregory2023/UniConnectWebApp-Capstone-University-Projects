@@ -5,6 +5,7 @@ const fs = require('fs');
 const path = require('path');
 const app = express();
 const userRoutes = require('../routes/usersRoutes');
+const tagsRoutes = require('../routes/tagsRoutes');
 
 const logStream = fs.createWriteStream(path.join(__dirname, 'requests.log'), {flags: 'a' });
 
@@ -16,6 +17,7 @@ app.use(cors({
     allowedHeaders: ["Content-Type", "Authorization"], // Allowed headers
 }));
 app.use("/users", userRoutes);
+app.use("/tags", tagsRoutes);
 //Add more middleware as needed
 
 module.exports = app;

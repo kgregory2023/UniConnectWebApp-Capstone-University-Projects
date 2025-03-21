@@ -57,6 +57,10 @@ const UserSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Rating",
     }],
+    tags: [{ 
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: "Tag" 
+    }], 
 }, 
 { timestamps: true });
 

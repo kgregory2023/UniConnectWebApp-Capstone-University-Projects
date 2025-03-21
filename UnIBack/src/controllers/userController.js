@@ -1,4 +1,5 @@
 const userService = require("../services/userService");
+const tagService = require("../services/tagService");
 
 exports.registerUser = async (req, res) => {
     try {
@@ -51,5 +52,61 @@ exports.deleteUser = async (req, res) => {
         res.status(204).json({});
     } catch (error) {
         res.status(404).json({ message: "User profile not found." });    
+    }
+};
+
+exports.addTagsToUser = async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const { tagIds } = req.body;
+
+        if (!tagIds || !Array.isArray(tagIds)) {
+            return res.status(400).json({ message: "Invalid tag data." });
+        }
+
+        const updatedUser = await userService.addTagsToUser(userId, tagIds);
+        res.status(200).json(updatedUser);
+    } catch (error) {
+        res.status(500).json({ message: "Internal server error: " + error.message });
+    }
+};
+
+exports.removeTagsFromUser = async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const { tagIds } = req.body;
+
+        if (!tagIds || !Array.isArray(tagIds)) {
+            return res.status(400).json({ message: "Invalid tag data." });
+        }
+
+        const updatedUser = await userService.removeTagsFromUser(userId, tagIds);
+        res.status(200).json(updatedUser);
+    } catch (error) {
+        res.status(500).json({ message: "Internal server error: " + error.message });
+    }
+};
+
+exports.createAndAddTagToUser = async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const { tagName, tagCatagory } = req.body;
+
+        if (!tagName) {
+            return res.status(400).json({ message: "Tag name is required." });
+        } else if (!tagCatagory) {
+            return res.status(400).json({ message: "Tag catagory is required." });
+        }
+
+        let tag = await tagService.getTagByName(tagName);
+
+        if (!tag) {
+            tag = await tagService.createTag({ tagName, tagCatagory });
+        }
+
+        const updatedUser = await userService.addTagsToUser(userId, [tag.id]);
+        res.status(200).json(updatedUser);
+    } catch (error) {
+        res.stats(500).json({ message: "Internal server error: " + error.message });
     }
 };
