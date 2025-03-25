@@ -1,13 +1,15 @@
 import { useState, useEffect } from 'react';
-import { useUser } from '../../components/userContext/UserContext'; 
+import { useUser } from '../../components/userContext/UserContext';
+import { useNavigate } from 'react-router-dom';
 import './CustomizeProfile.css';
 
 function CustomizeProfile() {
-    const { user, token, login } = useUser(); // updateUser will refresh the user context
+    const navigate = useNavigate();
+    const { user, token, login } = useUser();
     const [tempData, setTempData] = useState({});
+    const [previewImage, setPreviewImage] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
-    const [message, setMessage] = useState('');
 
     useEffect(() => {
         if (user) {
@@ -19,7 +21,12 @@ function CustomizeProfile() {
                 age: user.age || '',
                 password: '',
                 password2: '',
+                profilePic: user.profilePic || '',
             });
+            
+            if (user.profilePic) {
+                setPreviewImage(user.profilePic);
+            }
         }
     }, [user]);
 
@@ -28,6 +35,21 @@ function CustomizeProfile() {
             ...tempData,
             [e.target.name]: e.target.value
         });
+    };
+
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setPreviewImage(reader.result);
+                setTempData({
+                    ...tempData,
+                    profilePic: reader.result
+                });
+            };
+            reader.readAsDataURL(file);
+        }
     };
 
     const handleSubmit = async (e) => {
@@ -39,17 +61,27 @@ function CustomizeProfile() {
         }
     
         setError('');
-        setMessage('');
         setIsLoading(true);
     
         try {
+            // Create a copy of data to send to server
+            const dataToUpdate = { ...tempData };
+            
+            // If password is empty, don't include it in the update
+            if (!dataToUpdate.password) {
+                delete dataToUpdate.password;
+                delete dataToUpdate.password2;
+            } else {
+                delete dataToUpdate.password2;
+            }
+            
             const response = await fetch('http://localhost:5000/users/profile', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
                 },
-                body: JSON.stringify(tempData),
+                body: JSON.stringify(dataToUpdate),
             });
     
             if (!response.ok) {
@@ -58,8 +90,9 @@ function CustomizeProfile() {
             }
             const updatedUser = await response.json();
             login(updatedUser, token); // Update frontend state
-    
-            setMessage("Profile updated successfully!");
+                
+            navigate('/profile')
+
         } catch (err) {
             setError(err.message);
         } finally {
@@ -68,79 +101,131 @@ function CustomizeProfile() {
     };
     
         
-      /*  I also think there should be some additional fields like graduation month,year or at least the year*/
     return (
         <div className="profile-customization">
-            <h1 style={{ marginTop: '0px' }}>~ Customize Your Profile: ~</h1>
-            <form onSubmit={handleSubmit} className='profileCustomizationForm'>
-                <label>
-                    Username:   
-                    <input 
-                        type="text" 
-                        name="username" 
-                        value={tempData.username} 
-                        onChange={handleTempChange} 
-                    />
-                </label>
-                <label>
-                    Name:   
-                    <input 
-                        type="text" 
-                        name="name" 
-                        value={tempData.name} 
-                        onChange={handleTempChange} 
-                    />
-                </label>
-                <label>
-                    Phone #:   
-                    <input 
-                        type="text" 
-                        name="phone" 
-                        value={tempData.phone} 
-                        onChange={handleTempChange} 
-                    />
-                </label>
-                <label>
-                    Bio:   
-                    <input 
-                        type="text" 
-                        name="bio" 
-                        value={tempData.bio} 
-                        onChange={handleTempChange} 
-                    />
-                </label><label>
-                    Age:   
-                    <input 
-                        type="text" 
-                        name="age" 
-                        value={tempData.age} 
-                        onChange={handleTempChange} 
-                    />
-                </label>
-                {/* I added this one temporarily, obviously we need to make it more secure.
-                    Also need password validation but wasn't sure if that gets done in the frontend */}
-                <label>
-                    Password:   
-                    <input 
-                        type="password" 
-                        name="password" 
-                        value={tempData.password} 
-                        onChange={handleTempChange}
-                        placeholder="Enter your new password"
-                    />
-                </label>
-                <label>
-                    Re-enter Password:
-                    <input 
-                        type="password" 
-                        name="password2" 
-                        value={tempData.password2} 
-                        onChange={handleTempChange}
-                        placeholder="Confirm your new password"
-                    />
-                </label>
-                <button type="submit">Save Changes</button>
-            </form>
+            <h1>~ Customize Your Profile ~</h1>
+            
+            {error && <div className="error-message">{error}</div>}
+            {isLoading && <div className="loading-message">Updating profile...</div>}
+            
+            <div className="profile-content">
+                <div className="profile-picture-section">
+                    <div className="profile-picture-container">
+                        {previewImage ? (
+                            <img 
+                                src={previewImage} 
+                                alt="Profile Preview" 
+                                className="profile-picture-preview" 
+                            />
+                        ) : (
+                            <div className="profile-picture-placeholder">
+                                No image selected
+                            </div>
+                        )}
+                    </div>
+                    <label className="profile-picture-upload">
+                        <span>Choose Profile Picture</span>
+                        <input 
+                            type="file" 
+                            accept="image/*" 
+                            onChange={handleImageChange} 
+                            style={{display: 'none'}}
+                        />
+                    </label>
+                </div>
+                
+                <form onSubmit={handleSubmit} className='profileCustomizationForm'>
+                    <div className="form-group">
+                        <label>
+                            Username:   
+                            <input 
+                                type="text" 
+                                name="username" 
+                                value={tempData.username} 
+                                onChange={handleTempChange} 
+                            />
+                        </label>
+                    </div>
+                    
+                    <div className="form-group">
+                        <label>
+                            Name:   
+                            <input 
+                                type="text" 
+                                name="name" 
+                                value={tempData.name} 
+                                onChange={handleTempChange} 
+                            />
+                        </label>
+                    </div>
+                    
+                    <div className="form-group">
+                        <label>
+                            Phone #:   
+                            <input 
+                                type="text" 
+                                name="phone" 
+                                value={tempData.phone} 
+                                onChange={handleTempChange} 
+                            />
+                        </label>
+                    </div>
+                    
+                    <div className="form-group">
+                        <label>
+                            Bio:   
+                            <textarea 
+                                name="bio" 
+                                value={tempData.bio} 
+                                onChange={handleTempChange}
+                                rows="3" 
+                            />
+                        </label>
+                    </div>
+                    
+                    <div className="form-group">
+                        <label>
+                            Age:   
+                            <input 
+                                type="number" 
+                                name="age" 
+                                value={tempData.age} 
+                                onChange={handleTempChange} 
+                            />
+                        </label>
+                    </div>
+                    
+                    <div className="form-group password-group">
+                        <h3>Change Password</h3>
+                        <label>
+                            New Password:   
+                            <input 
+                                type="password" 
+                                name="password" 
+                                value={tempData.password} 
+                                onChange={handleTempChange}
+                                placeholder="Enter your new password"
+                            />
+                        </label>
+                        
+                        <label>
+                            Confirm Password:
+                            <input 
+                                type="password" 
+                                name="password2" 
+                                value={tempData.password2} 
+                                onChange={handleTempChange}
+                                placeholder="Confirm your new password"
+                            />
+                        </label>
+                    </div>
+                    
+                    <div className="button-group">
+                        <button type="submit" className="save-button">Save Changes</button>
+                        <button type="button" className="cancel-button" onClick={() => navigate('/profile')}>Cancel</button>
+                    </div>
+                </form>
+            </div>
         </div>
     );
 }
