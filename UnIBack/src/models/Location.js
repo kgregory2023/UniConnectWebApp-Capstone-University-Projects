@@ -21,10 +21,6 @@ const LocationSchema = new mongoose.Schema({
         type: String,
         required: [true, "State is required."],
     },
-    comments: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Comment",
-    }],
     ratings: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Rating"
