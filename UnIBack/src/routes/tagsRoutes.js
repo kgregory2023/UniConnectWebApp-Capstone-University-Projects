@@ -3,10 +3,10 @@ const { createTag, getTagById, getPredefinedTags, getAllTags, updateUserTag, del
 const authMiddleware = require("../../authMiddleware");
 const tagsRoutes = express.Router();
 
-tagsRoutes.post("", authMiddleware, createTag);
-tagsRoutes.get("", getTagById);
-tagsRoutes.get("/predefined", getPredefinedTags);
-tagsRoutes.get("", getAllTags);
-tagsRoutes.delete("", authMiddleware, deleteTag);
+tagsRoutes.post("/tags", authMiddleware, createTag);
+tagsRoutes.get("/tags", getTagById);
+tagsRoutes.get("/tags/predefined", getPredefinedTags);
+tagsRoutes.get("/tags", getAllTags);
+tagsRoutes.delete("/tags", authMiddleware, deleteTag);
 
 module.exports = tagsRoutes;

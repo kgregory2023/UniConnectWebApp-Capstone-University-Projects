@@ -17,7 +17,7 @@ app.use(cors({
     allowedHeaders: ["Content-Type", "Authorization"], // Allowed headers
 }));
 app.use("/users", userRoutes);
-app.use("/tags", tagsRoutes);
+app.use("/profile", tagsRoutes);
 //Add more middleware as needed
 
 module.exports = app;

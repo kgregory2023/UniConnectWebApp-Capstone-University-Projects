@@ -8,13 +8,12 @@ const TagSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
-        unique: true,
         lowercase: true,
         trim: true,
     },
     category: {
         type: String,
-        enum: ["Languages", "Hobbies", "Interests", "Music", "Personality Type", "Looking For", "Clubs/Sports"],
+        enum: ["Languages", "Hobbies", "Interests", "Music", "Personality Type", "Looking For", "Clubs/Sports", "Testing"],
         required: true,
     },
     isPredefined: {
