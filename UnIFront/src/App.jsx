@@ -1,7 +1,5 @@
 import { useState } from 'react'
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
 
 /* 
@@ -13,7 +11,10 @@ import Profile from './pages/profile/Profile'
 import CustomizeProfile from './pages/customizeProfile/CustomizeProfile'
 import Login from './pages/login/Login'
 import Register from './pages/register/Register'
-import Navbar from './components/navbar/Navbar';
+import Connect from './pages/connect/Connect'
+
+import Navbar from './components/navbar/Navbar'
+
 import { UserProvider } from './components/userContext/UserContext';
 
 
@@ -45,6 +46,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/customizeProfile" element={<CustomizeProfile />} />
+          <Route path ="/connect" element={<Connect/>} />
         </Routes>
     </UserProvider>
 
