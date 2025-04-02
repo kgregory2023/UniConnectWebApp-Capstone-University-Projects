@@ -16,8 +16,6 @@ let Navbar = () => {
         navigate('/');
     };
 
-
-
     return (
         <nav className="navbar">
             <ul style={{ display: 'flex', justifyContent: 'space-evenly', width: '100%' }}>
@@ -90,8 +88,6 @@ let Navbar = () => {
                         </li>
                     </>
                 )}
-
-
             </ul>
         </nav>
     );
