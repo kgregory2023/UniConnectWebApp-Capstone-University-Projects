@@ -1,5 +1,6 @@
 const User = require("../models/User");
 const { hashPassword, comparePassword, generateToken } = require("../../authService");
+const mongoose = require("mongoose");
 
 const registerUser = async (userData) => {
     const { username, email, password } = userData;
@@ -35,6 +36,15 @@ const deleteUser = async (userId) => {
     return await User.findByIdAndDelete(userId);
 };
 
+//get function for swipeUsers
+const getSwipeUsers = async (userId, count) => {
+    return await User.aggregate([
+        { $match: { _id: { $ne: new mongoose.Types.ObjectId(userId) } } },
+        { $sample: { size: count } }
+    ]);
+};
+
+// added getSwipeUsers
 module.exports = {
-    registerUser, loginUser, getUserProfile, updateUserProfile, deleteUser
+    registerUser, loginUser, getUserProfile, updateUserProfile, deleteUser, getSwipeUsers
 };
