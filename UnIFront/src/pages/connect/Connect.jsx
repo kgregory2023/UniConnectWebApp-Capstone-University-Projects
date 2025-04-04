@@ -6,7 +6,6 @@
 
 import { useState, React, useEffect } from 'react'; // Added useEffect for fetching users
 import { useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
 import { useUser } from '../../components/userContext/UserContext';
 import CardSwipe from '../../components/cardSwipe/cardSwipe';
 import './Connect.css';
@@ -17,8 +16,11 @@ function Connect() {
 
     // useEffect added to dynamically fetch users from the backend
     const [cards, setCards] = useState([]); // Replaced and restructured static initialCards with fetched cards from database
+    const [isLoading, setLoading] = useState(true);
 
     useEffect(() => {
+        if (!token) return; //Not fetching if token isn't ready.
+
         const fetchSwipeUsers = async () => {
             try {
                 const response = await fetch("http://localhost:5000/users/swipe/8", {
@@ -42,6 +44,8 @@ function Connect() {
                 }
             } catch (err) {
                 console.error("Fetch failed:", err);
+            } finally {
+                setLoading(false);
             }
         };
 
@@ -54,8 +58,13 @@ function Connect() {
     };
 
     return (
+        
         <div className="connect">
             <h1 className="padding-70">Connect</h1>
+
+            {isLoading? (
+                <div className="loading">Finding users...</div>
+            ) : (
             <div className="card-stack">
                 {cards.length > 0 ? (
                     cards.map((card, index) => (
@@ -74,6 +83,7 @@ function Connect() {
                     <p>No more!!!</p>
                 )}
             </div>
+            )}
         </div>
     );
 }
