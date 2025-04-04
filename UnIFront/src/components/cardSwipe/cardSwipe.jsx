@@ -51,6 +51,7 @@ const CardSwipe = ({ card, onSwipe, style }) => {
       <img
         src={card.profilePic || "/default-avatar.png"}
         alt="Profile"
+        draggable="false"
         style={{
           width: "100%",
           height: "60%",

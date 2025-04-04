@@ -17,6 +17,7 @@ function Connect() {
     // useEffect added to dynamically fetch users from the backend
     const [cards, setCards] = useState([]); // Replaced and restructured static initialCards with fetched cards from database
     const [isLoading, setLoading] = useState(true);
+    const [likedUsers, setLikedUsers] = useState([]);
 
     useEffect(() => {
         if (!token) return; //Not fetching if token isn't ready.
@@ -37,6 +38,7 @@ function Connect() {
                         age: user.age,
                         bio: user.bio,
                         profilePic: user.profilePic,
+                        email: user.email,
                     }));
                     setCards(formattedCards);
                 } else {
@@ -54,35 +56,85 @@ function Connect() {
 
     const handleSwipe = (direction, id) => {
         console.log(`Swiped ${direction} on card ${id}`);
+
+        const swipedUser = cards.find(card => card.id === id);//Grabs the entire card data for the contact
+
+        if (direction === "right" && swipedUser) {
+            setLikedUsers(prev => [...prev, swipedUser]);
+        }
+
         setCards(cards.filter(card => card.id !== id));
     };
 
+    // Handle deletion of a contact from the liked users list
+    const handleDelete = (contactId) => {
+        setLikedUsers(prevContacts => prevContacts.filter(contact => contact.id !== contactId));
+    };
+
     return (
-        
+
         <div className="connect">
             <h1 className="padding-70">Connect</h1>
 
-            {isLoading? (
+            {isLoading ? (
+                //Is loading
                 <div className="loading">Finding users...</div>
             ) : (
-            <div className="card-stack">
-                {cards.length > 0 ? (
-                    cards.map((card, index) => (
-                        <CardSwipe
-                            key={card.id}
-                            card={card}
-                            onSwipe={handleSwipe}
-                            style={{
-                                position: 'absolute',
-                                zIndex: cards.length - index,
-                                border: '1px solid black',
-                            }}
-                        />
-                    ))
-                ) : (
-                    <p>No more!!!</p>
-                )}
-            </div>
+                //Is ready
+                <div className="connect-layout">
+                    <div className="swipe-section">
+                        <div className="swipe-icon red-x">❌</div>
+
+                        <div className="card-stack">
+                            {cards.length > 0 ? (
+                                cards.map((card, index) => (
+                                    <CardSwipe
+                                        key={card.id}
+                                        card={card}
+                                        onSwipe={handleSwipe}
+                                        style={{
+                                            position: 'absolute',
+                                            zIndex: cards.length - index,
+                                            border: '1px solid black',
+                                        }}
+                                    />
+                                ))
+                            ) : (
+                                <p>No More Users</p>
+                            )}
+                        </div>
+
+                        <div className="swipe-icon green-check">✔</div>
+
+                    </div>
+
+                    <div className="contact-stack">
+                        <h3>Contacts</h3>
+                        {likedUsers.length > 0 ? (
+                            likedUsers.map(user => (
+                                <div key={user.id} className="contact-bar">
+                                    <img
+                                        src={user.profilePic || "/default-avatar.png"}
+                                        alt={user.username}
+                                        className="contact-icon"
+                                    />
+                                    <div className="contact-info">
+                                        <p className="contact-name">{user.username}, {user.age}</p>
+                                        <p className="contact-email">{user.email || "No email listed"}</p>
+                                    </div>
+                                    <button
+                                        className="trash"
+                                        onClick={() => handleDelete(user.id)} // Trigger the delete action
+                                    >
+                                        🗑️
+                                    </button>
+                                </div>
+                            ))
+                        ) : (
+                            <p>No one's here yet, swipe right on people you find interesting!</p>
+                        )}
+                    </div>
+                </div>
             )}
         </div>
     );
