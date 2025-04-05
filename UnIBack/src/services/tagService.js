@@ -1,7 +1,7 @@
 const Tag = require("../models/Tag");
 
 const createTag = async (tagData) => {
-    const { name, catagory } = tagData;
+    const { name, category } = tagData;
 
     let tag = await Tag.findOne({ name });
     if (tag) throw new Error ("Tag already exists.");
@@ -23,7 +23,7 @@ const getPredefinedTags = async () => {
 };
 
 const getAllTags = async () => {
-    return await Tag.find({ });
+    return await Tag.find();
 };
 
 const deleteTag = async (tagId) => {

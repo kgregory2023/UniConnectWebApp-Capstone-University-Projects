@@ -2,12 +2,12 @@ const tagService = require("../services/tagService");
 
 exports.createTag = async (req, res) => {
     try {
-        const { tagName, tagCatagory } = req.body;
+        const { name, category } = req.body;
 
-        if (!tagName) {
+        if (!name) {
             return res.status(400).json({ message: "Tag name is required." });
-        } else if (!tagCatagory) {
-            return res.status(400).json({ message: "Tag catagory is required." });
+        } else if (!category) {
+            return res.status(400).json({ message: "Tag category is required." });
         }
 
         const tag = await tagService.createTag(req.body);
@@ -22,7 +22,7 @@ exports.createTag = async (req, res) => {
 
 exports.getTagById = async (req, res) => {
     try {
-        const tag = await tagService.getTagById(req.tag.id);
+        const tag = await tagService.getTagById(req.params.id);
 
         if (!tag) {
             return res.status(404).json({ message: "Tag not found." });
@@ -30,13 +30,14 @@ exports.getTagById = async (req, res) => {
 
         res.status(200).json(tag);
     } catch (error) {
-
+        res.status(500).json({ message: "Internal server error: " + error.message });    
     }
 };
 
 exports.getPredefinedTags = async (req, res) => {
     try {
         const preTags = await tagService.getPredefinedTags();
+        console.log("Returned preTags:", preTags); // Log the returned tags
         res.status(200).json(preTags);
     } catch (error) {
         res.status(500).json({ message: "Internal server error: " + error.message });    
@@ -54,7 +55,7 @@ exports.getAllTags = async (req, res) => {
 
 exports.deleteTag = async (req, res) => {
     try {
-        const tag = await tagService.getTagById(req.tag.id);
+        const tag = await tagService.getTagById(req.params.id);
         if (!tag) {
             return res.status(404).json({ message: "Tag not found." });
         }
@@ -63,7 +64,7 @@ exports.deleteTag = async (req, res) => {
             res.status(403).json({ message: "Forbidden: You cannot delete this." });
         }
 
-        await tagService.deleteTag(req.tag.id);
+        await tagService.deleteTag(req.params.id);
         res.status(204).json({ });
     } catch (error) {
         res.status(500).json({ message: "Internal server error: " + error.message });
