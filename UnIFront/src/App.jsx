@@ -12,7 +12,10 @@ import Profile from './pages/profile/Profile'
 import CustomizeProfile from './pages/customizeProfile/CustomizeProfile'
 import Login from './pages/login/Login'
 import Register from './pages/register/Register'
-import Navbar from './components/navbar/Navbar';
+import Connect from './pages/connect/Connect'
+
+import Navbar from './components/navbar/Navbar'
+
 import { UserProvider } from './components/userContext/UserContext';
 
 
@@ -46,6 +49,7 @@ function App() {
         {/* Protected Routes */}
           <Route path="/profile" element={<ProtectedRoute element={<Profile />} />} />
           <Route path="/customizeProfile"element={<ProtectedRoute element={<CustomizeProfile />} />} />
+          <Route path ="/connect" element={<ProtectedRoute element={<Connect />} />} />
         </Routes>
     </UserProvider>
 
