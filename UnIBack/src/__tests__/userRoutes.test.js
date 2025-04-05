@@ -254,11 +254,7 @@ describe("User Routes", () => {
             expect(response.body.message).toBe("User profile not found.");
         });
     });
-    const request = require("supertest");
-
-    const express = require("express");
-
-    const jwt = require("jsonwebtoken");
+    
     const userService = require("../services/userService");
     const userRoutes = require("../routes/usersRoutes");
     const userController = require("../controllers/userController");
