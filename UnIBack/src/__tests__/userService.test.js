@@ -26,7 +26,7 @@ describe("User Service", () => {
         const userData = {
             username: "testuser",
             email: "test@example.com",
-            password: "securepassword"
+            password: "Test@123"
         };
 
         const user = await userService.registerUser(userData);
@@ -39,7 +39,7 @@ describe("User Service", () => {
         const userData = {
             username: "testuser",
             email: "test@example.com",
-            password: "securepassword"
+            password: "Test@123"
         };
 
         await userService.registerUser(userData);
@@ -51,40 +51,40 @@ describe("User Service", () => {
         const userData = {
             username: "testuser",
             email: "test@example.com",
-            password: "securepassword"
+            password: "Test@123"
         };
 
         const user = await userService.registerUser(userData);
         const foundUser = await User.findOne({ email: userData.email });
         
         expect(foundUser).toBeDefined();
-        expect(user.password).not.toBe("securepassword");
-        expect(await bcrypt.compare("securepassword", foundUser.password)).toBe(true);
+        expect(user.password).not.toBe("Test@123");
+        expect(await bcrypt.compare("Test@123", foundUser.password)).toBe(true);
     });
 
     it("should validate user login and return JWT", async () => {
         const userData = {
             username: "testuser",
             email: "test@example.com",
-            password: "securepassword"
+            password: "Test@123"
         };
 
         await userService.registerUser(userData);
-        const loginResponse = await userService.loginUser({ email: userData.email, password: "securepassword"});
+        const loginResponse = await userService.loginUser({ email: userData.email, password: "Test@123"});
 
         expect(loginResponse).toHaveProperty("token");
         expect(loginResponse.user.email).toBe(userData.email);
     });
 
     it("should reject login if user not found", async () => {
-        await expect(userService.loginUser({ email: "nonexistant@example.com", password: "securepassword"})).rejects.toThrow("Invalid email.");
+        await expect(userService.loginUser({ email: "nonexistant@example.com", password: "Test@123"})).rejects.toThrow("Invalid email.");
     });
 
     it("shoud reject login with incorrect password", async () => {
         const userData = {
             username: "testuser",
             email: "test@example.com",
-            password: "securepassword"
+            password: "Test@123"
         };
 
         await userService.registerUser(userData);
@@ -96,7 +96,7 @@ describe("User Service", () => {
         const userData = {
             username: "testuser",
             email: "test@example.com",
-            password: "securepassword"
+            password: "Test@123"
         };
         const user = await userService.registerUser(userData);
         userId = user._id;
@@ -131,7 +131,7 @@ describe("User Service", () => {
         const userData = {
             username: "testuser",
             email: "test@example.com",
-            password: "secure password"
+            password: "Test@123"
         };
 
         const user = await userService.registerUser(userData);
@@ -166,7 +166,7 @@ describe("User Service", () => {
         const userData = {
             username: "testuser",
             email: "test@example.com",
-            password: "secure password"
+            password: "Test@123"
         };
 
         const user = await userService.registerUser(userData);
@@ -186,4 +186,40 @@ describe("User Service", () => {
 
         expect(deletedUser).toBeNull();
     });
+});
+
+const {
+  validatePassword,
+  hashPassword,
+  comparePassword,
+  generateToken
+} = require("../../authService");
+
+describe("Password Utility Functions", () => {
+  const strongPassword = "StrongPass@123";
+  const weakPassword = "123";
+
+  it("should validate a strong password without throwing", () => {
+    expect(() => validatePassword(strongPassword)).not.toThrow();
+  });
+
+  it("should throw an error for a weak password", () => {
+    expect(() => validatePassword(weakPassword)).toThrow(
+      "Password must be 8-15 characters and include uppercase, lowercase, number, and special character."
+    );
+  });
+
+  it("should hash and compare passwords correctly", async () => {
+    const hashed = await hashPassword(strongPassword);
+    expect(hashed).not.toBe(strongPassword);
+    expect(await comparePassword(strongPassword, hashed)).toBe(true);
+    expect(await comparePassword("WrongPass123", hashed)).toBe(false);
+  });
+
+  it("should generate and verify JWT token", () => {
+    const user = { _id: "abc123", username: "testuser" };
+    const token = generateToken(user);
+    const decoded = require("jsonwebtoken").verify(token, process.env.JWT_SECRET);
+    expect(decoded).toHaveProperty("id", user._id);
+  });
 });
