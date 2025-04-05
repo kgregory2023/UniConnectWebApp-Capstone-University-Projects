@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import ProtectedRoute from './components/protectedRoute/ProtectedRoute';
 import './App.css'
 
 /* 
@@ -44,9 +45,11 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/customizeProfile" element={<CustomizeProfile />} />
-          <Route path ="/connect" element={<Connect/>} />
+
+        {/* Protected Routes */}
+          <Route path="/profile" element={<ProtectedRoute element={<Profile />} />} />
+          <Route path="/customizeProfile"element={<ProtectedRoute element={<CustomizeProfile />} />} />
+          <Route path ="/connect" element={<ProtectedRoute element={<Connect />} />} />
         </Routes>
     </UserProvider>
 

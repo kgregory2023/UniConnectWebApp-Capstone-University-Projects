@@ -29,8 +29,19 @@ body {
   display: flex;
   min-width: 320px;
   min-height: 100vh;
+  z-index: 0;
+}
+.fixed {
+  position: fixed !important; /* Ensure modal uses fixed positioning */
 }
 
+.z-50 {
+  z-index: 50 !important; /* High z-index for the modal container */
+}
+
+.z-60 {
+  z-index: 60 !important; /* Higher z-index for modal content */
+}
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
