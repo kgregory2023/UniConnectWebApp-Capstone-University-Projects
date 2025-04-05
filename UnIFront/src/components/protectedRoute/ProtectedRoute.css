@@ -1,0 +1,66 @@
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5); 
+    z-index: 50; 
+  }
+  
+  .modal {
+    background-color: rgb(225, 225, 226);
+    padding: 24px;
+    border-radius: 12px;
+    text-align: center;
+    width: 600px;
+    height: 400px;
+    border: 1px solid #ccc;
+  }
+  
+  .modal h2 {
+    font-size: 2.5rem;
+    color: #1f2020; 
+    margin-bottom: 16px;
+  }
+  
+  .modal p {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 24px;
+  }
+  
+  .modal .link-container {
+    justify-content: center;
+    gap: 16px;
+    font-size: 2rem;
+
+  }
+  
+  .modal .link-container a {
+    text-decoration: underline;
+    font-weight: bold;
+  }
+  
+  .modal .link-container a.register {
+    color: #4caf50;
+  }
+
+  .pair {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+
+  .pair p{
+    margin: 0;
+  }
+  .pair a {
+    text-decoration: underline;
+    color: #2196f3; 
+    font-weight: bold;
+  }

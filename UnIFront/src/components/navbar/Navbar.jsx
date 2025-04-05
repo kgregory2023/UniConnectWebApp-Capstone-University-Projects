@@ -3,18 +3,22 @@
  * author: @MMcClure313
  */
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import './Navbar.css';
 import { useUser } from '../userContext/UserContext'
 
 let Navbar = () => {
     const { user, logout } = useUser();
-
-
+    const navigate = useNavigate();
+    
+    const handleLogout = () => {
+        logout();
+        navigate('/');
+    };
 
     return (
         <nav className="navbar">
-            <ul>
+            <ul style={{ display: 'flex', justifyContent: 'space-evenly', width: '100%' }}>
                 <li>
                     <Link to="/" className="navbar-item">
                         Home
@@ -35,11 +39,6 @@ let Navbar = () => {
                         About
                     </Link>
                 </li>
-                <li>
-                    <Link to="/profile" className="navbar-item">
-                        Profile
-                    </Link>
-                </li>
                 {(!user) ? (
                     <li>
                         <Link to="/login" className="navbar-item">
@@ -47,23 +46,48 @@ let Navbar = () => {
                         </Link>
                     </li>
                 ) : (
-                    <div style={{ display: 'flex', allignItems:'center'}}>
+                    <>
                         <li>
                             <span
-                                onClick={logout}
+                                onClick={handleLogout}
                                 className="navbar-item"
-                                style={{ cursor: "pointer", marginLeft: "10px" }}
+                                style={{ cursor: "pointer" }}
                             >
                                 Logout
                             </span>
                         </li>
-                        <li className="navbar-item">
-                            Hello, {user.username}!
+                        <li>
+                            <Link to="/profile" className="navbar-item" style={{ display: 'flex', alignItems: 'center' }}>
+                                {user?.profilePic ? (
+                                    <img 
+                                        src={user.profilePic} 
+                                        alt="Profile" 
+                                        style={{ 
+                                            width: '35px', 
+                                            height: '35px', 
+                                            borderRadius: '50%',
+                                        }} 
+                                    />
+                                ) : (
+                                    <div 
+                                        style={{ 
+                                            width: '35px', 
+                                            height: '35px', 
+                                            borderRadius: '50%',
+                                            backgroundColor: '#ccc',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            marginRight: '10px'
+                                        }}
+                                    >
+                                        {user.username?.charAt(0).toUpperCase()}
+                                    </div>
+                                )}
+                            </Link>
                         </li>
-                    </div>
+                    </>
                 )}
-
-
             </ul>
         </nav>
     );
