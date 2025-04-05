@@ -13,6 +13,7 @@ import Profile from './pages/profile/Profile'
 import CustomizeProfile from './pages/customizeProfile/CustomizeProfile'
 import Login from './pages/login/Login'
 import Register from './pages/register/Register'
+import Discover from './pages/discover/Discover'
 import Navbar from './components/navbar/Navbar';
 import { UserProvider } from './components/userContext/UserContext';
 
@@ -45,6 +46,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/customizeProfile" element={<CustomizeProfile />} />
+          <Route path="/discover" element={<Discover />} />
         </Routes>
     </UserProvider>
 
