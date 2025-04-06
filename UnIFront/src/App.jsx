@@ -16,8 +16,6 @@ import Discover from './pages/discover/Discover'
 import Navbar from './components/navbar/Navbar';
 import Connect from './pages/connect/Connect'
 
-import Navbar from './components/navbar/Navbar'
-
 import { UserProvider } from './components/userContext/UserContext';
 
 
