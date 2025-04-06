@@ -56,9 +56,6 @@ const removeTagsFromUser = async (userId, tagIds) => {
     ).populate("tags");
 };
 
-module.exports = {
-    registerUser, loginUser, getUserProfile, updateUserProfile, deleteUser, addTagsToUser, removeTagsFromUser
-
 //get function for swipeUsers
 const getSwipeUsers = async (userId, count) => {
     return await User.aggregate([
@@ -69,5 +66,5 @@ const getSwipeUsers = async (userId, count) => {
 
 // added getSwipeUsers
 module.exports = {
-    registerUser, loginUser, getUserProfile, updateUserProfile, deleteUser, getSwipeUsers
+    registerUser, loginUser, getUserProfile, updateUserProfile, deleteUser, getSwipeUsers, addTagsToUser, removeTagsFromUser
 };

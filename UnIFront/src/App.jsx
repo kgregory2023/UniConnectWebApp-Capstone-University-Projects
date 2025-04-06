@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ProtectedRoute from './components/protectedRoute/ProtectedRoute';
-import './App.css'
+import './App.css'  
 
 /* 
 Create more pages in ./pages/<pagename folder>/<pagename that's exported> 
@@ -13,7 +13,6 @@ import CustomizeProfile from './pages/customizeProfile/CustomizeProfile'
 import Login from './pages/login/Login'
 import Register from './pages/register/Register'
 import Discover from './pages/discover/Discover'
-import Navbar from './components/navbar/Navbar';
 import Connect from './pages/connect/Connect'
 
 import Navbar from './components/navbar/Navbar'
