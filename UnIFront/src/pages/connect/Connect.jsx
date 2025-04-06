@@ -24,7 +24,7 @@ function Connect() {
 
         const fetchSwipeUsers = async () => {
             try {
-                const response = await fetch("http://localhost:5000/users/swipe/8", {
+                const response = await fetch("http://localhost:5000/users/swipe/5", {
                     headers: {
                         Authorization: `Bearer ${token}`, // Auth token is included in headers
                     },
@@ -39,7 +39,9 @@ function Connect() {
                         bio: user.bio,
                         profilePic: user.profilePic,
                         email: user.email,
+                        tags: user.tags,
                     }));
+                    console.log(formattedCards);
                     setCards(formattedCards);
                 } else {
                     console.error("Error fetching users:", data.message);
