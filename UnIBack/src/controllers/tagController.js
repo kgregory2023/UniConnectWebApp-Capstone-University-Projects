@@ -40,6 +40,7 @@ exports.getPredefinedTags = async (req, res) => {
         console.log("Returned preTags:", preTags); // Log the returned tags
         res.status(200).json(preTags);
     } catch (error) {
+        console.error(error.message);
         res.status(500).json({ message: "Internal server error: " + error.message });    
     }
 };

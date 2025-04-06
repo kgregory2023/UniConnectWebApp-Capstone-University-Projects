@@ -1,5 +1,5 @@
 const express = require("express");
-const { createTag, getTagById, getPredefinedTags, getAllTags, updateUserTag, deleteTag } = require("../controllers/tagController");
+const { createTag, getTagById, getPredefinedTags, getAllTags, deleteTag } = require("../controllers/tagController");
 const authMiddleware = require("../../authMiddleware");
 const tagsRoutes = express.Router();
 
