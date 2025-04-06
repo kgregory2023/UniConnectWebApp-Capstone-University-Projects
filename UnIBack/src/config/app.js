@@ -5,7 +5,8 @@ const fs = require('fs');
 const path = require('path');
 const app = express();
 const userRoutes = require('../routes/usersRoutes');
-const tagsRoutes = require('../routes/tagsRoutes');
+const tagRoutes = require('../routes/tagsRoutes');
+const locationRoutes = require('../routes/locationsRoutes');
 
 const logStream = fs.createWriteStream(path.join(__dirname, 'requests.log'), {flags: 'a' });
 
@@ -17,7 +18,8 @@ app.use(cors({
     allowedHeaders: ["Content-Type", "Authorization"], // Allowed headers
 }));
 app.use("/users", userRoutes);
-app.use("/profile", tagsRoutes);
+app.use("/profile", tagRoutes);
+app.use("/locations", locationRoutes);
 //Add more middleware as needed
 
 module.exports = app;
