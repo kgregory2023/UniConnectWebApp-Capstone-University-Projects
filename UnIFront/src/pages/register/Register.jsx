@@ -155,14 +155,9 @@ function Register () {
               required
             />
           </div>
-
         {/* conditionally only shows the error message if there even is one. */}
         {error && <div className="error-message">{error}</div>}
-
-    
-
           <button type="submit" disabled={isLoading}>{isLoading ? 'Registering...' : 'Register'}</button>
-
           <div>
             <Link to ="/login">
                 Already have an account? Click here

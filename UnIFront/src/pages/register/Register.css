@@ -1,73 +1,123 @@
+body {
+    text-align: center;
+    line-height: 1.5;
+    background-color: #2d4181;
+    color: white;
+    font-family: Arial, sans-serif;
+}
+
+h1 {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    font-size: 32px;
+    color: #fff;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+}
+
 .registerForm {
-    margin-top: 120px;
+    margin-top: 50px;
     display: flex;
-    flex-direction:column;
-    justify-content:space-between;
-    position:absolute;
+    flex-direction: column;
+    justify-content: space-between;
+    position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     width: 40%;
     height: 700px;
-    background-color: rgb(92, 92, 99);
-    border: 2px solid white;
+    background-color: #1a2b5d;
+    border: 2px solid #5a6caa;
     border-radius: 10px;
     padding: 20px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
 }
+
 label{
-    display:block;
-    font-size: medimu;
+    display: block;
+    font-size: x-large;
     margin-bottom:5px;
     margin-left:2px;
     font-weight:bold;
+    color: #ffffff;
 }
+
 .line {
     height: 1px;
-    background-color: rgba(0, 0, 0, 0.103);
-    margin-top:30px;
+    background-color: rgba(255, 255, 255, 0.2);
+    margin-top: 30px;
 }
 
 .fancy-input {
-    border: 2px solid #878a87;
-    width:60%;
+    border: 2px solid #5a6caa;
+    width: 60%;
     height: 30%;
     padding: 10px;
     border-radius: 5px;
     font-size: 18px;
+    background-color: #f5f5f5;
+    color: #000000;
     transition: border-color 0.3s ease;
 }
+
 .fancy-input:hover {
-    border: 2px solid rgb(216, 216, 231)
+    border: 2px solid #6271a7;
 }
+
+.fancy-input:focus {
+    outline: none;
+    border-color: #4a5d9b;
+    box-shadow: 0 0 5px rgba(74, 93, 155, 0.5);
+}
+
 .fancy-select {
-    border: 2px solid #878a87;
+    border: 2px solid #5a6caa;
     width:60%;
     height: 60%;
     padding: 10px;
     border-radius: 5px;
     font-size: 18px;
+    background-color: #f5f5f5;
+    color: #000000;
     transition: border-color 0.3s ease;
 }
+
 .fancy-select:hover {
-    border: 2px solid rgb(216, 216, 231)
+    border: 2px solid #6271a7;
 }
+
 button {
     width: 75%;
     padding: 12px;
     align-self: center;
+    background-color: #4caf50;
     color: white;
     border: none;
     border-radius: 5px;
     font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s;
+    font-weight: bold;
 }
 
-button:hover{
-    background-color:#878a87;
+button:hover {
+    background-color: #3d9c40;
 }
 
-a{
-    color:rgb(149, 151, 235);
+a {
+    color: #b8c0e0;
+}
+
+a:hover {
+    color: #ffffff;
+    text-decoration: underline;
+}
+
+.error-message {
+    color: #f44336;
+    background-color: rgba(244, 67, 54, 0.1);
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    text-align: center;
+    font-weight: bold;
 }
