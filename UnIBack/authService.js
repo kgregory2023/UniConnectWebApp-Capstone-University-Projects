@@ -1,6 +1,14 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-require('dotenv').config({ path: "./src/config/config.env"}); 
+require('dotenv').config({ path: "./src/config/config.env" }); 
+
+// Password must be 8–15 characters, include uppercase, lowercase, number, and special character
+const validatePassword = (password) => {
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,15}$/;
+    if (!passwordRegex.test(password)) {
+        throw new Error("Password must be 8-15 characters and include uppercase, lowercase, number, and special character.");
+    }
+};
 
 const hashPassword = async (password) => {
     return await bcrypt.hash(password, 10); 
@@ -18,4 +26,9 @@ const generateToken = (user) => {
     );
 };
 
-module.exports = { hashPassword, comparePassword, generateToken };
+module.exports = { 
+    hashPassword, 
+    comparePassword, 
+    generateToken, 
+    validatePassword 
+};

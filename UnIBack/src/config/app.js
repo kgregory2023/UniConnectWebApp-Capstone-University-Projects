@@ -9,7 +9,7 @@ const tagsRoutes = require('../routes/tagsRoutes');
 
 const logStream = fs.createWriteStream(path.join(__dirname, 'requests.log'), {flags: 'a' });
 
-app.use(express.json()); //middleware to parse JSON
+app.use(express.json({ limit: '5mb' })); //middleware to parse JSON with increased limit for profile pictures
 app.use(morgan("combined", { stream: logStream }));
 app.use(cors({
     origin: "http://localhost:5173", 

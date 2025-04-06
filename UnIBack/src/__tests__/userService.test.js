@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const User = require("../models/User");
-const Comment = require("../models/Comment");
 const Rating = require("../models/Rating");
 const userService = require("../services/userService");
 const { MongoMemoryServer } = require("mongodb-memory-server");
@@ -27,7 +26,7 @@ describe("User Service", () => {
         const userData = {
             username: "testuser",
             email: "test@example.com",
-            password: "securepassword"
+            password: "Test@123"
         };
 
         const user = await userService.registerUser(userData);
@@ -40,7 +39,7 @@ describe("User Service", () => {
         const userData = {
             username: "testuser",
             email: "test@example.com",
-            password: "securepassword"
+            password: "Test@123"
         };
 
         await userService.registerUser(userData);
@@ -52,40 +51,40 @@ describe("User Service", () => {
         const userData = {
             username: "testuser",
             email: "test@example.com",
-            password: "securepassword"
+            password: "Test@123"
         };
 
         const user = await userService.registerUser(userData);
         const foundUser = await User.findOne({ email: userData.email });
         
         expect(foundUser).toBeDefined();
-        expect(user.password).not.toBe("securepassword");
-        expect(await bcrypt.compare("securepassword", foundUser.password)).toBe(true);
+        expect(user.password).not.toBe("Test@123");
+        expect(await bcrypt.compare("Test@123", foundUser.password)).toBe(true);
     });
 
     it("should validate user login and return JWT", async () => {
         const userData = {
             username: "testuser",
             email: "test@example.com",
-            password: "securepassword"
+            password: "Test@123"
         };
 
         await userService.registerUser(userData);
-        const loginResponse = await userService.loginUser({ email: userData.email, password: "securepassword"});
+        const loginResponse = await userService.loginUser({ email: userData.email, password: "Test@123"});
 
         expect(loginResponse).toHaveProperty("token");
         expect(loginResponse.user.email).toBe(userData.email);
     });
 
     it("should reject login if user not found", async () => {
-        await expect(userService.loginUser({ email: "nonexistant@example.com", password: "securepassword"})).rejects.toThrow("Invalid email.");
+        await expect(userService.loginUser({ email: "nonexistant@example.com", password: "Test@123"})).rejects.toThrow("Invalid email.");
     });
 
     it("shoud reject login with incorrect password", async () => {
         const userData = {
             username: "testuser",
             email: "test@example.com",
-            password: "securepassword"
+            password: "Test@123"
         };
 
         await userService.registerUser(userData);
@@ -97,36 +96,28 @@ describe("User Service", () => {
         const userData = {
             username: "testuser",
             email: "test@example.com",
-            password: "securepassword"
+            password: "Test@123"
         };
         const user = await userService.registerUser(userData);
         userId = user._id;
 
-        const comment = await new Comment({
-            user: userId,
-            location: new mongoose.Types.ObjectId(),
-            text: "Great place!"
-        }).save();
-        commentId = comment._id;
-
         const rating = await new Rating({
             user: userId,
             location: new mongoose.Types.ObjectId(),
-            value: 5
+            value: 5,
+            text: "Great place!"
         }).save();
         ratingId = rating._id;
 
-        user.comments = [commentId];
         user.ratings = [ratingId];
         await user.save();
 
         const profile = await userService.getUserProfile(userId);
 
         expect(profile).toBeDefined();
-        expect(profile.comments).toHaveLength(1);
-        expect(profile.comments[0].text).toBe("Great place!");
         expect(profile.ratings).toHaveLength(1);
         expect(profile.ratings[0].value).toBe(5);
+        expect(profile.ratings[0].text).toBe("Great place!");
     });
 
     it("should return null if user does not exist", async () => {
@@ -140,7 +131,7 @@ describe("User Service", () => {
         const userData = {
             username: "testuser",
             email: "test@example.com",
-            password: "secure password"
+            password: "Test@123"
         };
 
         const user = await userService.registerUser(userData);
@@ -175,7 +166,7 @@ describe("User Service", () => {
         const userData = {
             username: "testuser",
             email: "test@example.com",
-            password: "secure password"
+            password: "Test@123"
         };
 
         const user = await userService.registerUser(userData);
@@ -195,4 +186,40 @@ describe("User Service", () => {
 
         expect(deletedUser).toBeNull();
     });
+});
+
+const {
+  validatePassword,
+  hashPassword,
+  comparePassword,
+  generateToken
+} = require("../../authService");
+
+describe("Password Utility Functions", () => {
+  const strongPassword = "StrongPass@123";
+  const weakPassword = "123";
+
+  it("should validate a strong password without throwing", () => {
+    expect(() => validatePassword(strongPassword)).not.toThrow();
+  });
+
+  it("should throw an error for a weak password", () => {
+    expect(() => validatePassword(weakPassword)).toThrow(
+      "Password must be 8-15 characters and include uppercase, lowercase, number, and special character."
+    );
+  });
+
+  it("should hash and compare passwords correctly", async () => {
+    const hashed = await hashPassword(strongPassword);
+    expect(hashed).not.toBe(strongPassword);
+    expect(await comparePassword(strongPassword, hashed)).toBe(true);
+    expect(await comparePassword("WrongPass123", hashed)).toBe(false);
+  });
+
+  it("should generate and verify JWT token", () => {
+    const user = { _id: "abc123", username: "testuser" };
+    const token = generateToken(user);
+    const decoded = require("jsonwebtoken").verify(token, process.env.JWT_SECRET);
+    expect(decoded).toHaveProperty("id", user._id);
+  });
 });

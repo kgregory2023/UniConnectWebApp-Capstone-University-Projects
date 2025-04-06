@@ -1,6 +1,7 @@
 const userService = require("../services/userService");
 const tagService = require("../services/tagService");
 
+
 exports.registerUser = async (req, res) => {
     try {
         const user = await userService.registerUser(req.body);
@@ -108,5 +109,18 @@ exports.createAndAddTagToUser = async (req, res) => {
         res.status(200).json(updatedUser);
     } catch (error) {
         res.stats(500).json({ message: "Internal server error: " + error.message });
+    }
+};
+
+// SwipeUserController export
+exports.getSwipeUsers = async (req, res) => {
+    try {
+        const count = parseInt(req.params.count) || 5;
+        console.log("Swipe request from user:", req.user.id, "for count:", count); //debugging purposes
+        const users = await userService.getSwipeUsers(req.user.id, count);
+        res.status(200).json(users);
+    } catch (error) {
+        console.error("Swipe Error:", error); // Prints Error in console, if any
+        res.status(500).json({ message: "Failed to fetch users" });
     }
 };

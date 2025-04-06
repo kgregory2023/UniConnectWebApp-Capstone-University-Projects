@@ -1,6 +1,7 @@
 const User = require("../models/User");
 const Tag = require("../models/Tag");
 const { hashPassword, comparePassword, generateToken } = require("../../authService");
+const mongoose = require("mongoose");
 
 const registerUser = async (userData) => {
     const { username, email, password } = userData;
@@ -57,4 +58,16 @@ const removeTagsFromUser = async (userId, tagIds) => {
 
 module.exports = {
     registerUser, loginUser, getUserProfile, updateUserProfile, deleteUser, addTagsToUser, removeTagsFromUser
+
+//get function for swipeUsers
+const getSwipeUsers = async (userId, count) => {
+    return await User.aggregate([
+        { $match: { _id: { $ne: new mongoose.Types.ObjectId(userId) } } },
+        { $sample: { size: count } }
+    ]);
+};
+
+// added getSwipeUsers
+module.exports = {
+    registerUser, loginUser, getUserProfile, updateUserProfile, deleteUser, getSwipeUsers
 };
