@@ -26,7 +26,7 @@ const loginUser = async ({ email, password }) => {
 };
 
 const getUserProfile = async (userId) => {
-    return await User.findById(userId).populate("comments ratings tags");
+    return await User.findById(userId).populate("ratings tags");
 };
 
 const updateUserProfile = async (userId, updateData) => {
