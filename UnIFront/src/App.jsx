@@ -12,6 +12,8 @@ import Profile from './pages/profile/Profile'
 import CustomizeProfile from './pages/customizeProfile/CustomizeProfile'
 import Login from './pages/login/Login'
 import Register from './pages/register/Register'
+import Discover from './pages/discover/Discover'
+import Navbar from './components/navbar/Navbar';
 import Connect from './pages/connect/Connect'
 
 import Navbar from './components/navbar/Navbar'
@@ -45,6 +47,8 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
+
+          <Route path="/discover" element={<Discover />} />
 
         {/* Protected Routes */}
           <Route path="/profile" element={<ProtectedRoute element={<Profile />} />} />
