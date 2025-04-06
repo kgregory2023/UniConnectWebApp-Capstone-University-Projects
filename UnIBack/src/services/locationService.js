@@ -12,7 +12,7 @@ const createLocation = async (locationData) => {
 };
 
 const getLocationById = async (locationId) => {
-    let location = await Location.findById({ _id: locationId }).populate("ratings");
+    let location = await Location.findById(locationId).populate("ratings");
     if (!location) throw new Error ("Location not found.");
 
     return location;
@@ -30,7 +30,7 @@ const updateLocation = async (locationId, locationData) => {
 };
 
 const deleteLocation = async (locationId) => {
-    let location = await Location.findById({ _id: locationId }).populate("ratings");
+    let location = await Location.findById(locationId).populate("ratings");
     if (!location) throw new Error("Location not found.");
 
     return await Location.findByIdAndDelete(locationId);
