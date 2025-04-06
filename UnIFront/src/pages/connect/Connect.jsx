@@ -18,9 +18,14 @@ function Connect() {
     const [cards, setCards] = useState([]); // Replaced and restructured static initialCards with fetched cards from database
     const [isLoading, setLoading] = useState(true);
     const [likedUsers, setLikedUsers] = useState([]);
+    const [hasFetched, setHasFetched] = useState(false);
 
-
-    const fetchSwipeUsers = async () => {
+    /**
+     * Function that finds the users, and applies an algorithm to figure out who should be presented first.
+     * If no one is found to have a score, then it'll fetch more users.
+     * @param {} attempts amount of attempts it has gone through (runs recursively)
+     */
+    const fetchSwipeUsers = async (attempts = 0) => {
         try {
             setLoading(true);
 
@@ -32,32 +37,60 @@ function Connect() {
 
             const data = await response.json();
             if (response.ok) {
-                const formattedCards = data.map(user => ({
-                    id: user._id,
-                    username: user.name || user.username, // Added the dynamic user mapping
-                    age: user.age,
-                    bio: user.bio,
-                    profilePic: user.profilePic,
-                    email: user.email,
-                    tags: user.tags,
-                }));
+                const userTags = user?.tags || [];
+
+                const formattedCards = data.map(u => {
+                    
+
+                    let sumScore = 0;
+                    const inTags = u.tags || [];
+                    const matches = inTags.filter(tag => userTags.include(tag)).length;
+                    sumScore += matches;
+
+                return{
+                    id: u._id,
+                    username: u.name || u.username, // Added the dynamic user mapping
+                    age: u.age,
+                    bio: u.bio,
+                    profilePic: u.profilePic,
+                    email: u.email,
+                    tags: u.tags,
+                    matchScore: matches,
+                }
+            });
+
+            const totalScore = formattedCards.reduce((sum, u) => sum + u.matchScore, 0); //Adds all matchScore of users
+            //console.log(totalScore);
+            if(totalScore === 0 && attempts < 2){
+                console.log(`Retrying fetch, onto ( ${attempts+1}/3 )`);
+                fetchSwipeUsers(attempts + 1);
+            }   else{
+                formattedCards.sort((a, b) => b.matchScore - a.matchScore);
                 setCards(formattedCards);
+                setLoading(false);
+            }
+
             } else {
                 console.error("Error fetching users:", data.message);
             }
         } catch (err) {
             console.error("Fetch failed:", err);
         } finally {
-            setLoading(false);
+            //setLoading(false);
         }
     };
 
+    /**
+     * On page render, does a fetch. Needed some cleaning because it would double call this and
+     * cause odd bugs with the card stack
+     */
     useEffect(() => {
-        if (!token) return; //Not fetching if token isn't ready.
+        if (!token || hasFetched) return; //Not fetching if token isn't ready.
 
 
         fetchSwipeUsers();
-    }, [token]);
+        setHasFetched(true)
+    }, [user, hasFetched]);
 
     const handleSwipe = (direction, id) => {
         console.log(`Swiped ${direction} on card ${id}`);
@@ -74,6 +107,11 @@ function Connect() {
     // Handle deletion of a contact from the liked users list
     const handleDelete = (contactId) => {
         setLikedUsers(prevContacts => prevContacts.filter(contact => contact.id !== contactId));
+    };
+
+    //Handle button
+    const handleFindMoreUsers = () => {
+        fetchSwipeUsers(0);   // Reset attempt count
     };
 
     return (
@@ -106,7 +144,7 @@ function Connect() {
                             ) : (
                                 <button 
                                 className="genButton"
-                                onClick ={fetchSwipeUsers}
+                                onClick ={handleFindMoreUsers}
                                 >
                                     Find more users
                                 </button>
