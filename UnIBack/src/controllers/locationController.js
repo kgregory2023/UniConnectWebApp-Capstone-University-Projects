@@ -29,9 +29,6 @@ exports.getAllLocations = async (req, res) => {
         const locations = await locationService.getAllLocations();
         res.status(200).json(locations);
     } catch (error) {
-        if(error.message === "Location not found."){
-            return res.status(404).json({ message: error.message });
-        }
         res.status(500).json({ message: "Internal server error: " + error.message });
     }
 };
@@ -53,17 +50,7 @@ exports.deleteLocation = async (req, res) => {
 
     try {
         await locationService.deleteLocation(locationId);
-
-        try{
-            const location = await locationService.getLocationById(locationId);
-            if(location) {
-                return res.status(400).json({ message: "Deletion failed." });
-            }
-        } catch (error) {
-            if(error.message === "Location not found."){
-                return res.status(204).json({});
-            }
-        }
+        res.status(204).send();
     } catch (error) {
         if(error.message === "Location not found."){
             return res.status(404).json({ message: error.message });
