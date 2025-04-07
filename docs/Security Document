@@ -1,0 +1,38 @@
+## 🔐 Security Documentation
+
+This document outlines the security implementation used for authentication, password handling, and role-based access control in our full-stack application.
+
+### 1. Password Storage and Authentication
+- **Hashing with bcrypt:**
+  - All passwords are hashed using the `bcrypt` library before being stored in MongoDB. This protects against password leakage in the event of a database breach.
+  - We use `bcrypt.hash(password, saltRounds)` to generate salted hashes. During login, `bcrypt.compare` is used to validate user credentials.
+
+### 2. Login Process
+- On login, the backend verifies the user’s email and password. The provided password is compared to the stored bcrypt hash.
+- Upon successful login, a **JWT token** is generated and sent to the client. This token must be provided with each request to access protected routes.
+
+### 3. Token-Based Authentication
+- **JWT (JSON Web Token):**
+  - A token is generated using a secret key and includes user information such as their ID and role.
+  - Middleware (`verifyToken`) is applied to protected routes to check token validity and extract the user.
+  - If the token is invalid or missing, the request is denied with a 401 Unauthorized error.
+
+### 4. Protected Routes and Permissions
+- Users can only access sensitive routes if they are authenticated via a valid JWT token.
+- The token is checked using a middleware that attaches the decoded user info to the request object.
+
+### 5. Roles and Permissions
+- Users are assigned a **role** (e.g., "user", "admin") when created.
+- Routes can optionally check the user's role to authorize specific actions. For example, admin-only endpoints will verify that `req.user.role === 'admin'`.
+
+### 6. Third-Party Authentication
+- **Not applicable.** Our application currently only supports email/password login using bcrypt and JWT. No third-party OAuth (e.g., Google, GitHub) is implemented.
+
+### 7. Security Best Practices
+- Passwords are never stored or logged in plaintext.
+- Tokens are signed and verified using a server-side secret key stored in environment variables.
+- Input validation is applied to login and registration forms to prevent injection and malformed input.
+- All sensitive operations (such as swiping profiles) are performed only after verifying the user’s token.
+
+With this approach, our application ensures secure user authentication, protects credentials, and restricts access to authorized users based on their role.
+
