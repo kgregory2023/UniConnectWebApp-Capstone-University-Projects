@@ -44,7 +44,7 @@ function Connect() {
 
                     let sumScore = 0;
                     const inTags = u.tags || [];
-                    const matches = inTags.filter(tag => userTags.include(tag)).length;
+                    const matches = inTags.filter(tag => userTags.includes(tag)).length;
                     sumScore += matches;
 
                 return{
@@ -58,6 +58,7 @@ function Connect() {
                     matchScore: matches,
                 }
             });
+
 
             const totalScore = formattedCards.reduce((sum, u) => sum + u.matchScore, 0); //Adds all matchScore of users
             //console.log(totalScore);
@@ -87,9 +88,8 @@ function Connect() {
     useEffect(() => {
         if (!token || hasFetched) return; //Not fetching if token isn't ready.
 
-
-        fetchSwipeUsers();
         setHasFetched(true)
+        fetchSwipeUsers();
     }, [user, hasFetched]);
 
     const handleSwipe = (direction, id) => {
@@ -112,6 +112,22 @@ function Connect() {
     //Handle button
     const handleFindMoreUsers = () => {
         fetchSwipeUsers(0);   // Reset attempt count
+    };
+
+    const makeTag = async () =>{
+        try{
+        const response = await fetch("http://localhost:5000/profile/profile/tags", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`, // Auth token is included in headers
+            },
+            body: JSON.stringify({ name: "Computer Science", category: "Hobbies", isPredefined: true }),
+        });
+    } catch (err) {
+        console.error("Error creating tag:", err);
+      }
+    
     };
 
     return (
@@ -142,12 +158,22 @@ function Connect() {
                                     />
                                 ))
                             ) : (
+                                <div>
                                 <button 
                                 className="genButton"
                                 onClick ={handleFindMoreUsers}
                                 >
                                     Find more users
                                 </button>
+
+
+
+                                {/* <button
+                                onClick ={makeTag}
+                                >
+                                    Secret ;)
+                                </button> */}
+                                </div> 
                             )}
                         </div>
                     )}

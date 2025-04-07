@@ -2,6 +2,7 @@ const tagService = require("../services/tagService");
 
 exports.createTag = async (req, res) => {
     try {
+        console.log("Hello!");
         const { name, category } = req.body;
 
         if (!name) {
