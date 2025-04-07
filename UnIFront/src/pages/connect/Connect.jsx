@@ -59,6 +59,7 @@ function Connect() {
                 }
             });
 
+
             const totalScore = formattedCards.reduce((sum, u) => sum + u.matchScore, 0); //Adds all matchScore of users
             //console.log(totalScore);
             if(totalScore === 0 && attempts < 2){
@@ -164,12 +165,15 @@ function Connect() {
                                 >
                                     Find more users
                                 </button>
-                                <button
+
+
+
+                                {/* <button
                                 onClick ={makeTag}
                                 >
                                     Secret ;)
-                                </button>
-                                </div>
+                                </button> */}
+                                </div> 
                             )}
                         </div>
                     )}
