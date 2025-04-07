@@ -1,6 +1,5 @@
 ## CIS4592: "UnIConnect"
 Group 3's Capstone Project for Spring 2025
---Remember to add topics once discussing with group what type of app we are developing--
 
 ## Introduction
 UnIConnect is a webapp to be used by students of universities in order to develop a more social life on campuses of their choice. The application allows a user to create an account, sign in, and either match with another student through card based swiping, similar to Tinder, and discover locations on and around campus with reviews and ratings from the student body, similar to Yelp.
@@ -37,9 +36,9 @@ The backend has a file structure that includes models, controllers, routes, and 
 
 Model - Defines the objects to be held within the database
 
-Services - Performs the business operations on incoming and outgoing database requests
+Services - Simply performs the incomming database request
 
-Controller -
+Controller - Any data handling, business logic, and error management is done here
 
 Routes - Defines routes that will be called to, primarily by the frontend, in order to carry out specific database and backend functions.
 
@@ -49,7 +48,7 @@ Routes - Defines routes that will be called to, primarily by the frontend, in or
   - ### (How to run tests)
 Ensuring that you are in the directory for UnIBack, there is a tests folder to cd into. Once in that directory, and ensuring that you have all the dependencies needed for the backend, running
 
-`npm test` 
+`jest`
 
 will run a series of Jest tests on the backend functionality.
 
@@ -66,5 +65,8 @@ These two commands will allow you to open http:localhost:5173, port 5173 is the 
   - (Github Issues)
   - (discord)
 
-### Video
+## Videos
+#### Stage 1 video
 https://drive.google.com/file/d/1Uuvm0-8mchNEGIvj-00L9rnUPBlwSqaQ/view?usp=drive_link
+
+#### Stage 2 video
