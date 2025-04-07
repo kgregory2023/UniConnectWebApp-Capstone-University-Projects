@@ -19,7 +19,12 @@ const LocationSchema = new mongoose.Schema({
     },
     state: {
         type: String,
-        required: [true, "State is required."],
+    },
+    latitude: {
+        type: String
+    },
+    longitude: {
+        type: String
     },
     ratings: [{
         type: mongoose.Schema.Types.ObjectId,

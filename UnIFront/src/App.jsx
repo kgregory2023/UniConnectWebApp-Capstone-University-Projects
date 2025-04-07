@@ -15,8 +15,6 @@ import Register from './pages/register/Register'
 import Discover from './pages/discover/Discover'
 import Connect from './pages/connect/Connect'
 
-import Navbar from './components/navbar/Navbar'
-
 import { UserProvider } from './components/userContext/UserContext';
 
 

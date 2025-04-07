@@ -56,7 +56,6 @@ const removeTagsFromUser = async (userId, tagIds) => {
     ).populate("tags");
 };
 
-//get function for swipeUsers
 const getSwipeUsers = async (userId, count) => {
     return await User.aggregate([
         { $match: { _id: { $ne: new mongoose.Types.ObjectId(userId) } } },
@@ -64,7 +63,7 @@ const getSwipeUsers = async (userId, count) => {
     ]);
 };
 
-// added getSwipeUsers
 module.exports = {
-    registerUser, loginUser, getUserProfile, updateUserProfile, deleteUser, getSwipeUsers, addTagsToUser, removeTagsFromUser
+    registerUser, loginUser, getUserProfile, updateUserProfile, deleteUser, addTagsToUser, removeTagsFromUser, getSwipeUsers
 };
+

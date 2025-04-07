@@ -11,8 +11,6 @@ userRoutes.post("/login", loginUser);
 userRoutes.get("/profile", authMiddleware, getUserProfile);
 userRoutes.put("/profile", authMiddleware, updateUserProfile);
 userRoutes.delete("/profile", authMiddleware, deleteUser);
-
-//Swipe Route
-userRoutes.get("/swipe/:count", authMiddleware, getSwipeUsers);
+userRoutes.get("/swipe/:count", authMiddleware, getSwipeUsers); //Swipe Route
 
 module.exports = userRoutes;
