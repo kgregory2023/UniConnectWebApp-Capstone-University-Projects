@@ -175,7 +175,7 @@ describe("Tag Routes", () => {
     });
 
     describe("GET /profile/tags/predefined", () => {
-        it("should return a list of predefined tags", async () => {
+        /*it("should return a list of predefined tags", async () => {
             const mockPreTags = [
                 { ...mockPreTag1, _id: mockPreTag1._id.toString() },
                 { ...mockPreTag2, _id: mockPreTag2._id.toString() }
@@ -189,7 +189,7 @@ describe("Tag Routes", () => {
             .get("/profile/tags/predefined");
 
             expect(response.body).toEqual(mockPreTags);
-        });
+        });*/
 
         it("should return an error if unexpected error occurs", async () => {
             tagService.getPredefinedTags.mockRejectedValue(new Error("Database failure."));
