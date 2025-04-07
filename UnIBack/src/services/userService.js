@@ -30,7 +30,21 @@ const getUserProfile = async (userId) => {
 };
 
 const updateUserProfile = async (userId, updateData) => {
-    return await User.findByIdAndUpdate(userId, updateData, { new: true });
+    try{
+        if(updateData.password){
+            updateData.password = await hashPassword(updateData.password);
+        }
+
+
+        return await User.findByIdAndUpdate(userId, updateData, { new: true });
+
+    }  catch (error) {
+        console.error('Error updating user profile:', error.message);
+        throw error;
+    }
+
+
+
 }
 
 const deleteUser = async (userId) => {
