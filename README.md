@@ -46,11 +46,19 @@ Routes - Defines routes that will be called to, primarily by the frontend, in or
 
 ## Contributing
   - ### (How to run tests)
+Ensure Jest is installed globally or within the UnIBack directory. Running npm i will not include it.
+
 Ensuring that you are in the directory for UnIBack, there is a tests folder to cd into. Once in that directory, and ensuring that you have all the dependencies needed for the backend, running
 
 `jest`
 
 will run a series of Jest tests on the backend functionality.
+
+
+To get coverage report: `npm run test --coverage`
+To just run test suite: `jest`
+To run jest with add. info: `jest --coverage --verbose`
+
 
   - ### (How To run the app)
 Both the frontend and the backend must be running as described previously in installation. 
@@ -70,3 +78,4 @@ These two commands will allow you to open http:localhost:5173, port 5173 is the 
 https://drive.google.com/file/d/1Uuvm0-8mchNEGIvj-00L9rnUPBlwSqaQ/view?usp=drive_link
 
 #### Stage 2 video
+https://drive.google.com/file/d/1vu06g2nwnnXnFnk6_yGcQGcXcsWDoOjm/view?usp=sharing
