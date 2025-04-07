@@ -4,6 +4,7 @@ const User = require("../models/User");
 const Rating = require("../models/Rating");
 const userService = require("../services/userService");
 const { MongoMemoryServer } = require("mongodb-memory-server");
+process.env.JWT_SECRET = 'testsecret';
 
 let mongoServer;
 

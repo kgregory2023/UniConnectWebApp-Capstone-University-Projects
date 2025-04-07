@@ -116,11 +116,9 @@ exports.createAndAddTagToUser = async (req, res) => {
 exports.getSwipeUsers = async (req, res) => {
     try {
         const count = parseInt(req.params.count) || 5;
-        console.log("Swipe request from user:", req.user.id, "for count:", count); //debugging purposes
         const users = await userService.getSwipeUsers(req.user.id, count);
         res.status(200).json(users);
     } catch (error) {
-        console.error("Swipe Error:", error); // Prints Error in console, if any
         res.status(500).json({ message: "Failed to fetch users" });
     }
 };
