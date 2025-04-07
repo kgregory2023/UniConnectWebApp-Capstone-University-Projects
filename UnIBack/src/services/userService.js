@@ -66,3 +66,4 @@ const getSwipeUsers = async (userId, count) => {
 module.exports = {
     registerUser, loginUser, getUserProfile, updateUserProfile, deleteUser, addTagsToUser, removeTagsFromUser, getSwipeUsers
 };
+
