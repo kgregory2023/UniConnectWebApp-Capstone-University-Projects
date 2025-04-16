@@ -153,6 +153,19 @@ function Discover() {
     }
   }, [markerTitle, token, saveLocationToBackend]);
 
+  // on a marker click, we need to grab the ratings as well, which would be in the back end.
+  const onMarkerClick = async (marker) => {
+    try {
+      //const res = await fetch(`http://localhost:5000/locations/${marker.id}/ratings`);
+      const ratings = {};
+      setSelected({ ...marker, ratings });
+    } catch (err) {
+      console.error('Failed to load ratings:', err);
+    }
+  };
+
+
+
   // Handle loading and error states
   if (loadError) return <div className="error-message">Error loading maps</div>;
   if (!isLoaded) return <div className="loading-message">Loading maps...</div>;
@@ -191,29 +204,88 @@ function Discover() {
             <Marker
               key={marker.id || `${marker.lat}-${marker.lng}-${marker.time ? marker.time.toISOString() : Date.now()}`}
               position={{ lat: marker.lat, lng: marker.lng }}
-              onClick={() => setSelected(marker)}
+              onClick={() => {
+                onMarkerClick(marker);
+              }}
               icon={{
                 url: 'https://maps.google.com/mapfiles/ms/icons/red-dot.png',
                 scaledSize: new window.google.maps.Size(40, 40),
               }}
             />
           ))}
-          {selected && (
+
+          {/* Info window for selected marker
+              Add on selected, to get the ratings of the location by name or id.
+            */}
+          {selected ? (
+
+
+
             <InfoWindow
               position={{ lat: selected.lat, lng: selected.lng }}
               onCloseClick={() => setSelected(null)}
             >
               <div className="info-window">
-                <h2 style={{ color: '#2d4181', marginBottom: '8px', fontSize: '18px', fontWeight: 'bold' }}>
-                  {selected.title}
-                </h2>
-                <p style={{ fontSize: '14px', marginTop: '5px', color: '#555' }}>
-                  Coordinates: ({selected.lat.toFixed(6)}, {selected.lng.toFixed(6)})
-                </p>
+                <h2>{selected.title}</h2>
+                <p>Coordinates: ({selected.lat.toFixed(6)}, {selected.lng.toFixed(6)})</p>
+                <p>Added: {selected.time.toLocaleString()}</p>
+
+                <div className="ratings-list">
+                  <h4>Ratings:</h4>
+                  {selected.ratings?.length ? (
+                    selected.ratings.map((r, i) => (
+                      <div key={i}>
+                        ⭐ {r.rating} - {r.comment || 'No comment'}
+                      </div>
+                    ))
+                  ) : (
+                    <p>No ratings yet.</p>
+                  )}
+                </div>
+
+                {/* New Rating Form */}
+                <div className="add-rating-form">
+                  <label>
+                    Your Rating:
+                    <select value={rating} onChange={(e) => setRating(e.target.value)}>
+                      <option value="">Select</option>
+                      {[1, 2, 3, 4, 5].map(n => <option key={n} value={n}>{n}</option>)}
+                    </select>
+                  </label>
+                  <textarea
+                    value={comment}
+                    onChange={(e) => setComment(e.target.value)}
+                    placeholder="Leave a comment (optional)"
+                  />
+                  <button onClick={() => submitRating(selected.id)}>Submit</button>
+                </div>
+
               </div>
             </InfoWindow>
           )}
         </GoogleMap>
+      </div>
+
+      <div className="locations-list">
+        <h2>Saved Locations</h2>
+        {markers.length === 0 ? (
+          <p>No locations added yet. Click on the map to add locations.</p>
+        ) : (
+          <ul>
+            {markers.map((marker, index) => (
+              <li
+                key={index}
+                onClick={() => {
+                  setSelected(marker);
+                  panTo({ lat: marker.lat, lng: marker.lng });
+                }}
+              >
+                <strong>{marker.title}</strong>
+                <small>Added: {marker.time.toLocaleString()}</small>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
     </div>
   );
