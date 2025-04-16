@@ -5,7 +5,7 @@ import './Discover.css';
 
 const mapContainerStyle = {
   width: '100%',
-  height: '75vh',
+  height: '90vh',
 };
 
 // Default center location set to UWF
@@ -19,7 +19,6 @@ const options = {
   disableDefaultUI: false,
   zoomControl: true,
   mapTypeControl: true,
-  streetViewControl: true,
   fullscreenControl: true,
 };
 
@@ -35,7 +34,10 @@ function Discover() {
   const [markerTitle, setMarkerTitle] = useState(""); // Stores the title of the marker to be added
   const [loading, setLoading] = useState(true); // Loading state for API calls
   const [error, setError] = useState(null); // Error state for API calls
-  
+  const [rating, setRating] = useState('');
+  const [comment, setComment] = useState('');
+  const [isInfoWindowOpen, setIsInfoWindowOpen] = useState(false);
+
   // Get user context for authentication
   const { token } = useUser();
 
@@ -159,10 +161,18 @@ function Discover() {
       //const res = await fetch(`http://localhost:5000/locations/${marker.id}/ratings`);
       const ratings = {};
       setSelected({ ...marker, ratings });
+      setIsInfoWindowOpen(false);
     } catch (err) {
       console.error('Failed to load ratings:', err);
     }
   };
+
+  const submitRating = async (locationId) => {
+    if (!rating) {
+      alert("please elect a rating before submitting.");
+      return;
+    }
+  }
 
 
 
@@ -195,7 +205,10 @@ function Discover() {
           mapContainerStyle={mapContainerStyle}
           zoom={15}
           center={center}
-          options={options}
+          options={{
+            ...options,
+            gestureHandling: isInfoWindowOpen ? 'none' : 'auto', // Disable map interaction when info window is open
+          }}
           onClick={onMapClick}
           onLoad={onMapLoad}
         >
@@ -213,17 +226,15 @@ function Discover() {
               }}
             />
           ))}
+          {/* Info window for selected marker Add on selected, to get the ratings of the location by name or id. */}
 
-          {/* Info window for selected marker
-              Add on selected, to get the ratings of the location by name or id.
-            */}
-          {selected ? (
-
-
-
+          {selected && (
             <InfoWindow
               position={{ lat: selected.lat, lng: selected.lng }}
-              onCloseClick={() => setSelected(null)}
+              onCloseClick={() => {
+                setSelected(null);
+                setIsInfoWindowOpen(false);
+              }}
             >
               <div className="info-window">
                 <h2>{selected.title}</h2>
