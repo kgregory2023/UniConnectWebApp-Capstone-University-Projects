@@ -4,7 +4,9 @@ body {
     line-height: 1.5;
     background-color: #2d4181; /* Light background for visibility */
 }
-
+p{
+    padding-top: 2%;
+}
 .authors{
     padding-left: 5%;
     background-color: #2d4181;

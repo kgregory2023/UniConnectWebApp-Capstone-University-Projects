@@ -5,7 +5,7 @@ import './Discover.css';
 
 const mapContainerStyle = {
   width: '100%',
-  height: '90vh',
+  height: '80vh',
 };
 
 // Default center location set to UWF
@@ -183,8 +183,9 @@ function Discover() {
   if (error) return <div className="error-message">Error: {error}</div>;
 
   return (
+    <div>
+            <h1>Discover Locations</h1>
     <div className="discover-container">
-      <h1>Discover Locations</h1>
       <div className="map-controls">
         <div className="input-group">
           <label htmlFor="markerTitle">Location Name:</label>
@@ -299,6 +300,8 @@ function Discover() {
         )}
       </div>
     </div>
+    </div>
+
   );
 }
 
