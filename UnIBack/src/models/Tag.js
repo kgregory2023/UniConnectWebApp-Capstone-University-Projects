@@ -13,7 +13,7 @@ const TagSchema = new mongoose.Schema({
     },
     category: {
         type: String,
-        enum: ["Languages", "Hobbies", "Interests", "Music", "Personality Type", "Looking For", "Clubs/Sports", "Testing"],
+        enum: ["Languages", "Hobbies/Interests", "Music", "Personality Type", "Looking For", "Clubs/Sports", "Testing"],
         required: true,
     },
     isPredefined: {
