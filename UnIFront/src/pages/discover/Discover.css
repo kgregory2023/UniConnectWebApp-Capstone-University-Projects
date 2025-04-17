@@ -7,7 +7,8 @@ body {
 }
 
 .discover-container {
-  max-width: 1200px;
+  max-width: none;
+  width: 150%;
   margin: 80px auto 20px;
   padding: 20px;
   font-family: Arial, sans-serif;
@@ -55,6 +56,16 @@ body {
   color: #000000;
 }
 
+.input-row {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 10px;
+}
+
+.input-row .input-group {
+  flex: 1;
+}
+
 .instructions {
   margin: 10px 0 0;
   color: #b8c0e0;
@@ -91,19 +102,39 @@ body {
 }
 
 .info-window {
+  width: 600px;
+  min-height: 400px;
   padding: 5px;
   color: #000000;
 }
 
 .info-window h2 {
   margin-top: 0;
-  font-size: 18px;
+  font-size: 38px;
   color: #333;
+  text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.5); /* Horizontal, Vertical, Blur, Color */
 }
 
 .info-window p {
-  margin: 5px 0;
-  font-size: 14px;
+  margin: 1px 0;
+  font-size: 18px;
+}
+
+.add-rating-form {
+  margin-top: 10px;
+  width: 95%
+}
+
+.add-rating-form label{
+  color : #000000;
+  margin-left: 30%;
+}
+
+.add-rating-form textarea {
+  width: 100%;
+  min-height: 40px;
+  margin-top: 4px;
+  margin-bottom: 8px;
 }
 
 .locations-list {
@@ -149,9 +180,25 @@ body {
   color: #ffffff;
 }
 
+.locations-list li .location-info {
+  font-size: 14px;
+  color: #d0d6f0;
+  margin-bottom: 4px;
+}
+
 .locations-list li small {
   color: #b8c0e0;
   font-size: 12px;
+}
+
+.locations-list li .rating {
+  background-color: #4caf50;
+  color: white;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 12px;
+  margin-top: 4px;
+  display: inline-block;
 }
 
 /* Add button styling consistent with profile pages */
@@ -198,5 +245,10 @@ button.secondary:hover {
   
   .input-group input {
     width: 100%;
+  }
+  
+  .input-row {
+    flex-direction: column;
+    gap: 0;
   }
 }
