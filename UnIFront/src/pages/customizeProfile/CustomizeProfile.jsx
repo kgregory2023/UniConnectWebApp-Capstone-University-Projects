@@ -10,6 +10,9 @@ function CustomizeProfile() {
     const [previewImage, setPreviewImage] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
+    const [tags, setTags] = useState([]);
+    const [selectedTags, setSelectedTags] = useState([]);
+    const [tagsByCategory, setTagsByCategory] = useState({});
 
     useEffect(() => {
         if (user) {
@@ -22,19 +25,103 @@ function CustomizeProfile() {
                 password: '',
                 password2: '',
                 profilePic: user.profilePic || '',
+                tags: user.tags || [],
             });
             
             if (user.profilePic) {
                 setPreviewImage(user.profilePic);
             }
         }
-    }, [user]);
+
+        // Fetch all tags
+        const fetchTags = async () => {
+            try {
+                console.log('Fetching tags...');
+                const response = await fetch('http://localhost:5000/profile/tags', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                console.log('Tags API response status:', response.status);
+                
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch tags: ${response.status} ${response.statusText}`);
+                }
+
+                const tagsData = await response.json();
+                console.log('Tags data received:', tagsData);
+                setTags(tagsData);
+
+                // Group tags by category
+                const groupedTags = {};
+                if (Array.isArray(tagsData) && tagsData.length > 0) {
+                    tagsData.forEach(tag => {
+                        if (tag && tag.category) {
+                            if (!groupedTags[tag.category]) {
+                                groupedTags[tag.category] = [];
+                            }
+                            groupedTags[tag.category].push(tag);
+                        } else {
+                            console.warn('Invalid tag data:', tag);
+                        }
+                    });
+                    console.log('Tags grouped by category:', groupedTags);
+                } else {
+                    console.warn('No tags data received or data is not an array');
+                }
+                
+                setTagsByCategory(groupedTags);
+                
+                // Set selected tags using full tag objects that match user.tags IDs
+                if (user && user.tags && Array.isArray(user.tags) && tagsData.length > 0) {
+                    if (typeof user.tags[0] === 'object' && user.tags[0]._id) {
+                        setSelectedTags(user.tags);
+                    } 
+                    else {
+                        const userTagIds = Array.isArray(user.tags) ? user.tags : [];
+                        const fullTagObjects = tagsData.filter(tag => 
+                            userTagIds.includes(tag._id)
+                        );
+                        console.log('Setting selected tags with full objects:', fullTagObjects);
+                        setSelectedTags(fullTagObjects);
+                    }
+                }
+            } catch (err) {
+                console.error('Error fetching tags:', err);
+                setError('Could not load tags. Please try again later.');
+            }
+        };
+
+        fetchTags();
+    }, [user, token]);
 
     const handleTempChange = (e) => {
         setTempData({
             ...tempData,
             [e.target.name]: e.target.value
         });
+    };
+
+    const handleTagSelection = (tag) => {
+        console.log('Tag selected/deselected:', tag);
+        if (selectedTags.some(selectedTag => selectedTag._id === tag._id)) {
+            // If tag is already selected remove it
+            const updatedTags = selectedTags.filter(selectedTag => selectedTag._id !== tag._id);
+            console.log('Removing tag, updated selection:', updatedTags);
+            setSelectedTags(updatedTags);
+        } else {
+            // If tag is not selected and we haven't reached the limit, add it
+            if (selectedTags.length < 10) {
+                const updatedTags = [...selectedTags, tag];
+                console.log('Adding tag, updated selection:', updatedTags);
+                setSelectedTags(updatedTags);
+            } else {
+                console.log('Tag limit reached (10)');
+                setError('You can only select up to 10 tags.');
+                setTimeout(() => setError(''), 3000); // Clear error after 3 seconds
+            }
+        }
     };
 
     const handleImageChange = (e) => {
@@ -75,6 +162,9 @@ function CustomizeProfile() {
                 delete dataToUpdate.password2;
             }
             
+            // Add selected tags to the data to update
+            dataToUpdate.tags = selectedTags.map(tag => tag._id);
+            
             const response = await fetch('http://localhost:5000/users/profile', {
                 method: 'PUT',
                 headers: {
@@ -98,6 +188,25 @@ function CustomizeProfile() {
         } finally {
             setIsLoading(false);
         }
+    };
+
+    // Render a tag with selection functionality
+    const renderTag = (tag) => {
+        if (!tag || !tag._id || !tag.name) {
+            console.warn('Invalid tag provided to renderTag:', tag);
+            return null;
+        }
+        
+        const isSelected = selectedTags.some(selectedTag => selectedTag._id === tag._id);
+        return (
+            <div 
+                key={tag._id} 
+                className={`tag ${isSelected ? 'selected' : ''}`}
+                onClick={() => handleTagSelection(tag)}
+            >
+                {tag.name}
+            </div>
+        );
     };
     
         
@@ -193,6 +302,27 @@ function CustomizeProfile() {
                                 onChange={handleTempChange} 
                             />
                         </label>
+                    </div>
+
+                    <div className="form-group tags-section">
+                        <h3>Select Your Tags (Choose up to 10)</h3>
+                        <div className="tags-counter">
+                            <span>{selectedTags.length} / 10 selected</span>
+                        </div>
+                        <div className="tags-container">
+                            {Object.keys(tagsByCategory).length > 0 ? (
+                                Object.keys(tagsByCategory).map(category => (
+                                    <div key={category} className="tag-category">
+                                        <h4>{category}</h4>
+                                        <div className="tag-group">
+                                            {tagsByCategory[category].map(tag => renderTag(tag))}
+                                        </div>
+                                    </div>
+                                ))
+                            ) : (
+                                <div className="loading-message">Loading tags or no tags available...</div>
+                            )}
+                        </div>
                     </div>
                     
                     <div className="form-group password-group">
