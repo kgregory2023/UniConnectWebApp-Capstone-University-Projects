@@ -22,6 +22,10 @@ function Register () {
 
     const navigate = useNavigate();
     
+    const validatePassword = (pwd) => {
+      const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/;
+      return regex.test(pwd);
+    }
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -30,6 +34,12 @@ function Register () {
           setError('The passwords must match');
           return;
         }
+        if(!validatePassword(password)){
+          setError('The password must have 1 digit, 1 lower case, 1 upper case, and at least 8 characters');
+          return;
+        }
+
+
 
         
 
