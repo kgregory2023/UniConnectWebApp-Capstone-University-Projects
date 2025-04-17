@@ -1,0 +1,128 @@
+const request = require("supertest");
+const express = require("express");
+const mongoose = require("mongoose");
+const ratingController = require("../controllers/ratingController");
+const ratingService = require("../services/ratingService");
+const app = require("../config/app");
+const locationRoutes = require("../routes/locationsRoutes");
+
+jest.mock("../../authMiddleware", () => (req, res, next) => {
+    req.user = { id: "mock-user-id" }; // inject test user
+    next();
+  });
+jest.mock("../services/ratingService");
+
+app.use(express.json());
+app.use("/locations", locationRoutes);
+
+describe("Rating Routes", () => {
+    let mockRating;
+    let mockUser;
+    let mockLocation;
+
+    beforeAll(() => {
+        jest.setTimeout(10000);
+
+        mockUser = {
+            _id: "mock-user-id",
+            username: "test",
+            email: "test@example.com",
+            password: "12345678" 
+        };
+
+        mockLocation = {
+            _id: new mongoose.Types.ObjectId(),
+            name: "testLocation",
+            address: "0000 test address",
+            city: "testCity"
+        }
+
+        mockRating = {
+            _id: new mongoose.Types.ObjectId(),
+            user: mockUser._id,
+            location: mockLocation._id,
+            value: 5,
+            text: "test comment"
+        };
+    });
+
+    afterAll(() => {
+        jest.restoreAllMocks();
+    });
+
+    describe("POST /locations/:locationId/ratings", () => {
+        it("should return 201 and a new created Rating", async () => {
+            ratingService.createRating.mockResolvedValue(mockRating);
+
+            const response = await request(app)
+            .post(`/locations/${mockLocation._id.toString()}/ratings`)
+            .send({
+                value: 5,
+                text: "test comment"
+            });
+
+            expect(response.status).toBe(201);
+            expect(response.body).toHaveProperty("_id");
+            expect(response.body.user).toBe(mockUser._id.toString());
+            expect(response.body.location).toBe(mockLocation._id.toString());
+            expect(response.body.value).toBe(5);
+            expect(response.body.text).toBe("test comment");
+        });
+
+        it("should return 401 if non-authorized user tries to leave a rating", async () => {
+            ratingService.createRating.mockRejectedValue(new Error("You are not authorized to do that."));
+
+            const response = await request(app)
+            .post(`/locations/${mockLocation._id.toString()}/ratings`)
+            .send({
+                value: 5,
+                text: "test comment"
+            });
+
+            expect(response.status).toBe(401);
+            expect(response.body.message).toBe("You are not authorized to do that.");
+        });
+
+        it("should return 409 if value isn't between 1-5", async () => {
+            ratingService.createRating.mockRejectedValue(new Error("Rating value must be between 1 and 5."));
+
+            const response = await request(app)
+            .post(`/locations/${mockLocation._id.toString()}/ratings`)
+            .send({
+                value: 5,
+                text: "test comment"
+            });
+
+            expect(response.status).toBe(409);
+            expect(response.body.message).toBe("Rating value must be between 1 and 5.");
+        });
+
+        it("should return 409 if comment left empty", async () => {
+            ratingService.createRating.mockRejectedValue(new Error("Comment text is a required field."));
+
+            const response = await request(app)
+            .post(`/locations/${mockLocation._id.toString()}/ratings`)
+            .send({
+                value: 5,
+                text: "test comment"
+            });
+
+            expect(response.status).toBe(409);
+            expect(response.body.message).toBe("Comment text is a required field.");
+        });
+
+        it("should return 500 if unexpected error occurs", async () => {
+            ratingService.createRating.mockRejectedValue(new Error("Database failure."));
+
+            const response = await request(app)
+            .post(`/locations/${mockLocation._id.toString()}/ratings`)
+            .send({
+                value: 5,
+                text: "test comment"
+            });
+
+            expect(response.status).toBe(500);
+            expect(response.body.message).toBe("Internal server error: Database failure.");
+        });
+    });
+});
