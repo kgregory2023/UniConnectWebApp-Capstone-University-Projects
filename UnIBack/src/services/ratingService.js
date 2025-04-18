@@ -41,7 +41,7 @@ const deleteRatingById = async (ratingId) => {
     let rating = await Rating.findByIdAndDelete(ratingId);
     if (!rating) throw new Error("Rating not found.");
 
-    return await Rating.findByIdAndDelete(ratingId);
+    return rating;
 };
 
 module.exports = {
