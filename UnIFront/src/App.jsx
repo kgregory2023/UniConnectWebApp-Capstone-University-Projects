@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { useEffect } from 'react'
+import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import ProtectedRoute from './components/protectedRoute/ProtectedRoute';
 import './App.css'  
 
@@ -18,24 +19,42 @@ import Connect from './pages/connect/Connect'
 
 import { UserProvider } from './components/userContext/UserContext';
 
-
-
-
-//This was the pre made web page, wrapped it in a function to make the actuall App function look prettier :)
 function DefaultApp() {
-  const [count, setCount] = useState(0)
 
   return (
-    <>
-      <div>
-      </div>
+    <div className="home-container">
+    <video className="background-video" autoPlay muted loop>
+    <source src="/campus.mp4" type="video/mp4" />
+      Your browser does not support the video tag.
+    </video>
+
+    <div className="home-content">
       <h1>Welcome to UnIConnect!</h1>
-    </>
-  )
+      <p>Meet. Match. Mingle.</p>
+      <a href="/register">
+        <button className="home-btn">Connect Now!</button>
+      </a>
+    </div>
+  </div>
+)
 }
 
 
 function App() {
+  const location = useLocation();
+
+  useEffect(() => {
+    const root = document.getElementById('root');
+
+    if (location.pathname === '/') {
+      document.body.style.background = 'none';
+      if (root) root.style.background = 'none';
+    } else {
+      document.body.style.background = '#2d4181';
+      if (root) root.style.background = '#2d4181';
+    }
+  }, [location.pathname]);
+
   return (
 
     <UserProvider>
@@ -55,7 +74,7 @@ function App() {
         </Routes>
     </UserProvider>
 
-  )
+  );
 }
 
 export default App
