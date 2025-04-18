@@ -18,6 +18,32 @@ const createRating = async (ratingData) => {
     return await rating.save();
 };
 
+const getAllRatings = async () => {
+    return await Rating.find();
+};
+
+const getRatingById = async (ratingId) => {
+    let rating = await Rating.findById(ratingId);
+    if (!rating) throw new Error("Rating not found.");
+
+    return rating;
+};
+
+const getRatingsByUserId = async (userId) => {
+    return await Rating.find({ user: userId });    
+};
+
+const getRatingsByLocationId = async (locationId) => {
+    return await Rating.find({ location: locationId });
+};
+
+const deleteRatingById = async (ratingId) => {
+    let rating = await Rating.findByIdAndDelete(ratingId);
+    if (!rating) throw new Error("Rating not found.");
+
+    return await Rating.findByIdAndDelete(ratingId);
+};
+
 module.exports = {
-    createRating
+    createRating, getAllRatings, getRatingById, getRatingsByUserId, getRatingsByLocationId, deleteRatingById
 }
