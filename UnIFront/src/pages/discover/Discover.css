@@ -226,6 +226,70 @@ button.secondary:hover {
   background-color: #d32f2f;
 }
 
+.ratings-list {
+  max-height: 300px; /* or whatever height you want */
+  overflow-y: auto;
+  padding-right: 4px; 
+  border: 1px solid #d4cccc; /* To visualize the container's boundaries */
+}
+
+.rating-box {
+  display: flex;
+  align-items: center;
+  
+  border: 2px solid #333 !important; 
+  border-radius: 8px;
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: #f9f9f9;
+  width: fit-content;
+  max-width: 550px;
+  width: 550px;
+  z-index: 9999;
+
+
+}
+
+.rater-name {
+  font-weight: bold;
+  margin-bottom: 4px;
+  background-color: #e0e0e0;
+  padding: 4px 8px;
+  border-radius: 4px;
+  text-align: left;
+  display: inline-block;
+  border: 1px solid #d4cccc; /* To visualize the container's boundaries */
+
+}
+
+.rating-text {
+  font-size: 14px;
+  flex-grow: 1; /* Makes it take up the rest of the row */
+  max-width: 400px;
+  display: flex;
+  align-items: center; /* Aligns the stars and text vertically */
+  
+}
+.star-rating {
+  font-size: 20px; /* Larger size for the stars */
+  margin-right: 10px; /* Space between the stars and text */
+}
+
+.delete-button {
+  background-color: #e74c3c;
+  width: 50px;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 0px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.delete-button:hover {
+  background-color: #c0392b;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .discover-container {
@@ -251,4 +315,7 @@ button.secondary:hover {
     flex-direction: column;
     gap: 0;
   }
+
+
+  
 }

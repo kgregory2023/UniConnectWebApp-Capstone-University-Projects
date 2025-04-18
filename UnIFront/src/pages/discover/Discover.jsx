@@ -39,27 +39,27 @@ function Discover() {
   const [isInfoWindowOpen, setIsInfoWindowOpen] = useState(false);
 
   // Get user context for authentication
-  const { token } = useUser();
+  const { user, token } = useUser();
 
   // Ref to maintain map instance
   const mapRef = useRef();
   const onMapLoad = useCallback((map) => {
     mapRef.current = map;
   }, []);
-  
+
   // Fetch all locations from the backend when component mounts
   useEffect(() => {
     const fetchLocations = async () => {
       try {
         setLoading(true);
         const response = await fetch('http://localhost:5000/locations');
-        
+
         if (!response.ok) {
           throw new Error(`Failed to fetch locations: ${response.status}`);
         }
-        
+
         const data = await response.json();
-        
+
         // Convert backend locations to marker format
         const backendMarkers = data.map(location => ({
           id: location._id,
@@ -72,7 +72,7 @@ function Discover() {
           time: new Date(location.createdAt),
           averageRating: location.averageRating
         }));
-        
+
         setMarkers(backendMarkers);
         setLoading(false);
       } catch (err) {
@@ -81,7 +81,8 @@ function Discover() {
         setLoading(false);
       }
     };
-    
+
+    console.log(user);
     fetchLocations();
   }, []);
 
@@ -102,11 +103,11 @@ function Discover() {
         },
         body: JSON.stringify(locationData)
       });
-      
+
       if (!response.ok) {
         throw new Error(`Failed to save location: ${response.status}`);
       }
-      
+
       const savedLocation = await response.json();
       return savedLocation;
     } catch (err) {
@@ -122,10 +123,10 @@ function Discover() {
       alert("Please enter a location name before adding a marker");
       return;
     }
-    
+
     const latitude = event.latLng.lat();
     const longitude = event.latLng.lng();
-    
+
     const locationData = {
       name: markerTitle,
       address: "N/A",
@@ -134,10 +135,10 @@ function Discover() {
       latitude: latitude.toString(),
       longitude: longitude.toString()
     };
-    
+
     // Save to backend
     const savedLocation = await saveLocationToBackend(locationData);
-    
+
     if (savedLocation) {
       const newMarker = {
         id: savedLocation._id,
@@ -147,9 +148,9 @@ function Discover() {
         time: new Date(),
         averageRating: savedLocation.averageRating || 0
       };
-      
+
       setMarkers((current) => [...current, newMarker]);
-      
+
       // Reset the input field
       setMarkerTitle("");
     }
@@ -159,9 +160,22 @@ function Discover() {
   const onMarkerClick = async (marker) => {
     try {
       //const res = await fetch(`http://localhost:5000/locations/${marker.id}/ratings`);
-      const ratings = {};
+      const ratings = [
+        {
+          user: 'mmcclure',
+          value: 5,
+          text: 'Amazing place! Loved it.',
+          createdAt: new Date().toISOString(),
+        },
+        {
+          user: 'TestUser2',
+          value: 3,
+          text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+          createdAt: new Date().toISOString(),
+        },
+      ];
       setSelected({ ...marker, ratings });
-      setIsInfoWindowOpen(false);
+      setIsInfoWindowOpen(true);
     } catch (err) {
       console.error('Failed to load ratings:', err);
     }
@@ -174,35 +188,69 @@ function Discover() {
       return;
     }
 
-    try{
-    const response = await fetch(`http://localhost:5000/locations/${locationId}/ratings`, {
-      method: 'POST',
-      headers: {
+    try {
+      const response = await fetch(`http://localhost:5000/locations/${locationId}/ratings`, {
+        method: 'POST',
+        headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`, 
-      },
-      body: JSON.stringify({
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({
           "value": parseInt(rating),
-          "text": comment, 
-      }),
-    });
-   
-    if (!response.ok) {
-      const contentType = response.headers.get("content-type");
-      console.log("Content-Type:", contentType);
-      
-      const text = await response.text();
-      console.log("Raw response text:", text);
-      
-      throw new Error('Failed to submit rating');
-    }
+          "text": comment,
+        }),
+      });
 
-    setRating('');
-    setComment('');
-  } catch (error) {
-    console.error(error);
+      if (!response.ok) {
+        const contentType = response.headers.get("content-type");
+        console.log("Content-Type:", contentType);
+
+        const text = await response.text();
+        console.log("Raw response text:", text);
+
+        throw new Error('Failed to submit rating');
+      }
+
+      setRating('');
+      setComment('');
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const deleteLocation = async (locationId) => {
+
+  };
+
+  const deleteRating = async (ratingId) => {
+    console.log(`Deleting location with id: ${ratingId}`);
+
+    // try {
+    //   const response = await fetch(`http://localhost:5000/locations/${locationId}/ratings`, {
+    //     method: 'DELETE',
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //       'Authorization': `Bearer ${token}`,
+    //     },
+    //     body: JSON.stringify({
+    //       "value": parseInt(rating),
+    //       "text": comment,
+    //     }),
+    //   });
+
+    //   if (!response.ok) {
+    //     const contentType = response.headers.get("content-type");
+    //     console.log("Content-Type:", contentType);
+
+    //     const text = await response.text();
+    //     console.log("Raw response text:", text);
+
+    //     throw new Error('Failed to submit rating');
+    //   }
+    // } catch (error) {
+    //   console.error(error);
+    // }
+    console.log(user.id);
   }
-};
 
 
 
@@ -237,7 +285,7 @@ function Discover() {
           center={center}
           options={{
             ...options,
-            gestureHandling: isInfoWindowOpen ? 'none' : 'auto', // Disable map interaction when info window is open
+            //gestureHandling: isInfoWindowOpen ? 'none' : 'auto', // Disable map interaction when info window is open
           }}
           onClick={onMapClick}
           onLoad={onMapLoad}
@@ -268,23 +316,40 @@ function Discover() {
             >
               <div className="info-window">
                 <h2>{selected.title}</h2>
-                <p>Coordinates: ({selected.lat.toFixed(6)}, {selected.lng.toFixed(6)})</p>
                 <p>Added: {selected.time.toLocaleString()}</p>
+                <h3 style={{ fontSize: '30px', fontStyle: 'bold' }}>Ratings:</h3>
 
                 <div className="ratings-list">
-                  <h4>Ratings:</h4>
+
                   {selected.ratings?.length ? (
                     selected.ratings.map((r, i) => (
+
                       <div key={i}>
-                        ⭐ {r.rating} - {r.comment || 'No comment'}
+                        <div className="rating-box">
+                          <div className="rater-name">{r.user || 'Anonymous'}</div>
+                          <div className="rating-text">
+                            <div className="star-rating">⭐<p>{r.value}</p></div>
+                            {r.text || 'No comment'}
+                          </div>
+
+                          {user && r.user === user.username && (
+                            <button className="delete-button" onClick={() => deleteRating(r.id)}>
+                              🗑️
+                            </button>
+                          )}
+
+
+                        </div>
                       </div>
+
                     ))
                   ) : (
                     <p>No ratings yet.</p>
                   )}
                 </div>
 
-                {/* New Rating Form */}
+                {/* New Rating Form, only if user */}
+                {user && (
                 <div className="add-rating-form">
                   <label>
                     Your Rating:
@@ -300,7 +365,7 @@ function Discover() {
                   />
                   <button onClick={() => submitRating(selected.id)}>Submit</button>
                 </div>
-
+              )}
               </div>
             </InfoWindow>
           )}
@@ -317,7 +382,7 @@ function Discover() {
               <li
                 key={index}
                 onClick={() => {
-                  setSelected(marker);
+                  onMarkerClick(marker);
                   panTo({ lat: marker.lat, lng: marker.lng });
                 }}
               >
