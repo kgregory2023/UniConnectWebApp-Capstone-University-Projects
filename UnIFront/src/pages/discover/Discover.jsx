@@ -82,7 +82,6 @@ function Discover() {
       }
     };
 
-    console.log(user);
     fetchLocations();
   }, []);
 
@@ -162,12 +161,14 @@ function Discover() {
       //const res = await fetch(`http://localhost:5000/locations/${marker.id}/ratings`);
       const ratings = [
         {
+          _id: 1,
           user: 'mmcclure',
           value: 5,
           text: 'Amazing place! Loved it.',
           createdAt: new Date().toISOString(),
         },
         {
+          _id: 2,
           user: 'TestUser2',
           value: 3,
           text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
@@ -218,11 +219,30 @@ function Discover() {
     }
   };
   const deleteLocation = async (locationId) => {
+    try {
+      const response = await fetch(`http://localhost:5000/locations/${locationId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+      });
 
+      if (!response.ok) {
+        throw new Error('Failed to delete Location');
+      }
+    } catch (error) {
+      console.error(error);
+    }
+
+    setMarkers((current) => current.filter(marker => marker.id !== locationId));
+
+    setSelected(null);
+    setIsInfoWindowOpen(false);
   };
 
   const deleteRating = async (ratingId) => {
-    console.log(`Deleting location with id: ${ratingId}`);
+    console.log(`Deleting rating with id: ${ratingId}`);
 
     // try {
     //   const response = await fetch(`http://localhost:5000/locations/${locationId}/ratings`, {
@@ -231,10 +251,6 @@ function Discover() {
     //       'Content-Type': 'application/json',
     //       'Authorization': `Bearer ${token}`,
     //     },
-    //     body: JSON.stringify({
-    //       "value": parseInt(rating),
-    //       "text": comment,
-    //     }),
     //   });
 
     //   if (!response.ok) {
@@ -249,7 +265,8 @@ function Discover() {
     // } catch (error) {
     //   console.error(error);
     // }
-    console.log(user.id);
+
+    console.log(user._id);
   }
 
 
@@ -315,7 +332,15 @@ function Discover() {
               }}
             >
               <div className="info-window">
-                <h2>{selected.title}</h2>
+                <div className="info-header">
+                  <h2>{selected.title}</h2>
+                  {user && (
+                  <button className="delete-button" onClick={() => deleteLocation(selected.id)}>
+                    🗑️
+                  </button>
+                )}
+                </div>
+                
                 <p>Added: {selected.time.toLocaleString()}</p>
                 <h3 style={{ fontSize: '30px', fontStyle: 'bold' }}>Ratings:</h3>
 
@@ -333,7 +358,7 @@ function Discover() {
                           </div>
 
                           {user && r.user === user.username && (
-                            <button className="delete-button" onClick={() => deleteRating(r.id)}>
+                            <button className="delete-button" onClick={() => deleteRating(r._id)}>
                               🗑️
                             </button>
                           )}
