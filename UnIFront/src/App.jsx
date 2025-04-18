@@ -31,6 +31,8 @@ function DefaultApp() {
     <div className="home-content">
       <h1>Welcome to UnIConnect!</h1>
       <p>Meet. Match. Mingle.</p>
+      <p className="built-by-tag">👨‍🎓 Built for students, by students.</p>
+      <p>✅ Trusted by over <strong>14,000+ students</strong> at UWF</p>  
       <a href="/register">
         <button className="home-btn">Connect Now!</button>
       </a>
