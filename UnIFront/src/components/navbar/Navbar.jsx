@@ -15,34 +15,37 @@ let Navbar = () => {
         logout();
         navigate('/');
     };
-
+    
     return (
         <nav className="navbar">
             <ul style={{ display: 'flex', justifyContent: 'space-evenly', width: '100%' }}>
+                <li className="navbar-logo">
+            <img src="/uniconnect.png" alt="UniConnect"  />
+                </li>
                 <li>
                     <Link to="/" className="navbar-item">
-                        Home
+                         HOME 🏠
                     </Link>
                 </li>
                 <li>
                     <Link to="/connect" className="navbar-item">
-                        Connect
+                        CONNECT 🤝🏻
                     </Link>
                 </li>
                 <li>
                     <Link to="/discover" className="navbar-item">
-                        Discover
+                        DISCOVER 🔎
                     </Link>
                 </li>
                 <li>
                     <Link to="/about" className="navbar-item">
-                        About
+                        ABOUT ℹ️
                     </Link>
                 </li>
                 {(!user) ? (
                     <li>
                         <Link to="/login" className="navbar-item">
-                            Log In
+                            LOG IN 🔓
                         </Link>
                     </li>
                 ) : (
