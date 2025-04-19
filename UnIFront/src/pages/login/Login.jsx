@@ -61,7 +61,7 @@ function Login() {
   }
 
   return (
-    <div>
+    <div className="login-page">
       <h1>
         Log in
       </h1>
