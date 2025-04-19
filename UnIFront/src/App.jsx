@@ -21,8 +21,7 @@ import { UserProvider } from './components/userContext/UserContext';
 
 const videoList = [
   '/campus.mp4',
-  '/campus2.mp4',
-  '/campus3.mp4'
+  '/campus2.mp4'
 ];
 
 function DefaultApp() {
