@@ -133,6 +133,60 @@ body {
     box-sizing: border-box;
 }
 
+/* Tags styling for profile page */
+.profile-tags-section {
+    width: 100%;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.profile-tags-section h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 18px;
+    color: #ffffff;
+    text-align: center;
+}
+
+.profile-tags-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    padding: 10px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Tag styling */
+.tag {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #4a5d9b;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 30px;
+    font-size: 14px;
+    cursor: default;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    margin: 2px;
+}
+
+/* Loading tags indicator */
+.loading-tags {
+    font-size: 14px;
+    color: #b8c0e0;
+    margin: 10px 0;
+    font-style: italic;
+}
+
 /* Bio container specific styles */
 .profileForm div:nth-child(3) {
     display: block;
