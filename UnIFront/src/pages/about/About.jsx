@@ -7,8 +7,7 @@ import './About.css'
 
 function About() {
     return (
-        <>
-            <div>
+        <div className="about-page">
                 <h1>
                     About UNI Connect
                 </h1>
@@ -36,10 +35,8 @@ function About() {
                         <li>Kieren Gregory (Security Lead)</li>
                     </ul>
                 </div>
+                </div>
 
-            </div>
-
-        </>
     )
 }
 
