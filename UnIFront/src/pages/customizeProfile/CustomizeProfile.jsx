@@ -211,6 +211,7 @@ function CustomizeProfile() {
     
         
     return (
+        <div className="customize-profile-page">
         <div className="profile-customization">
             <h1>~ Customize Your Profile ~</h1>
             
@@ -356,6 +357,7 @@ function CustomizeProfile() {
                     </div>
                 </form>
             </div>
+        </div>
         </div>
     );
 }

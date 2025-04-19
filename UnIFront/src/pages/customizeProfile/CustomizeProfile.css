@@ -1,11 +1,8 @@
-body {
+.customize-profile-page {
+    padding-top: 80px; 
     text-align: center;
-    line-height: 1.5;
-    background-color: #2d4181;
     color: white;
-    font-family: Arial, sans-serif;
-}
-
+  }
 .profile-customization {
     display: flex;
     flex-direction: column;
