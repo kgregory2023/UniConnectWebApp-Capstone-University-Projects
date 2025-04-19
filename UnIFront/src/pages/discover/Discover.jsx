@@ -204,8 +204,6 @@ function Discover() {
   }
 };
 
-
-
   // Handle loading and error states
   if (loadError) return <div className="error-message">Error loading maps</div>;
   if (!isLoaded) return <div className="loading-message">Loading maps...</div>;
