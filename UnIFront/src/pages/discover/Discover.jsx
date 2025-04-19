@@ -157,30 +157,60 @@ function Discover() {
 
   // on a marker click, we need to grab the ratings as well, which would be in the back end.
   const onMarkerClick = async (marker) => {
+    let ratings = [];
+    console.log(marker.id);
     try {
-      //const res = await fetch(`http://localhost:5000/locations/${marker.id}/ratings`);
-      const ratings = [
-        {
-          _id: 1,
-          user: 'mmcclure',
-          value: 5,
-          text: 'Amazing place! Loved it.',
-          createdAt: new Date().toISOString(),
+      const response = await fetch(`http://localhost:5000/locations/${marker.id}/ratings/location/${marker.id}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
         },
-        {
-          _id: 2,
-          user: 'TestUser2',
-          value: 3,
-          text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-          createdAt: new Date().toISOString(),
-        },
-      ];
-      setSelected({ ...marker, ratings });
+      });
+      ratings = await response.json()
+      console.log(ratings);
+
+      // Fetch user info for each rating
+      const ratingsWithUsers = await Promise.all(ratings.map(async (rating) => {
+        try {
+          const userResponse = await fetch(`http://localhost:5000/users/profile/${rating.userId}`, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`,
+            },
+          });
+
+          if (!userResponse.ok) {
+            throw new Error(`User fetch failed for ID: ${rating.userId}`);
+          }
+
+          const user = await userResponse.json();
+          return {
+            ...rating,
+            user, // attach full user info
+          };
+        } catch (err) {
+          console.error(`Error fetching user ${rating.userId}:`, err);
+          return {
+            ...rating,
+            user: { username: 'Unknown' }, // fallback
+          };
+        }
+      }));
+
+
+      setSelected({ ...marker, ratings: ratings || [] });
       setIsInfoWindowOpen(true);
+
+
     } catch (err) {
       console.error('Failed to load ratings:', err);
     }
+
   };
+
+
 
   const submitRating = async (locationId) => {
     console.log('Submitting rating for location:', locationId);
@@ -244,27 +274,27 @@ function Discover() {
   const deleteRating = async (ratingId) => {
     console.log(`Deleting rating with id: ${ratingId}`);
 
-    // try {
-    //   const response = await fetch(`http://localhost:5000/locations/${locationId}/ratings`, {
-    //     method: 'DELETE',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //       'Authorization': `Bearer ${token}`,
-    //     },
-    //   });
+    try {
+      const response = await fetch(`http://localhost:5000/locations/${locationId}/ratings/${ratingId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+      });
 
-    //   if (!response.ok) {
-    //     const contentType = response.headers.get("content-type");
-    //     console.log("Content-Type:", contentType);
+      if (!response.ok) {
+        const contentType = response.headers.get("content-type");
+        console.log("Content-Type:", contentType);
 
-    //     const text = await response.text();
-    //     console.log("Raw response text:", text);
+        const text = await response.text();
+        console.log("Raw response text:", text);
 
-    //     throw new Error('Failed to submit rating');
-    //   }
-    // } catch (error) {
-    //   console.error(error);
-    // }
+        throw new Error('Failed to submit rating');
+      }
+    } catch (error) {
+      console.error(error);
+    }
 
     console.log(user._id);
   }
@@ -335,12 +365,12 @@ function Discover() {
                 <div className="info-header">
                   <h2>{selected.title}</h2>
                   {user && (
-                  <button className="delete-button" onClick={() => deleteLocation(selected.id)}>
-                    🗑️
-                  </button>
-                )}
+                    <button className="delete-button" onClick={() => deleteLocation(selected.id)}>
+                      🗑️
+                    </button>
+                  )}
                 </div>
-                
+
                 <p>Added: {selected.time.toLocaleString()}</p>
                 <h3 style={{ fontSize: '30px', fontStyle: 'bold' }}>Ratings:</h3>
 
@@ -375,22 +405,22 @@ function Discover() {
 
                 {/* New Rating Form, only if user */}
                 {user && (
-                <div className="add-rating-form">
-                  <label>
-                    Your Rating:
-                    <select value={rating} onChange={(e) => setRating(e.target.value)}>
-                      <option value="">Select</option>
-                      {[1, 2, 3, 4, 5].map(n => <option key={n} value={n}>{n}</option>)}
-                    </select>
-                  </label>
-                  <textarea
-                    value={comment}
-                    onChange={(e) => setComment(e.target.value)}
-                    placeholder="Leave a comment (optional)"
-                  />
-                  <button onClick={() => submitRating(selected.id)}>Submit</button>
-                </div>
-              )}
+                  <div className="add-rating-form">
+                    <label>
+                      Your Rating:
+                      <select value={rating} onChange={(e) => setRating(e.target.value)}>
+                        <option value="">Select</option>
+                        {[1, 2, 3, 4, 5].map(n => <option key={n} value={n}>{n}</option>)}
+                      </select>
+                    </label>
+                    <textarea
+                      value={comment}
+                      onChange={(e) => setComment(e.target.value)}
+                      placeholder="Leave a comment (optional)"
+                    />
+                    <button onClick={() => submitRating(selected.id)}>Submit</button>
+                  </div>
+                )}
               </div>
             </InfoWindow>
           )}
