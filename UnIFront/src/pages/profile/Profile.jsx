@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { useUser } from '../../components/userContext/UserContext'; 
@@ -7,9 +7,50 @@ import './Profile.css';
 function Profile() {
     const navigate = useNavigate();
     const { user, token, logout } = useUser();
+    const [tagDetails, setTagDetails] = useState([]);
+    const [isLoadingTags, setIsLoadingTags] = useState(false);
 
-    console.log(user);
-    console.log(token);
+    // Fetch tag details if needed
+    useEffect(() => {
+        if (user?.tags && user.tags.length > 0) {
+            // If tags are already objects with name property, use them directly
+            if (typeof user.tags[0] === 'object' && user.tags[0].name) {
+                setTagDetails(user.tags);
+                return;
+            }
+
+            // Otherwise, fetch tag details
+            const fetchTagDetails = async () => {
+                setIsLoadingTags(true);
+                try {
+                    const response = await fetch('http://localhost:5000/profile/tags', {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`Failed to fetch tags: ${response.status}`);
+                    }
+
+                    const allTags = await response.json();
+                    
+                    // Filter to only include user's tags
+                    const userTagsWithDetails = allTags.filter(tag => 
+                        user.tags.includes(tag._id)
+                    );
+                    
+                    setTagDetails(userTagsWithDetails);
+                } catch (error) {
+                    console.error('Error fetching tag details:', error);
+                } finally {
+                    setIsLoadingTags(false);
+                }
+            };
+
+            fetchTagDetails();
+        }
+    }, [user, token]);
 
     const handleCustomize = (event) => {
         event.preventDefault();
@@ -88,6 +129,25 @@ function Profile() {
                     <div>
                         <span className="bio-text">{user?.bio}</span>
                     </div>
+                    
+                    {/* Tags section */}
+                    {tagDetails.length > 0 && (
+                        <div className="profile-tags-section">
+                            <h3>Tags</h3>
+                            <div className="profile-tags-container">
+                                {tagDetails.map(tag => (
+                                    <div key={tag._id} className="tag">
+                                        {tag.name}
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+                    
+                    {isLoadingTags && (
+                        <div className="loading-tags">Loading tags...</div>
+                    )}
+                    
                     <button type="submit" className='submitButton'>Customize Profile</button>
                 </form>
                 <button className='deleteButton' onClick={handleDelete}> Delete Profile? </button>
