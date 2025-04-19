@@ -82,6 +82,7 @@ function Discover() {
       }
     };
 
+
     fetchLocations();
   }, []);
 
@@ -242,12 +243,21 @@ function Discover() {
         throw new Error('Failed to submit rating');
       }
 
+      const newRating = await response.json();
+
+      setSelected(prev => ({
+        ...prev,
+        ratings: [...prev.ratings, { ...newRating }],
+      }));
+
+
       setRating('');
       setComment('');
     } catch (error) {
       console.error(error);
     }
   };
+
   const deleteLocation = async (locationId) => {
     try {
       const response = await fetch(`http://localhost:5000/locations/${locationId}`, {
@@ -265,15 +275,15 @@ function Discover() {
       console.error(error);
     }
 
-    setMarkers((current) => current.filter(marker => marker.id !== locationId));
+    setMarkers(prev => prev.filter(loc => loc.id !== locationId));
 
     setSelected(null);
     setIsInfoWindowOpen(false);
   };
 
-  const deleteRating = async (ratingId) => {
-    console.log(`Deleting rating with id: ${ratingId}`);
-
+  const deleteRating = async (locationId, ratingId) => {
+    // console.log(`Deleting rating with id: ${ratingId}`);
+    // console.log(`Deleting rating from location with id: ${locationId}`);
     try {
       const response = await fetch(`http://localhost:5000/locations/${locationId}/ratings/${ratingId}`, {
         method: 'DELETE',
@@ -296,7 +306,12 @@ function Discover() {
       console.error(error);
     }
 
-    console.log(user._id);
+    setSelected(prev => ({
+      ...prev,
+      ratings: prev.ratings.filter(r => r._id !== ratingId)
+    }));
+
+
   }
 
 
@@ -387,8 +402,8 @@ function Discover() {
                             {r.text || 'No comment'}
                           </div>
 
-                          {user && r.user === user.username && (
-                            <button className="delete-button" onClick={() => deleteRating(r._id)}>
+                          {user && r.user === user._id && (
+                            <button className="delete-button" onClick={() => deleteRating(selected.id, r._id)}>
                               🗑️
                             </button>
                           )}
