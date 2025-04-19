@@ -7,9 +7,15 @@ body {
 }
 
 .discover-container {
+  position:absolute;
+  left: 30%;
   max-width: none;
-  width: 150%;
-  margin: 80px auto 20px;
+  min-height: 100vh;
+  display:flex;
+  overflow: auto;
+  flex-direction: column;
+  width: 40%;
+  margin: 40px auto 20px;
   padding: 20px;
   font-family: Arial, sans-serif;
   background-color: #1a2b5d;
@@ -19,7 +25,8 @@ body {
 }
 
 .discover-container h1 {
-  margin-bottom: 20px;
+  margin-bottom: 15px;
+  top: 0;
   color: #ffffff;
   text-align: center;
   font-size: 28px;
@@ -78,6 +85,7 @@ body {
   overflow: hidden;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   margin-bottom: 20px;
+  max-height: 50%;
   border: 2px solid #5a6caa;
 }
 
