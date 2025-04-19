@@ -1,8 +1,15 @@
+
 .login-page {
-    padding-top: 80px; 
-    text-align: center;
+    min-height: 100vh;
+    background-image: url('/background.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     color: white;
-    background-color: #2d4181;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 60px;
   }
 
 h1 {
