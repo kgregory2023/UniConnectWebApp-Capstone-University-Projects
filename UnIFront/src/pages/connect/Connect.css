@@ -17,9 +17,6 @@ body {
     justify-content: space-between;
     align-items: center;
     padding: 20px;
-    position: absolute;
-    top: 10%;
-    left: 25%;
 }
 
 .swipe-section {
