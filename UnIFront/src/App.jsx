@@ -35,7 +35,7 @@ function DefaultApp() {
   return (
     <div className="home-container">
     <video
-        key={videoList[currentVideoIndex]} // 🔁 re-renders on change
+        key={videoList[currentVideoIndex]} // re-renders on change
         className="background-video"
         autoPlay
         muted
