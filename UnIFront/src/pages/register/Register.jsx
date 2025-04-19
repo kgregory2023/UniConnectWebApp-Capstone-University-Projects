@@ -84,8 +84,9 @@ function Register () {
   }
 
   return (
-    <div className="page-wrapper"> 
-      <h1 style={{ marginBottom: '20px' }}>
+    <div className="register-page">
+    <div className="register-wrapper"> 
+      <h1 style={{ marginBottom: '60px' }}>
         Register
       </h1>
   
@@ -165,6 +166,7 @@ function Register () {
           <Link to="/login">Already have an account? Click here</Link>
         </div>
       </form>
+    </div>
     </div>
   );
 }
