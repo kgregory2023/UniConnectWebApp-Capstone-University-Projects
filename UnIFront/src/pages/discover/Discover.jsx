@@ -168,11 +168,41 @@ function Discover() {
   };
 
   const submitRating = async (locationId) => {
+    console.log('Submitting rating for location:', locationId);
     if (!rating) {
       alert("please elect a rating before submitting.");
       return;
     }
+
+    try{
+    const response = await fetch(`http://localhost:5000/locations/${locationId}/ratings`, {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`, 
+      },
+      body: JSON.stringify({
+          "value": parseInt(rating),
+          "text": comment, 
+      }),
+    });
+   
+    if (!response.ok) {
+      const contentType = response.headers.get("content-type");
+      console.log("Content-Type:", contentType);
+      
+      const text = await response.text();
+      console.log("Raw response text:", text);
+      
+      throw new Error('Failed to submit rating');
+    }
+
+    setRating('');
+    setComment('');
+  } catch (error) {
+    console.error(error);
   }
+};
 
 
 

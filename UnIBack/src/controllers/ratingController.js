@@ -2,9 +2,13 @@ const ratingService = require("../services/ratingService");
 
 exports.createRating = async (req, res) => {
     try {
+            
             const userId = req.user.id;
             const locationId = req.params.locationId; // /locations/:locationId/ratings is what the route will look like
             const { value, text } = req.body;
+
+            console.log(req.params);
+            console.log("Rating submitted for location:", locationId);
 
             const rating = await ratingService.createRating({
                 user: userId,

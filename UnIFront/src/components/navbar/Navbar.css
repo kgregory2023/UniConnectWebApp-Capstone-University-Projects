@@ -17,15 +17,40 @@
     justify-content: center;
     overflow: hidden;
     display: flex;
+    font-family: 'Quicksand'
 }
+
+.navbar-logo {
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    height: 60px; /* match navbar height */
+  }
+
+.navbar-logo img {
+    object-fit: contain;
+    max-height: 150%;
+  }
 .navbar-item{
-    color: rgb(0, 0, 0);
-    padding: 20px 80px;
-    display: block;
-    text-align: center;
-    float:left
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: white;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+  -webkit-text-stroke: 0.5px black; 
+  font-family: 'Quicksand', sans-serif;
+  padding: 20px 60px;
+  display: block;
+  text-align: center;
+  transition: all 0.2s ease-in-out;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  -webkit-font-smoothing: antialiased;
 }
 .navbar-item:hover{
     color:rgb(255, 255, 255);
-    background-color:#89d48e;
+    background-color: #6fdc88;
+    transform: scale(1.05);
+    transition: transform 0.2s ease-in-out;
+    transform: scale(1.05);
+    
 }
