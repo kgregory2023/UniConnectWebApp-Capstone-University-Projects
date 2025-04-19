@@ -99,6 +99,8 @@ function Profile() {
     };
 
     return (
+        <div className="profile-page">
+
         <div className='profile'>
             <h1>{user?.username}</h1>
             
@@ -117,6 +119,7 @@ function Profile() {
                             </div>
                         )}
                     </div>
+                </div>
                 </div>
                 
                 <form onSubmit={handleCustomize} className='profileForm'>
