@@ -44,13 +44,15 @@
   text-shadow: 0 1px 1px rgba(255, 255, 255, 0.1);
   -webkit-text-stroke: 0.5px black; 
   font-family: 'Quicksand', sans-serif;
-  padding: 20px 60px;
   display: block;
   text-align: center;
   transition: all 0.2s ease-in-out;
   letter-spacing: 0.5px;
   text-transform: uppercase;
   -webkit-font-smoothing: antialiased;
+  padding: 10px 20px;
+  border-radius: 12px;
+  transition: all 0.25s ease-in-out;
 }
 .navbar-item:hover{
     color:rgb(255, 255, 255);
@@ -58,5 +60,8 @@
     transform: scale(1.05);
     transition: transform 0.2s ease-in-out;
     transform: scale(1.05);
+    background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     
 }
