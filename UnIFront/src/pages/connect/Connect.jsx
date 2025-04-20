@@ -114,22 +114,6 @@ function Connect() {
         fetchSwipeUsers(0);   // Reset attempt count
     };
 
-    const makeTag = async () =>{
-        try{
-        const response = await fetch("http://localhost:5000/profile/profile/tags", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`, // Auth token is included in headers
-            },
-            body: JSON.stringify({ name: "Computer Science", category: "Hobbies", isPredefined: true }),
-        });
-    } catch (err) {
-        console.error("Error creating tag:", err);
-      }
-    
-    };
-
     return (
 
         <div className="connect">
