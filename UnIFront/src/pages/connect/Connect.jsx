@@ -131,9 +131,9 @@ function Connect() {
     };
 
     return (
-
+<div className="connect-wrapper">
         <div className="connect">
-            <h1 className="padding-70">Connect</h1>
+        <h1 className="connect-heading">Connect</h1>
 
 
             <div className="connect-layout">
@@ -210,6 +210,7 @@ function Connect() {
                 </div>
             </div>
 
+        </div>
         </div>
     );
 }
