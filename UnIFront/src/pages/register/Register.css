@@ -108,17 +108,18 @@ label{
 .fancy-select {
     border: 2px solid #5a6caa;
     width:100%;
-    height: 60%;
+    height: 30%;
     padding: 10px;
     border-radius: 5px;
     font-size: 18px;
     background: rgba(255, 255, 255, 0.2);
     backdrop-filter: blur(6px);
-    color: white;
+    color: rgb(0, 0, 0);
     border: 1px solid rgba(255, 255, 255, 0.3);
     transition: border-color 0.3s ease;
     box-shadow: 0 2px 8px rgba(0,0,0,0.2);
     transition: box-shadow 0.3s ease;
+    padding-bottom:
 }
 
 .fancy-select:hover {
