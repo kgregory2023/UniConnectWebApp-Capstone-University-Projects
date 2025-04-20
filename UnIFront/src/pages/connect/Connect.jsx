@@ -120,9 +120,9 @@ function Connect() {
     };
 
     return (
-
+<div className="connect-wrapper">
         <div className="connect">
-            <h1 className="padding-70">Connect</h1>
+        <h1 className="connect-heading">Connect</h1>
 
 
             <div className="connect-layout">
@@ -132,6 +132,7 @@ function Connect() {
                         //Is loading
                         <div className="card-stack">Finding users...</div>
                     ) : (
+                        <div className="card-stack fade-in">
                         <div className="card-stack">
                             {cards.length > 0 ? (
                                 cards.map((card, index) => (
@@ -139,6 +140,7 @@ function Connect() {
                                         key={card.id}
                                         card={card}
                                         onSwipe={handleSwipe}
+                                        isTopCard={index === 0}
                                         style={{
                                             position: 'absolute',
                                             zIndex: cards.length - index,
@@ -165,12 +167,13 @@ function Connect() {
                                 </div> 
                             )}
                         </div>
+                        </div>
                     )}
 
                         <div className="swipe-icon green-check">✔</div>
 
                     </div>
-
+                        
                 <div className="contact-stack">
                     <h3>Contacts</h3>
                     {likedUsers.length > 0 ? (
@@ -199,6 +202,7 @@ function Connect() {
                 </div>
             </div>
 
+        </div>
         </div>
     );
 }

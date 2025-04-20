@@ -1,21 +1,18 @@
-body {
-  text-align: center;
-  line-height: 1.5;
-  background-color: #2d4181;
-  color: white;
-  font-family: Arial, sans-serif;
-}
 
 .discover-container {
-  max-width: none;
-  width: 150%;
-  margin: 80px auto 20px;
-  padding: 20px;
-  font-family: Arial, sans-serif;
-  background-color: #1a2b5d;
-  border-radius: 10px;
-  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+  padding-top: 80px;
+  padding-inline: 20px;
+  text-align: center;
   color: white;
+  background-image: url('/background.png'); 
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding-top: 80px;
+  color: white;
+  min-height: 100vh;
+  box-sizing: border-box;
+  overflow-x: hidden;
 }
 
 .discover-container h1 {
@@ -28,10 +25,12 @@ body {
 .map-controls {
   margin-bottom: 20px;
   padding: 15px;
-  background-color: #3a4c8a;
-  border: 2px solid #5a6caa;
+  background: rgba(255, 255, 255, 0.1);;
   border-radius: 10px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
 }
 
 .input-group {
@@ -68,7 +67,7 @@ body {
 
 .instructions {
   margin: 10px 0 0;
-  color: #b8c0e0;
+  color: #00020a;
   font-style: italic;
   text-align: center;
 }
@@ -78,7 +77,7 @@ body {
   overflow: hidden;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   margin-bottom: 20px;
-  border: 2px solid #5a6caa;
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .error-message {
@@ -132,7 +131,7 @@ body {
 }
 
 .add-rating-form label{
-  color : #000000;
+  background: rgba(255, 255, 255, 0.1);;
   margin-left: 30%;
 }
 
@@ -144,17 +143,22 @@ body {
 }
 
 .locations-list {
-  background-color: #3a4c8a;
+  background: rgba(255, 255, 255, 0.1);
   padding: 15px;
-  border: 2px solid #5a6caa;
+  color: #2196f3;
   border-radius: 10px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
 }
 
 .locations-list h2 {
   margin-top: 0;
   padding-bottom: 10px;
-  border-bottom: 1px solid #5a6caa;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+
   color: #ffffff;
 }
 
@@ -166,15 +170,16 @@ body {
 
 .locations-list li {
   padding: 10px;
-  border-bottom: 1px solid #5a6caa;
   cursor: pointer;
   transition: background-color 0.2s;
+  backdrop-filter: blur(8px);
   display: flex;
   flex-direction: column;
 }
 
 .locations-list li:hover {
-  background-color: #4a5d9b;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
 }
 
 .locations-list li:last-child {

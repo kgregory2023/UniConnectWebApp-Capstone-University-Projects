@@ -1,19 +1,20 @@
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #17161f;
-
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
-  padding-top: 60px; 
+  line-height: 1.5;
+  font-weight: 400;
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #17161f;
 }
+
+*, *::before, *::after {
+  box-sizing: inherit;
+}
+
 
 a {
   font-weight: 500;
@@ -26,7 +27,7 @@ a:hover {
 
 body {
   margin: 0;
-  display: flex;
+  display: block;
   min-width: 320px;
   min-height: 100vh;
   z-index: 0;
@@ -77,4 +78,17 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+}
+
+/* Small but fun global button animation */
+
+button {
+  transition: all 0.3s ease;
+  transform: translateY(0);
+}
+
+button:hover {
+  background-color: #3d9c40;
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }

@@ -19,14 +19,31 @@ import Connect from './pages/connect/Connect'
 
 import { UserProvider } from './components/userContext/UserContext';
 
+const videoList = [
+  '/campus.mp4',
+  '/campus2.mp4'
+];
+
 function DefaultApp() {
+
+  const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
+
+  const handleVideoEnd = () => {
+    setCurrentVideoIndex((prev) => (prev + 1) % videoList.length);
+  };
 
   return (
     <div className="home-container">
-    <video className="background-video" autoPlay muted loop>
-    <source src="/campus.mp4" type="video/mp4" />
-      Your browser does not support the video tag.
-    </video>
+    <video
+        key={videoList[currentVideoIndex]} // re-renders on change
+        className="background-video"
+        autoPlay
+        muted
+        onEnded={handleVideoEnd}
+      >
+        <source src={videoList[currentVideoIndex]} type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
 
     <div className="home-content">
       <h1>Welcome to UnIConnect!</h1>

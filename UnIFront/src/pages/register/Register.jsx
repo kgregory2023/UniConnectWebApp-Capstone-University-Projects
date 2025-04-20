@@ -23,7 +23,7 @@ function Register () {
     const navigate = useNavigate();
     
     const validatePassword = (pwd) => {
-      const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/;
+      const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
       return regex.test(pwd);
     }
 
@@ -38,10 +38,6 @@ function Register () {
           setError('The password must have 1 digit, 1 lower case, 1 upper case, and at least 8 characters');
           return;
         }
-
-
-
-        
 
         setError('');
         setIsLoading(true);
@@ -87,99 +83,93 @@ function Register () {
 
   }
 
-    return (
+  return (
+    <div className="register-page">
+    <div className="register-wrapper"> 
+      
+    <h1 className="stroked-text">
+      REGISTER
+      </h1>
+  
+      <form onSubmit={handleSubmit} className='registerForm'>
         <div>
-            <h1 style={{ marginBottom: '20px'}}>
-                Register
-            </h1>
-        <form onSubmit={handleSubmit}  className = 'registerForm'>
-
-          {/* Email field */}
-          <div>
-            <label htmlFor="email">Email:</label>
-            <input
-              className='fancy-input'
-              type="text"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="aaa@students.uwf.edu"
-              required
-            />
-          </div>
-
-
-          {/* Username field */}
-          <div>
-            <label htmlFor="username">Username:</label>
-            <input
-              className='fancy-input'
-              type="text"
-              id="username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              placeholder="enter your username"
-              required
-            />
-          </div>
-
-          {/* Dropdown School field */}
-          <div>
-            <label htmlFor="uni">Select a school:</label>
-            <select
-                id="uni"
-                value={uni}
-                onChange={(e) => setUni(e.target.value)}
-                className="fancy-select"
-                required
-            >
-                <option value="UWF">University of West Florida</option>
-                <option value="OTHER">Other</option>
-            </select>
-          </div>
-
-
-          {/* Password field */}
-          <div>
-            <label htmlFor="password">Password:</label> 
-            <input
-              className='fancy-input'
-              type="password"
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="enter your password"
-              required
-            />
-          </div>
-
-             {/* Password2 field */}
-            <div>
-            <label htmlFor="password2">Re-enter your Password:</label> 
-            <input
-              className='fancy-input'
-              type="password"
-              id="password2"
-              value={password2}
-              onChange={(e) => setPassword2(e.target.value)}
-              required
-            />
-          </div>
-        {/* conditionally only shows the error message if there even is one. */}
-        {error && <div className="error-message">{error}</div>}
-          <button type="submit" disabled={isLoading}>{isLoading ? 'Registering...' : 'Register'}</button>
-          <div>
-            <Link to ="/login">
-                Already have an account? Click here
-            </Link>
+          <label htmlFor="email">Email:</label>
+          <input
+            className='fancy-input'
+            type="text"
+            id="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="aaa@students.uwf.edu"
+            required
+          />
         </div>
-        </form>
-
-
-
-
+  
+        <div>
+          <label htmlFor="username">Username:</label>
+          <input
+            className='fancy-input'
+            type="text"
+            id="username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            placeholder="enter your username"
+            required
+          />
+        </div>
+  
+        <div>
+          <label htmlFor="uni">Select a school:</label>
+          <select
+            id="uni"
+            value={uni}
+            onChange={(e) => setUni(e.target.value)}
+            className="fancy-select"
+            required
+          >
+            <option value="UWF">University of West Florida</option>
+            <option value="OTHER">Other</option>
+          </select>
+        </div>
+  
+        <div>
+          <label htmlFor="password">Password:</label>
+          <input
+            className='fancy-input'
+            type="password"
+            id="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="enter your password"
+            required
+          />
+        </div>
+  
+        <div>
+          <label htmlFor="password2">Re-enter your Password:</label>
+          <input
+            className='fancy-input'
+            type="password"
+            id="password2"
+            value={password2}
+            onChange={(e) => setPassword2(e.target.value)}
+            required
+          />
+        </div>
+  
+        {error && <div className="error-message">{error}</div>}
+  
+        <button type="submit" disabled={isLoading}>
+          {isLoading ? 'Registering...' : 'Register'}
+        </button>
+  
+        <div>
+          <Link to="/login">Already have an account? Click here</Link>
+        </div>
+      </form>
     </div>
-    )
+    </div>
+  );
 }
 
 export default Register

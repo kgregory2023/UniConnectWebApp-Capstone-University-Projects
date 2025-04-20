@@ -9,7 +9,7 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
 
-const CardSwipe = ({ card, onSwipe, style }) => {
+const CardSwipe = ({ card, onSwipe, style, isTopCard }) => {
   const [x, setX] = useState(0);
 
   const handleDrag = (event, info) => {
@@ -34,18 +34,21 @@ const CardSwipe = ({ card, onSwipe, style }) => {
       animate={{ x }}
       style={{
         ...style,
-        backgroundColor: "#fff",
+        background: "linear-gradient(to bottom, rgba(116, 238, 171, 0.15), rgba(104, 124, 138, 0.1))",
+        backdropFilter: "blur(16px)",      
         width: "300px",
         height: "450px",
+        border: "1px solid rgba(255, 255, 255, 0.2)",
         borderRadius: "12px",
-        boxShadow: "0 10px 20px rgba(0, 0, 0, 0.2)",
+        boxShadow: "rgba(255, 255, 255, 0.05)",
         overflow: "hidden",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "flex-start",
         padding: "15px",
-        boxSizing: "border-box"
+        boxSizing: "border-box",
+        color: isTopCard ? "#fff" : "transparent",  
       }}
     >
       <img
@@ -53,21 +56,28 @@ const CardSwipe = ({ card, onSwipe, style }) => {
         alt="Profile"
         draggable="false"
         style={{
-          width: "100%",
-          height: "60%",
-          objectFit: "cover",
-          borderRadius: "8px"
+        background: "rgba(255, 255, 255, 0.08)",
+        backdropFilter: "blur(10px)",
+        WebkitBackdropFilter: "blur(10px)",
+        border: "1px solid rgba(255, 255, 255, 0.2)",
+        boxShadow: "0 6px 12px rgba(0, 0, 0, 0.2)",
+        width: "100%",
+        height: "60%",
+        objectFit: "cover",
+        borderRadius: "8px"
         }}
       />
 
-      <div style={{ textAlign: "center", marginTop: "10px" }}>
-        <h2 style={{ margin: "5px 0", fontSize: "1.4rem", color: "#222" }}>
-          {card.username || "No Name"}, {card.age || "??"}
-        </h2>
-        <p style={{ marginTop: "8px", color: "#444", fontSize: "0.95rem" }}>
-          {card.bio || "This user hasn’t written a bio yet."}
-        </p>
-      </div>
+    {isTopCard && (
+    <div style={{ textAlign: "center", marginTop: "10px" }}>
+      <h2 style={{ margin: "5px 0", fontSize: "1.4rem" }}>
+        {card.username || "No Name"}, {card.age || "??"}
+      </h2>
+      <p style={{ marginTop: "8px", fontSize: "0.95rem" }}>
+        {card.bio || "This user hasn’t written a bio yet."}
+      </p>
+    </div>
+  )}
     </motion.div>
   );
 };

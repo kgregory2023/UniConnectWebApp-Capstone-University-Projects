@@ -1,9 +1,13 @@
-body {
-    text-align: center;
-    line-height: 1.5;
-    background-color: #2d4181;
-    color: white;
-    font-family: Arial, sans-serif;
+.connect-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding-top: 30px; 
+  min-height: 100vh;
+  background: url('/background.png');
+  background-size: cover;
+  padding-top: 60px;
 }
 .card-stack {
     position: 'relative';
@@ -11,6 +15,7 @@ body {
     height: 200px;
     margin: 0 auto; 
     border: '1px solid black';
+    
 }
 .connect-layout {
     display: flex;
@@ -19,14 +24,25 @@ body {
     padding: 20px;
 }
 
+.connect-heading {
+  text-align: center;
+  font-size: 2.5rem;
+  font-weight: bold;
+  width: 100%;
+  margin-bottom: 30px;
+  color: white;
+  
+}
+
 .swipe-section {
     display: flex;
     justify-content: space-around;
     align-items: flex-start;
-    padding: 20px;
+    padding-left: 20%;
     gap: 50px;
     height: 60vh;
     flex-shrink: 0;
+    font-weight: bold;
   } 
   
 
@@ -48,13 +64,31 @@ body {
     min-width: 300px;
     min-height: 650px;
     background-color: #ced3e2;
-    color: black;
-    border-radius: 12px;
+    color: #ffffff;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+    font-weight: bold;
     padding: 15px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(12px);
+   -webkit-backdrop-filter: blur(12px);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   }
   .contact-stack h3{
     font-size: 2rem;
+  }
+  .fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.6s ease-out forwards;
+  }
+  
+  @keyframes fadeInUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
   .contact-bar {
@@ -65,9 +99,21 @@ body {
     padding: 10px;
     border-radius: 8px;
     margin-bottom: 10px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     transition: background-color 0.3s ease;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    box-shadow: 0.3s ease;
 
+  }
+
+  .contact-bar:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
   }
   .contact-icon {
     width: 50px;
@@ -86,12 +132,13 @@ body {
     font-weight: bold;
     margin: 0;
     font-size: 1.0rem;
+    font-weight: bold;
   }
   
   .contact-email {
     margin: 2px 0 0;
     font-size: 0.8rem;
-    color: #666;
+    color: #fbfaff;
   }
 
 .contact-bar .trash {
