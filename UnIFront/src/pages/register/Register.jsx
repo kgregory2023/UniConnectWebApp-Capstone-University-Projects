@@ -86,8 +86,9 @@ function Register () {
   return (
     <div className="register-page">
     <div className="register-wrapper"> 
-      <h1 style={{ marginBottom: '60px' }}>
-        Register
+      
+    <h1 className="stroked-text">
+      REGISTER
       </h1>
   
       <form onSubmit={handleSubmit} className='registerForm'>
