@@ -151,6 +151,7 @@ function Connect() {
                                         key={card.id}
                                         card={card}
                                         onSwipe={handleSwipe}
+                                        isTopCard={index === 0}
                                         style={{
                                             position: 'absolute',
                                             zIndex: cards.length - index,
