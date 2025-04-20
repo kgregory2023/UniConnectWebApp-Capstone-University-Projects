@@ -143,6 +143,7 @@ function Connect() {
                         //Is loading
                         <div className="card-stack">Finding users...</div>
                     ) : (
+                        <div className="card-stack fade-in">
                         <div className="card-stack">
                             {cards.length > 0 ? (
                                 cards.map((card, index) => (
@@ -176,12 +177,13 @@ function Connect() {
                                 </div> 
                             )}
                         </div>
+                        </div>
                     )}
 
                         <div className="swipe-icon green-check">✔</div>
 
                     </div>
-
+                        
                 <div className="contact-stack">
                     <h3>Contacts</h3>
                     {likedUsers.length > 0 ? (
