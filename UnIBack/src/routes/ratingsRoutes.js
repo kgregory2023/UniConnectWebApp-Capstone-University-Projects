@@ -4,7 +4,7 @@ const { createRating, getAllRatings, getRatingById, getRatingsByUserId, getRatin
 const authMiddleware = require("../../authMiddleware");
 
 ratingRoutes.post("/", authMiddleware, createRating);
-ratingRoutes.get("/user", authMiddleware, getRatingByUserId);
+ratingRoutes.get("/user", authMiddleware, getRatingsByUserId);
 
 ratingRoutes.get("/", getAllRatings);
 ratingRoutes.get("/location/:id", getRatingsByLocationId);
