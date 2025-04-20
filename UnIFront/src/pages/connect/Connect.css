@@ -5,6 +5,12 @@
   justify-content: flex-start;
   padding-top: 30px; 
   min-height: 100vh;
+  background: url('/background.png');
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 60px;
 }
 .card-stack {
     position: 'relative';
@@ -63,6 +69,12 @@
     border-radius: 12px;
     padding: 15px;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(12px);
+   -webkit-backdrop-filter: blur(12px);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   }
   .contact-stack h3{
     font-size: 2rem;
@@ -78,6 +90,12 @@
     margin-bottom: 10px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     transition: background-color 0.3s ease;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 
   }
   .contact-icon {
@@ -102,7 +120,7 @@
   .contact-email {
     margin: 2px 0 0;
     font-size: 0.8rem;
-    color: #666;
+    color: #080808;
   }
 
 .contact-bar .trash {
