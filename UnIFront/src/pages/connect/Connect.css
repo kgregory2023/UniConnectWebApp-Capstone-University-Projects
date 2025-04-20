@@ -64,9 +64,7 @@
     min-height: 650px;
     background-color: #ced3e2;
     color: black;
-    border-radius: 12px;
     padding: 15px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
     background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(12px);
    -webkit-backdrop-filter: blur(12px);
