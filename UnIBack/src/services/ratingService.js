@@ -34,7 +34,7 @@ const getRatingsByUserId = async (userId) => {
 };
 
 const getRatingsByLocationId = async (locationId) => {
-    return await Rating.find({ location: locationId });
+    return await Rating.find({ location: locationId }).populate("user");
 };
 
 const deleteRatingById = async (ratingId) => {

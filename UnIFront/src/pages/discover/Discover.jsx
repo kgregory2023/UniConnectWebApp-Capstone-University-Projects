@@ -171,34 +171,6 @@ function Discover() {
       ratings = await response.json()
       console.log(ratings);
 
-      // Fetch user info for each rating
-      const ratingsWithUsers = await Promise.all(ratings.map(async (rating) => {
-        try {
-          const userResponse = await fetch(`http://localhost:5000/users/profile/${rating.userId}`, {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${token}`,
-            },
-          });
-
-          if (!userResponse.ok) {
-            throw new Error(`User fetch failed for ID: ${rating.userId}`);
-          }
-
-          const user = await userResponse.json();
-          return {
-            ...rating,
-            user, // attach full user info
-          };
-        } catch (err) {
-          console.error(`Error fetching user ${rating.userId}:`, err);
-          return {
-            ...rating,
-            user: { username: 'Unknown' }, // fallback
-          };
-        }
-      }));
 
 
       setSelected({ ...marker, ratings: ratings || [] });
@@ -396,13 +368,13 @@ function Discover() {
 
                       <div key={i}>
                         <div className="rating-box">
-                          <div className="rater-name">{r.user || 'Anonymous'}</div>
+                          <div className="rater-name">{r.user?.username || 'Anonymous'}</div>
                           <div className="rating-text">
                             <div className="star-rating">⭐<p>{r.value}</p></div>
                             {r.text || 'No comment'}
                           </div>
 
-                          {user && r.user === user._id && (
+                          {user && r.user?._id === user._id && (
                             <button className="delete-button" onClick={() => deleteRating(selected.id, r._id)}>
                               🗑️
                             </button>
