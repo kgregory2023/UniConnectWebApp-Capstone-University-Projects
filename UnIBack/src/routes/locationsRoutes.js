@@ -1,6 +1,7 @@
 const express = require("express")
 const ratingRoutes = require("../routes/ratingsRoutes");
-const authorizeRoles = require("../roleMiddleware");
+const authorizeRoles = require("../../roleMiddleware");
+const authenticateToken = require("../../authMiddleware");
 const { createLocation, getLocationById, getAllLocations, updateLocation, deleteLocation } = require("../controllers/locationController");
 const locationRoutes = express.Router();
 
