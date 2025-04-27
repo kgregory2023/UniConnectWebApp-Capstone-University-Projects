@@ -100,7 +100,7 @@ To run jest with add. info: `jest --coverage --verbose`
   - ### (How To run the app)
 Both the frontend and the backend must be running as described previously in installation. 
 
-While in the UnIBack directory `node server.js` 
+While in the UnIBack/src directory `node server.js` 
 
 on a seperate terminal, whil in the UnIFront directory, `npm run dev`
 
