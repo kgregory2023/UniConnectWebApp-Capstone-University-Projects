@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const User = require("../models/User");
+const Tag = require("../models/Tag");
 const Rating = require("../models/Rating");
 const userService = require("../services/userService");
 const { MongoMemoryServer } = require("mongodb-memory-server");
@@ -138,9 +139,11 @@ describe("User Service", () => {
         const user = await userService.registerUser(userData);
         const userId = user._id;
 
+        const newPass = "NewPass@123";
         const updateData = {
             username: "updatedUser",
-            age: 22
+            age: 22,
+            password: newPass
         };
 
         const updatedUser = await userService.updateUserProfile(userId, updateData);
@@ -148,8 +151,9 @@ describe("User Service", () => {
 
         expect(userFromDb.username).toBe(updateData.username);
         expect(userFromDb.age).toBe(updateData.age);
-        expect(updatedUser.username).toBe(updateData.username);
-        expect(updatedUser.age).toBe(updateData.age);
+        expect(userFromDb.password).not.toBe(newPass);
+        const isPassCorrect = await bcrypt.compare(newPass, userFromDb.password);
+        expect(isPassCorrect).toBe(true);
     });
 
     it("should return null if the user does not exist", async () => {
@@ -161,6 +165,19 @@ describe("User Service", () => {
         const updatedUser = await userService.updateUserProfile(nonExistantUserId, updateData);
         
         expect(updatedUser).toBeNull();
+    });
+
+    it("should return an error if something goes wrong", async () => {
+        const nonExistantUserId = new mongoose.Types.ObjectId();
+        const updateData = {
+            username: "nonExistentUser"
+        };
+        const mockError = new Error("Database failure.");
+        jest.spyOn(User, 'findByIdAndUpdate').mockRejectedValueOnce(mockError);
+        const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+
+        await expect(userService.updateUserProfile(userId, updateData)).rejects.toThrow("Database failure.");
+        consoleErrorSpy.mockRestore();
     });
 
     it("should delete user profile", async () => {
@@ -187,6 +204,65 @@ describe("User Service", () => {
 
         expect(deletedUser).toBeNull();
     });
+
+    it("should add tags to user when all tagIds are valid", async () => {
+        const userId = "someuserid123";
+        const tagIds = ["tagid1", "tagid2"];
+        jest.spyOn(Tag, 'find').mockResolvedValueOnce([
+            { _id: "tagid1" },
+            { _id: "tagid2" }
+        ]);
+    
+        const mockUpdatedUser = { _id: userId, tags: tagIds };
+        jest.spyOn(User, 'findByIdAndUpdate').mockReturnValueOnce({
+            populate: jest.fn().mockResolvedValueOnce(mockUpdatedUser)
+        });
+    
+        const result = await userService.addTagsToUser(userId, tagIds);
+    
+        expect(result.tags).toEqual(tagIds);
+    });
+    
+    it("should throw an error if any tagId is invalid", async () => {
+        const userId = "someuserid123";
+        const tagIds = ["tagid1", "tagid2"];
+    
+        jest.spyOn(Tag, 'find').mockResolvedValueOnce([
+            { _id: "tagid1" }
+        ]);
+    
+        await expect(userService.addTagsToUser(userId, tagIds))
+            .rejects.toThrow("One or more tags are invalid.");
+    });
+    
+    it("should remove tags from user", async () => {
+        const userId = "someuserid123";
+        const tagIds = ["tagid1", "tagid2"];
+        const mockUpdatedUser = { _id: userId, tags: [] };
+        jest.spyOn(User, 'findByIdAndUpdate').mockReturnValueOnce({
+            populate: jest.fn().mockResolvedValueOnce(mockUpdatedUser)
+        });
+    
+        const result = await userService.removeTagsFromUser(userId, tagIds);
+    
+        expect(result.tags).toEqual([]);
+    });
+    
+    it("should return random users excluding the current user", async () => {
+        const userId = new mongoose.Types.ObjectId;
+        const mockUsers = [
+            { _id: new mongoose.Types.ObjectId },
+            { _id: new mongoose.Types.ObjectId },
+            { _id: new mongoose.Types.ObjectId }
+        ];
+        jest.spyOn(User, 'aggregate').mockResolvedValueOnce(mockUsers);
+    
+        const result = await userService.getSwipeUsers(userId, 3);
+    
+        expect(result.length).toBe(3);
+        expect(result).toEqual(mockUsers);
+    });
+    
 });
 
 const {
