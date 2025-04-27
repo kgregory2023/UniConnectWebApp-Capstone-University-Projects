@@ -216,10 +216,19 @@ function Discover() {
       }
 
       const newRating = await response.json();
+      
+      // Add user information to the new rating from current user context
+      const ratingWithUser = {
+        ...newRating,
+        user: {
+          _id: user._id,
+          username: user.username
+        }
+      };
 
       setSelected(prev => ({
         ...prev,
-        ratings: [...prev.ratings, { ...newRating }],
+        ratings: [...prev.ratings, ratingWithUser],
       }));
 
 
