@@ -1,4 +1,6 @@
 const Location = require("../models/Location");
+const Rating = require("../models/Rating");
+const ratingService = require("./ratingService");
 const mongoose = require("mongoose");
 
 const createLocation = async (locationData) => {
@@ -30,10 +32,17 @@ const updateLocation = async (locationId, locationData) => {
 };
 
 const deleteLocation = async (locationId) => {
-    let location = await Location.findById(locationId).populate("ratings");
+    let location = await Location.findById(locationId);
     if (!location) throw new Error("Location not found.");
-
-    return await Location.findByIdAndDelete(locationId);
+    
+    try {
+        await Rating.deleteMany({ location: locationId });
+        
+        const deletedLocation = await Location.findByIdAndDelete(locationId);
+        return deletedLocation;
+    } catch (error) {
+        throw new Error(`Failed to delete location: ${error.message}`);
+    }
 };
 
 module.exports = {
