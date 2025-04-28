@@ -25,10 +25,28 @@ This document outlines the security implementation used for authentication, pass
 - Users are assigned a **role** (e.g., "user", "admin") when created.
 - Routes can optionally check the user's role to authorize specific actions. For example, admin-only endpoints will verify that `req.user.role === 'admin'`.
 
-### 6. Third-Party Authentication
+### 6. SQL Injection Prevention 
+MongoDB Injection Hardening: 
+- All user inputs are validated and sanitized to prevent malicious injection attacks.
+- Queries avoid dynamically constructing objects directly from user input. For example, login and lookup operations validate inputs and strictly control query building to prevent unauthorized queries.
+
+### 7. Cross-Site Scripting (XSS) Prevention 
+Frontend and Backend Measures: 
+- User-provided inputs (such as bios or profile information) are validated and sanitized. 
+- Input fields enforce character limits and restrict disallowed characters that could be used for script injection. 
+- The frontend properly escapes or sanitizes any dynamically inserted content to prevent execution of untrusted scripts.
+
+### 8. Rate Limiting
+Request Throttling with express-rate-limit:
+- The application uses the express-rate-limit middleware to protect against brute-force and denial-of-service (DoS) attacks.
+- Login attempts are restricted to a maximum of 5 attempts per 2-minute window.
+- General requests are limited to 100 per minute per IP address.
+
+If limits are exceeded, the server responds with a standardized error message and temporarily blocks further requests from that IP.
+### 9. Third-Party Authentication
 - **Not applicable.** Our application currently only supports email/password login using bcrypt and JWT. No third-party OAuth (e.g., Google, GitHub) is implemented.
 
-### 7. Security Best Practices
+### 10. Security Best Practices
 - Passwords are never stored or logged in plaintext.
 - Tokens are signed and verified using a server-side secret key stored in environment variables.
 - Input validation is applied to login and registration forms to prevent injection and malformed input.
