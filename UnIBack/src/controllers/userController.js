@@ -88,30 +88,6 @@ exports.removeTagsFromUser = async (req, res) => {
     }
 };
 
-exports.createAndAddTagToUser = async (req, res) => {
-    try {
-        const userId = req.user.id;
-        const { tagName, tagCatagory } = req.body;
-
-        if (!tagName) {
-            return res.status(400).json({ message: "Tag name is required." });
-        } else if (!tagCatagory) {
-            return res.status(400).json({ message: "Tag catagory is required." });
-        }
-
-        let tag = await tagService.getTagByName(tagName);
-
-        if (!tag) {
-            tag = await tagService.createTag({ tagName, tagCatagory });
-        }
-
-        const updatedUser = await userService.addTagsToUser(userId, [tag.id]);
-        res.status(200).json(updatedUser);
-    } catch (error) {
-        res.stats(500).json({ message: "Internal server error: " + error.message });
-    }
-};
-
 // SwipeUserController export
 exports.getSwipeUsers = async (req, res) => {
     try {

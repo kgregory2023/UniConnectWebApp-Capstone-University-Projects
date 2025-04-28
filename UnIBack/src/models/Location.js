@@ -36,17 +36,5 @@ const LocationSchema = new mongoose.Schema({
     },
 }, { timestamps: true });
 
-LocationSchema.methods.calculateAverageRating = async function () {
-    const location = await this.populate("ratings").execPopulate();
-    if (location.ratings.length > 0) {
-        const sum = location.ratings.reduce((acc, rating) => acc + rating.value, 0);
-        this.averageRating = sum / location.ratings.length;
-    } else {
-        this.averageRating = 0;
-    }
-
-    await this.save();
-};
-
 const Location = mongoose.model("Location", LocationSchema);
 module.exports = Location;
