@@ -3,8 +3,10 @@ const Rating = require("../models/Rating");
 const ratingService = require("../services/ratingService");
 const { MongoMemoryServer } = require("mongodb-memory-server");
 
+
 let mongoLocationServer;
 
+mongoose.model('User', new mongoose.Schema({}));
 beforeAll (async () => {
     mongoLocationServer = await MongoMemoryServer.create();
     await mongoose.connect(mongoLocationServer.getUri());

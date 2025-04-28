@@ -95,7 +95,7 @@ function Discover() {
   // Save a new location to the backend
   const saveLocationToBackend = async (locationData) => {
     try {
-      const response = await fetch('http://localhost:5000/locations', {
+      const response = await fetch('http://localhost:5000/locations/create', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -358,7 +358,7 @@ function Discover() {
               <div className="info-window">
                 <div className="info-header">
                   <h2>{selected.title}</h2>
-                  {user && (
+                  {user && user.role === "admin" && (
                     <button className="delete-button" onClick={() => deleteLocation(selected.id)}>
                       🗑️
                     </button>
