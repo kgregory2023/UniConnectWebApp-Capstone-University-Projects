@@ -63,7 +63,7 @@ exports.getRatingsByUserId = async (req, res) => {
 
 exports.getRatingsByLocationId = async (req, res) => {
     try {
-        const ratings = await ratingService.getRatingsByLocationId(req.params.id);
+        const ratings = await ratingService.getRatingsByLocationId(req.params.locationId);
         res.status(200).json(ratings);
     } catch (error) {
         res.status(500).json({ message: "Internal server error: " + error.message });
