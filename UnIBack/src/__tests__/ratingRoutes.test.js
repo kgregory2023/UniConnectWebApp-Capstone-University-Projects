@@ -7,9 +7,15 @@ const app = require("../config/app");
 const locationRoutes = require("../routes/locationsRoutes");
 
 jest.mock("../../authMiddleware", () => (req, res, next) => {
-    req.user = { id: "mock-user-id" }; // inject test user
+    req.user = { id: "mock-user-id", role: "user" }; // Mock user with role
     next();
   });
+  
+  jest.mock("../../roleMiddleware", () => (allowedRoles) => (req, res, next) => {
+    req.user = { id: "mock-user-id", role: "user" }; // Mock role for test
+    next();
+  });
+  
 jest.mock("../services/ratingService");
 
 app.use(express.json());

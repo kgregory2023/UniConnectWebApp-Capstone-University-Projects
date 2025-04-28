@@ -349,7 +349,7 @@ function Discover() {
               <div className="info-window">
                 <div className="info-header">
                   <h2>{selected.title}</h2>
-                  {user && (
+                  {user && user.role === "admin" && (
                     <button className="delete-button" onClick={() => deleteLocation(selected.id)}>
                       🗑️
                     </button>
