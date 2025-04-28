@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const Location = require("../models/Location");
 const Rating = require("../models/Rating");
 const locationService = require("../services/locationService");
+const ratingService = require("../services/ratingService");
 const { MongoMemoryServer } = require("mongodb-memory-server");
 
 let mongoLocationServer;
@@ -144,5 +145,40 @@ describe("Location Service", () => {
         const locationId = new mongoose.Types.ObjectId;
 
         await expect(locationService.deleteLocation(locationId)).rejects.toThrow("Location not found.");
+    });
+
+    it ("should delete all ratings associated with a location when the location is deleted", async () => {
+        const locationData = {
+            name: "testLocation",
+            address: "0000 test address",
+            city: "testCity"
+        };
+        const location = await locationService.createLocation(locationData);
+        const locationId = location.id;
+
+        const userId = new mongoose.Types.ObjectId;
+        const ratingData1 = {
+            user: userId,
+            location: locationId,
+            value: 4,
+            text: "First test rating"
+        };
+        const ratingData2 = {
+            user: userId,
+            location: locationId,
+            value: 5,
+            text: "Second test rating"
+        };
+        await ratingService.createRating(ratingData1);
+        await ratingService.createRating(ratingData2);
+
+        const ratingsBeforeDelete = await Rating.find({ location: locationId });
+        expect(ratingsBeforeDelete).toHaveLength(2);
+
+        await locationService.deleteLocation(locationId);
+        await expect(locationService.getLocationById(locationId)).rejects.toThrow("Location not found.");
+
+        const ratingsAfterDelete = await Rating.find({ location: locationId });
+        expect(ratingsAfterDelete).toHaveLength(0);
     });
 });
