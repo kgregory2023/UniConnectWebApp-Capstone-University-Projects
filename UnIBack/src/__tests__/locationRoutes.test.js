@@ -7,7 +7,7 @@ const app = require("../config/app");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const locationRoutes = require("../routes/locationsRoutes");
-app.use("/locations", locationRoutes); // ✅ Mount the router her
+app.use("/locations", locationRoutes); 
 
 const adminToken = jwt.sign({ id: "adminId", role: "admin" }, process.env.JWT_SECRET || "secret", { expiresIn: "1h" });
 const userToken = jwt.sign({ id: "userId", role: "user" }, process.env.JWT_SECRET || "secret", { expiresIn: "1h" });
